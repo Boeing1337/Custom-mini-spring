@@ -27,9 +27,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: '-x test'
+      uses: gradle/gradle-build-action@v2
+    - run: gradle build -x test
   test:
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +39,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Test with Gradle
-      uses: gradle/gradle-test-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: test
     
