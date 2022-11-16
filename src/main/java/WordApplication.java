@@ -22,6 +22,7 @@ public class WordApplication {
                         "Пожалуйста, попробуйте еще раз");
                 continue;
             }
+
             while (!stoped) {
                 System.out.println("Введите пароль");
                 String pass = scanner.nextLine();
