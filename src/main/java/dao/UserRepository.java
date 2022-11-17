@@ -51,7 +51,9 @@ public class UserRepository {
     public Optional<UserEntity> information (String login, String scan){
         File file = new File("."+File.separator+BASE_DIRECTORY+File.separator + login+File.separator+ scan);
         try (Scanner scanner = new Scanner(file, StandardCharsets.UTF_8)){
-            return Optional.of(new UserEntity(login,scanner.nextLine()));
+            if (scanner.hasNextLine()) {
+                return Optional.of(new UserEntity(login, scanner.nextLine()));
+            }
         }catch (Exception ignore){
             ignore.printStackTrace();
         }
