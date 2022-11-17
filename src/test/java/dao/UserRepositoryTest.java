@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 
 import static dao.Constants.BASE_DIRECTORY;
 import static java.io.File.separator;
@@ -55,6 +57,10 @@ deleted();
     @Test
     void CheckInformation(){
         UserRepository test4 = new UserRepository();
+        Optional<UserEntity> resolt = test4.information("ArtiWell", "pass");
+        if (resolt.isPresent()){
+            System.out.println(resolt.get().getPass());
+        }
 
     }
 
