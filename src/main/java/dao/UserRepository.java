@@ -46,4 +46,19 @@ public class UserRepository {
         }
     }
 
+    public static List information (String login){
+        List<String> abc = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        String scan = scanner.nextLine();
+        File file = new File(".\\Users\\" + login +"\\"+ scan);
+        try (Scanner scanner1 = new Scanner(file)){
+            while (scanner1.hasNext()){
+                abc.add(scanner1.nextLine());
+            }
+            return abc;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 }
