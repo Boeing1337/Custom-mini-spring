@@ -52,6 +52,12 @@ deleted();
 
     }
 
+    @Test
+    void CheckInformation(){
+        UserRepository test4 = new UserRepository();
+
+    }
+
     static void deleted() {
         try {
             UserRepository test1 = new UserRepository();

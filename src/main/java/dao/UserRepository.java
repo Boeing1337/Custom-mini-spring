@@ -28,7 +28,8 @@ public class UserRepository {
     }
 
     public boolean createdFilePass(String login, String pass) {
-        try (PrintWriter writer = new PrintWriter("."+File.separator+BASE_DIRECTORY+File.separator + login + File.separator+"pass")) {
+        try (PrintWriter writer = new PrintWriter("."+File.separator+BASE_DIRECTORY+File.separator + login +
+                File.separator+"pass")) {
             writer.println(pass);
             return true;
         } catch (Exception e) {
@@ -45,17 +46,15 @@ public class UserRepository {
             return true;
         }
     }
-
-    public static List information (String login){
-        List<String> abc = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        String scan = scanner.nextLine();
+public static String scan = "pass";
+    public static List information (String login, String scan){
+        List<String> information = new ArrayList<>();
         File file = new File("."+File.separator+BASE_DIRECTORY+File.separator + login+File.separator+ scan);
         try (Scanner scanner1 = new Scanner(file)){
             while (scanner1.hasNext()){
-                abc.add(scanner1.nextLine());
+                information.add(scanner1.nextLine());
             }
-            return abc;
+            return information;
         }catch (Exception e){
             return null;
         }
