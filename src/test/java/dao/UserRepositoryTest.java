@@ -1,78 +1,60 @@
 package dao;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
 
 import static dao.Constants.BASE_DIRECTORY;
 import static java.io.File.separator;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
-static String user = "ArtiWell";
-    @Test
-    void testCreateUserCheckIfFolderExists() {
-        UserRepository test1 = new UserRepository();
-        boolean resolt = test1.createUser(user);
-        Assertions.assertTrue(resolt," otvet");
-        File file = new File("."+ separator+ BASE_DIRECTORY+separator+user);
-        Assertions.assertTrue(file.exists(),"ehfjf");;
-deleted();
-    }
-    @Test
-    void testCreateUserCheckIfFolder() {
-        UserRepository test1 = new UserRepository();
-        boolean resolt = test1.createUser(user);
-        Assertions.assertTrue(resolt," otvet");
-        File file = new File("."+ separator+ BASE_DIRECTORY+separator+user);
-        Assertions.assertTrue(file.isDirectory(),"ehfjf");
-deleted();
-    }
+    static final String PASS = "pass";
+    static String USER_LOGIN = "ArtiWell";
+    UserRepository repository = new UserRepository();
 
-
-    @Test
-    void testCreatedFilePassCheckPass() {
-        UserRepository test2 = new UserRepository();
-        test2.createUser(user);
-        boolean resolt = test2.createdFilePass(user, "123456qwe");
-        Assertions.assertTrue(resolt);
-//        File file = new File("."+ separator+ BASE_DIRECTORY+separator+user+separator+"pass");
-deleted();
-
+    @BeforeEach
+    void prepare() {
+        repository.createUser(USER_LOGIN);
     }
 
     @Test
-    void testCheckIsUserPresents() throws IOException {
-        UserRepository test3 = new UserRepository();
-        test3.createUser(user);
-        boolean resolt = test3.isUserPresents(user);
-        Assertions.assertTrue(resolt);
-deleted();
+    void testIfFolderExists() {
+        File file = new File("." + separator + BASE_DIRECTORY + separator + USER_LOGIN);
+        Assertions.assertTrue(file.exists(), "dima_soskuchilsuy_po_cody");
     }
 
     @Test
-    void testCheckInformation(){
-        UserRepository test4 = new UserRepository();
-        test4.createUser(user);
-        test4.createdFilePass(user, "pass");
-        Optional<UserEntity> resolt = test4.information(user, "pass");
-        if (resolt.isPresent()){
-            System.out.println(resolt.get().getPass());
-        }
-deleted();
+    void testIfFolderTypeCreated() {
+        File file = new File("." + separator + BASE_DIRECTORY + separator + USER_LOGIN);
+        Assertions.assertTrue(file.isDirectory(), "dima_soskuchilsuy_po_cody");
     }
 
-    static void deleted() {
+
+    @Test
+    void testIfPassSaved() {
+        boolean isPassCreated = repository.createPass(USER_LOGIN, PASS);
+        Assertions.assertTrue(isPassCreated);
+        UserEntity result = repository.getUser(USER_LOGIN, PASS).orElseThrow();
+        Assertions.assertEquals(PASS, result.getPass());
+    }
+
+    @Test
+    void testCheckIfUserPresents() throws IOException {
+        boolean result = repository.isUserPresents(USER_LOGIN);
+        Assertions.assertTrue(result);
+    }
+
+    @AfterEach
+    void deleted() {
         try {
-            UserRepository test1 = new UserRepository();
-            Path path1 = Path.of("."+ separator+ BASE_DIRECTORY+separator+user+separator+"pass");
-            Path path = Path.of("."+ separator+ BASE_DIRECTORY+separator+user);
+            Path path1 = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN + separator + PASS);
+            Path path = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN);
             Files.delete(path1);
             Files.delete(path);
         } catch (Exception e) {
