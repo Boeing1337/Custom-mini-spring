@@ -40,7 +40,7 @@ public class UserRepository {
         }
     }
 
-    public boolean scanUser (String login) throws IOException {
+    public boolean isUserPresents (String login) throws IOException {
         try {
             Files.createDirectory(Path.of("."+File.separator+BASE_DIRECTORY+File.separator + login));
             return false;
