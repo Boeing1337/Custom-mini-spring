@@ -39,7 +39,7 @@ public class UserRepository {
 
     public static boolean scanUser (String login) throws IOException {
         try {
-            Files.createDirectory(Path.of(".\\Users\\" + login));
+            Files.createDirectory(Path.of("."+File.separator+BASE_DIRECTORY+File.separator + login));
             return false;
         } catch (FileAlreadyExistsException e) {
             return true;
@@ -50,7 +50,7 @@ public class UserRepository {
         List<String> abc = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         String scan = scanner.nextLine();
-        File file = new File(".\\Users\\" + login +"\\"+ scan);
+        File file = new File("."+File.separator+BASE_DIRECTORY+File.separator + login+File.separator+ scan);
         try (Scanner scanner1 = new Scanner(file)){
             while (scanner1.hasNext()){
                 abc.add(scanner1.nextLine());
