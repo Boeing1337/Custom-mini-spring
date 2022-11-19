@@ -1,10 +1,14 @@
 package AddingAQuestion;
 
 public class Adding {
-
-
-    for(
+    String[] bukvi = poxuy.split(";");
     int i = 0;
+    for(
+
+    public static void main(String[] args) {
+
+    }
+
     i<bukvi.length;i++)
 
     {
