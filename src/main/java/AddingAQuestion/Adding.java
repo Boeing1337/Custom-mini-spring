@@ -26,13 +26,18 @@ public class Adding {
 
 
     public static void main(String[] args) throws IOException {
+        ispolnenue();
+
+    }
+
+    public static void ispolnenue() throws IOException {
         Scanner scanner = new Scanner(System.in, UTF_8);
         reading();
         readQuestions();
         readAnswers();
         System.out.println("Введите вопрос");
         String question1 = scanner.nextLine();
-        System.out.println("Введите ответ");
+        System.out.println("Введите ответ в верхнем регистре (заглавными буквами)");
         String answers1 = scanner.nextLine();
         for (int i = 0; i < 33; i++) {
             if (answers1.charAt(0) == bukvi[i].charAt(0)) {
@@ -41,13 +46,6 @@ public class Adding {
             }
         }
         updateQuestion();
-
-    }
-
-    public static void ispolnenue() throws IOException {
-
-        updateQuestion();
-
     }
 
 
