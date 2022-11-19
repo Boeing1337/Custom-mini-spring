@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class UserRepository {
 
 
-    public boolean createUser(String login) {
+    public static boolean createUser(String login) {
         try {
             Files.createDirectory(Path.of("." + separator + BASE_DIRECTORY + separator + login));
             Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "pass"));
@@ -26,7 +26,7 @@ public class UserRepository {
         }
     }
 
-    public boolean createPass(String login, String pass) {
+    public static boolean createPass(String login, String pass) {
         try (PrintWriter writer = new PrintWriter("." + separator + BASE_DIRECTORY + separator + login +
                 separator + "pass", UTF_8)) {
             writer.println(pass);
