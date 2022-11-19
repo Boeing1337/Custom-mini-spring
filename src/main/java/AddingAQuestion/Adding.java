@@ -26,28 +26,23 @@ public class Adding {
 
 
     public static void main(String[] args) throws IOException {
-        ispolnenue();
-
-    }
-
-    public static void ispolnenue() throws IOException {
         Scanner scanner = new Scanner(System.in, UTF_8);
         reading();
         readQuestions();
         readAnswers();
         System.out.println("Введите вопрос");
         String question1 = scanner.nextLine();
-        System.out.println("Введите ответ в верхнем регистре (заглавными буквами)");
+        System.out.println("Введите ответ");
         String answers1 = scanner.nextLine();
         for (int i = 0; i < 33; i++) {
             if (answers1.charAt(0) == bukvi[i].charAt(0)) {
-                question.get(i).add(question1 + "\n");
-                answers.get(i).add(answers1 + "\n");
+                question.get(i).add(question1);
+                answers.get(i).add("\n" + answers1);
             }
         }
         updateQuestion();
-    }
 
+    }
 
     public static void updateQuestion() throws IOException {
         try (FileWriter writer = new FileWriter("." + separator + "abc and questions", UTF_8)) {
