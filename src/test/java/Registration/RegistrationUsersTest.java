@@ -1,7 +1,6 @@
 package Registration;
 
 import dao.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class RegistrationUsersTest {
@@ -11,17 +10,10 @@ class RegistrationUsersTest {
     String pass2 = "qwerty";
 
     @Test
-    void writePassword() {
-
-        Assertions.assertTrue(registration.writePassword(login, pass1, pass2));
+    void registrationUser() {
+        registration.registrationUser(login, pass1, pass2);
     }
 
-    @Test
-    void createdUserLogin() {
-
-        Assertions.assertTrue(registration.createdUserLogin(login));
-
-    }
 
 
 }
