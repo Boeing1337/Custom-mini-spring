@@ -22,6 +22,26 @@ public class RegistrationUsers {
             return false;
         }
     }
+
+    private boolean writePassword(String login, String pass1, String pass2) {
+
+        if (!"".equals(pass1)) {
+            if (userRepository.createPass(login, pass1)) {
+                System.out.println("Введите пароль повторно");
+                if (pass2.equals(pass1)) {
+                    return true;
+                } else {
+                    System.out.println("Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз");
+                    return false;
+                }
+            } else {
+                System.out.println("Пароль не соответствует требованиям");
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 //    boolean stoped = true;
 //    public void registrationUser(String LOGIN, String PASS1, String PASS2) {
 //        while (stoped) {
@@ -50,23 +70,5 @@ public class RegistrationUsers {
 //        }
 //    }
 
-    private boolean writePassword(String login, String pass1, String pass2) {
 
-        if (!"".equals(pass1)) {
-            if (userRepository.createPass(login, pass1)) {
-                System.out.println("Введите пароль повторно");
-                if (pass2.equals(pass1)) {
-                    return true;
-                } else {
-                    System.out.println("Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз");
-                    return false;
-                }
-            } else {
-                System.out.println("Пароль не соответствует требованиям");
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
 }
