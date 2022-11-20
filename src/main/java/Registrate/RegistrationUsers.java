@@ -4,19 +4,19 @@ import dao.UserRepository;
 
 import java.util.Scanner;
 
-public class registrate {
-    public static boolean stoped = true;
-
+public class RegistrationUsers {
+    public boolean stoped = true;
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+    }
 
+    public void registrationUser() {
+        Scanner scanner = new Scanner(System.in);
         while (stoped) {
             System.out.println("Введите логин");
             String login = scanner.nextLine();
             if (UserRepository.createUser(login)) {
-
                 stoped = false;
             } else {
                 System.out.println("Пользователь с таким логином уже существует или логин введен некорректно. " +
@@ -39,13 +39,9 @@ public class registrate {
                         System.out.println("Пароль не соответствует требованиям");
                     }
                 }
-
             }
             stoped = false;
         }
-
-
     }
-
 
 }
