@@ -53,9 +53,15 @@ public class RegistrationUsers {
                         "Пожалуйста, попробуйте еще раз");
                 continue;
             }
+            System.out.println("Введите пароль или нажмите 0, чтобы вернуться в предыдущее меню");
+            if ("0".equals(PASS1)) {
+                continue;
+            }
             while (!stoped) {
+
                 if (readFirstPassword(LOGIN, PASS1)) {
                     if (userRepository.createPass(LOGIN, PASS1)) {
+                        System.out.println("Ввудите пароль повторно, или нажмите 0, чтоб вернуться в предыдущее меню");
                         if (readDoublePass(PASS1, PASS2)) {
                             stoped = true;
                         } else {
