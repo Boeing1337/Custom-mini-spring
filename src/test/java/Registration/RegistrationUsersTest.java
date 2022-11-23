@@ -1,18 +1,46 @@
-package Registration;
+package Servise;
 
+import Registration.RegistrationUsers;
 import dao.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+@ExtendWith(MockitoExtension.class)
 class RegistrationUsersTest {
-    RegistrationUsers registration = new RegistrationUsers(new UserRepository());
-    String login = "ArtiWell";
-    String pass1 = "qwerty";
-    String pass2 = "qwerty";
+
+    @InjectMocks
+    RegistrationUsers service;
+
+    @Mock
+    UserRepository userRepository;
 
     @Test
     void registrationUser() {
-        registration.registrationUser(login, pass1, pass2);
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+
+        Mockito.when(userRepository.createUser("login"))
+                .thenReturn(true);
+        Mockito.when(userRepository.createPass("login", "gfhgfhg"))
+                .thenReturn(true);
+//        Mockito.when(userRepository.getUser("pizduk"))
+//                .thenReturn(Optional.empty());
+        System.setIn(new ByteArrayInputStream("login\ngfhgfhg\njhghjg\n0\n0".getBytes()));
+//        service.registrationUser();
+        System.setOut(originalOut);
+        System.out.println(outContent);
     }
+}
 
 
 

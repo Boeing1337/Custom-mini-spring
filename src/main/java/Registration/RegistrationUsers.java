@@ -2,75 +2,73 @@ package Registration;
 
 import dao.UserRepository;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 public class RegistrationUsers {
+    Scanner scanner = new Scanner(System.in);
     private final UserRepository userRepository;
+    String login;
+    String pass1;
+    String pass2;
 
     public RegistrationUsers(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    private boolean allows = true;
 
-    private boolean stoped = true;
-
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
+        RegistrationUsers user = new RegistrationUsers(new UserRepository());
+        user.interUsersDate();
     }
 
+    private boolean checkDoublePass(String pass1, String pass2) {
+        return pass2.equals(pass1);
+    }
 
-    private boolean readFirstPassword(String login, String pass1) {
-
-        if (!"".equals(pass1)) {
-            if (userRepository.createPass(login, pass1)) {
-                return true;
-            } else {
-                System.out.println("Пароль не соответствует требованиям");
-                return false;
+    public void interUsersDate() throws IOException {
+        while (allows) {
+            System.out.println("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
+            login = scanner.nextLine();
+            if ("0".equals(login)) {
+                return;
             }
-        } else {
-            System.out.println("Пароль не соответствует требованиям");
-            return false;
-        }
-    }
-
-    private boolean readDoublePass(String pass1, String pass2) {
-        if (pass2.equals(pass1)) {
-            return true;
-        } else {
-            System.out.println("Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз");
-            return false;
-        }
-    }
-
-    public void registrationUser(String LOGIN, String PASS1, String PASS2) {
-        while (stoped) {
-            if (userRepository.createUser(LOGIN)) {
-                stoped = false;
-            } else {
-                System.out.println("Пользователь с таким логином уже существует или логин введен некорректно. " +
-                        "Пожалуйста, попробуйте еще раз");
+            if (userRepository.isUserPresents(login)) {
+                System.out.println("Такой логин уже занят. Пожалуйста, попробуйте еще раз");
                 continue;
             }
-            System.out.println("Введите пароль или нажмите 0, чтобы вернуться в предыдущее меню");
-            if ("0".equals(PASS1)) {
-                continue;
-            }
-            while (!stoped) {
-
-                if (readFirstPassword(LOGIN, PASS1)) {
-                    if (userRepository.createPass(LOGIN, PASS1)) {
-                        System.out.println("Ввудите пароль повторно, или нажмите 0, чтоб вернуться в предыдущее меню");
-                        if (readDoublePass(PASS1, PASS2)) {
-                            stoped = true;
-                        } else {
-                            System.out.println("Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз");
-                        }
+            while (allows) {
+                System.out.println("Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню");
+                pass1 = scanner.nextLine();
+                if ("0".equals(pass1)) {
+                    break;
+                }
+                if ("".equals(pass1)) {
+                    System.out.println("Пароль должен содержать значение");
+                    continue;
+                }
+                while (allows) {
+                    System.out.println("Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню");
+                    pass2 = scanner.nextLine();
+                    if ("0".equals(pass2)) {
+                        break;
+                    }
+                    if (checkDoublePass(pass1, pass2)) {
+                        allows = false;
                     } else {
-                        System.out.println("Пароль не соответствует требованиям");
+                        System.out.println("Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз");
                     }
                 }
             }
-            stoped = false;
+            if (!allows) {
+                registrationUser(login, pass1);
+            }
         }
     }
 
+    private void registrationUser(String login, String pass1) {
+        userRepository.createUser(login);
+        userRepository.createPass(login, pass1);
+    }
 }
