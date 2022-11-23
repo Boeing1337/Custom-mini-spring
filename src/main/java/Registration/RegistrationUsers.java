@@ -16,9 +16,6 @@ public class RegistrationUsers {
 
     }
 
-    private boolean createdUserLogin(String login) {
-        return userRepository.createUser(login);
-    }
 
     private boolean readFirstPassword(String login, String pass1) {
 
@@ -46,7 +43,7 @@ public class RegistrationUsers {
 
     public void registrationUser(String LOGIN, String PASS1, String PASS2) {
         while (stoped) {
-            if (createdUserLogin(LOGIN)) {
+            if (userRepository.createUser(LOGIN)) {
                 stoped = false;
             } else {
                 System.out.println("Пользователь с таким логином уже существует или логин введен некорректно. " +
