@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class RegistrationUsers {
     private final UserRepository userRepository;
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     private RegistrationUsers(UserRepository userRepository) {
         this.userRepository = userRepository;
