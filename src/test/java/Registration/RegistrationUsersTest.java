@@ -41,19 +41,7 @@ class RegistrationUsersTest {
     }
 }
 
-//        Mockito.when(userRepository.createUser("login"))
-//                .thenReturn(true);
-//        Mockito.when(userRepository.createPass("login", "gfhgfhg"))
-//                .thenReturn(true);
-//        Mockito.when(userRepository.isUserPresents("login"))
-//                .thenReturn(true);
-////        Mockito.when(userRepository.getUser("pizduk"))
-////                .thenReturn(Optional.empty());
-//        System.setIn(new ByteArrayInputStream("login\ngfhgfhg\njhghjg\n0\n0".getBytes()));
-////        service.registrationUser();
-//        System.setOut(originalOut);
-//        System.out.println(outContent);
-//    }
+
 
 
 
