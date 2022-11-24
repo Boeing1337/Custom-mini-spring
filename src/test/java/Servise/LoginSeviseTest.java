@@ -31,8 +31,6 @@ class LoginSeviseTest {
 
 
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
-//        Mockito.when(userRepository.getUser("pizduk"))
-//                .thenReturn(Optional.empty());
         System.setIn(new ByteArrayInputStream("login\ngfhgfhg\njhghjg\n0\n0".getBytes()));
         service.authorization();
         System.setOut(originalOut);
@@ -47,8 +45,6 @@ class LoginSeviseTest {
 
 
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
-//        Mockito.when(userRepository.getUser("pizduk"))
-//                .thenReturn(Optional.empty());
         System.setIn(new ByteArrayInputStream("login\npass".getBytes()));
         service.authorization();
         System.setOut(originalOut);

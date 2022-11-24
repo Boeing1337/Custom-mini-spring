@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class LoginSevise {
     private final UserRepository userRepository;
-    Optional<UserEntity> opt;
-    boolean allows = true;
-    String login;
-    Scanner scanner = new Scanner(System.in);
+    private Optional<UserEntity> opt;
+    private boolean allows = true;
+    private String login;
+    private Scanner scanner = new Scanner(System.in);
 
     public LoginSevise(UserRepository userRepository) {
         this.userRepository = userRepository;
