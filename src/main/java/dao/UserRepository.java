@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -60,6 +61,4 @@ public class UserRepository {
         }
         return Optional.empty();
     }
-
-
 }

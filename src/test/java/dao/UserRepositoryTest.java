@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -45,7 +44,7 @@ class UserRepositoryTest {
 
 
     @Test
-    void testCheckIfUserPresents() throws IOException {
+    void testCheckIfUserPresents() {
         boolean result = repository.isUserPresents(USER_LOGIN);
         Assertions.assertTrue(result);
     }
