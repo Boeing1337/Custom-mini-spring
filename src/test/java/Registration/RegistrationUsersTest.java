@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,25 +24,37 @@ class RegistrationUsersTest {
     UserRepository userRepository;
 
     @Test
-    void registrationUser() {
+    void registrationUser() throws IOException {
         PrintStream originalOut = System.out;
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
+        System.setOut(new PrintStream(outContent));
 
 
-        Mockito.when(userRepository.createUser("login"))
-                .thenReturn(true);
-        Mockito.when(userRepository.createPass("login", "gfhgfhg"))
-                .thenReturn(true);
-//        Mockito.when(userRepository.getUser("pizduk"))
-//                .thenReturn(Optional.empty());
-        System.setIn(new ByteArrayInputStream("login\ngfhgfhg\njhghjg\n0\n0".getBytes()));
-//        service.registrationUser();
+        Mockito.when(userRepository.createUser("login")).thenReturn(true);
+        Mockito.when(userRepository.createPass("login", "pass")).thenReturn(true);
+        Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
+        System.setIn(new ByteArrayInputStream("login\n0\nlogin\npass\npass".getBytes()));
+        service.registrationUser();
         System.setOut(originalOut);
         System.out.println(outContent);
     }
 }
 
+//        Mockito.when(userRepository.createUser("login"))
+//                .thenReturn(true);
+//        Mockito.when(userRepository.createPass("login", "gfhgfhg"))
+//                .thenReturn(true);
+//        Mockito.when(userRepository.isUserPresents("login"))
+//                .thenReturn(true);
+////        Mockito.when(userRepository.getUser("pizduk"))
+////                .thenReturn(Optional.empty());
+//        System.setIn(new ByteArrayInputStream("login\ngfhgfhg\njhghjg\n0\n0".getBytes()));
+////        service.registrationUser();
+//        System.setOut(originalOut);
+//        System.out.println(outContent);
+//    }
 
 
-}
+
+

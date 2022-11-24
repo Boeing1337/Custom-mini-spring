@@ -17,8 +17,9 @@ public class QuestionRepository {
     private final ArrayList<List<String>> answers = new ArrayList<>();
     private String[] bukvi;
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
+        QuestionRepository d = new QuestionRepository();
+        d.submitQuestionsInAConvenient();
     }
 
     public void reading() {

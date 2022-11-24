@@ -6,28 +6,32 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class RegistrationUsers {
-    Scanner scanner = new Scanner(System.in);
     private final UserRepository userRepository;
-    String login;
-    String pass1;
-    String pass2;
+    Scanner scanner = new Scanner(System.in);
 
-    public RegistrationUsers(UserRepository userRepository) {
+    private RegistrationUsers(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    private boolean allows = true;
-
     public static void main(String[] args) throws IOException {
         RegistrationUsers user = new RegistrationUsers(new UserRepository());
-        user.interUsersDate();
+        user.registrationUser();
+    }
+
+    private void initScanner() {
+        scanner = new Scanner(System.in);
     }
 
     private boolean checkDoublePass(String pass1, String pass2) {
         return pass2.equals(pass1);
     }
 
-    public void interUsersDate() throws IOException {
+    public void registrationUser() throws IOException {
+        initScanner();
+        boolean allows = true;
+        String login = null;
+        String pass1 = null;
+        String pass2 = null;
         while (allows) {
             System.out.println("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
             login = scanner.nextLine();
@@ -62,12 +66,12 @@ public class RegistrationUsers {
                 }
             }
             if (!allows) {
-                registrationUser(login, pass1);
+                createdFiles(login, pass1);
             }
         }
     }
 
-    private void registrationUser(String login, String pass1) {
+    private void createdFiles(String login, String pass1) {
         userRepository.createUser(login);
         userRepository.createPass(login, pass1);
     }

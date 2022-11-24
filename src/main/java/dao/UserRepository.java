@@ -45,6 +45,8 @@ public class UserRepository {
             return false;
         } catch (FileAlreadyExistsException e) {
             return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
