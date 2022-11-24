@@ -13,11 +13,6 @@ public class RegistrationUsers {
         this.userRepository = userRepository;
     }
 
-    public static void main(String[] args) throws IOException {
-        RegistrationUsers user = new RegistrationUsers(new UserRepository());
-        user.registrationUser();
-    }
-
     private void initScanner() {
         scanner = new Scanner(System.in);
     }
