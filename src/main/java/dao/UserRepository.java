@@ -1,7 +1,6 @@
 package dao;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -37,7 +36,7 @@ public class UserRepository {
         }
     }
 
-    public boolean isUserPresents(String login) throws IOException {
+    public boolean isUserPresents(String login) {
         try {
             Path path = Path.of("." + separator + BASE_DIRECTORY + separator + login);
             Files.createDirectory(path);

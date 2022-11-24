@@ -2,7 +2,6 @@ package Registration;
 
 import dao.UserRepository;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class RegistrationUsers {
@@ -21,7 +20,7 @@ public class RegistrationUsers {
         return pass2.equals(pass1);
     }
 
-    public void registrationUser() throws IOException {
+    public void registrationUser() {
         initScanner();
         boolean allows = true;
         String login = null;
