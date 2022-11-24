@@ -66,7 +66,12 @@ public class RegistrationUsers {
     }
 
     private void createdFiles(String login, String pass1) {
-        userRepository.createUser(login);
-        userRepository.createPass(login, pass1);
+        if (userRepository.createUser(login) && userRepository.createPass(login, pass1)) {
+            System.out.println("Вы успешно зарегистрировались в Диминой игре!");
+        } else {
+            System.out.println("К сожалению произошла критическая ошибка при создании логина, пожалуйста" +
+                    " перезайдите в игру и попробуйте снова");
+        }
+
     }
 }
