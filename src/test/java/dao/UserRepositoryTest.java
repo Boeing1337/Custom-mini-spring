@@ -35,6 +35,14 @@ class UserRepositoryTest {
         Assertions.assertTrue(file.isDirectory(), "dima_soskuchilsuy_po_cody");
     }
 
+    @Test
+    void testIfPassSaved() {
+        boolean isPassCreated = repository.createPass(USER_LOGIN, PASS);
+        Assertions.assertTrue(isPassCreated);
+        UserEntity result = repository.getUser(USER_LOGIN).orElseThrow();
+        Assertions.assertEquals(PASS, result.getPass());
+    }
+
 
     @Test
     void testCheckIfUserPresents() throws IOException {
