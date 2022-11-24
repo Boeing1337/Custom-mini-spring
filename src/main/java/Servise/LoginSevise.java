@@ -51,43 +51,4 @@ public class LoginSevise {
             }
         }
     }
-
-//    public boolean enterYourLogin() {
-//        System.out.println("Что бы вернуться назад нажмите 0");
-//        System.out.println("Введите ваш логин:");
-//        while (!scanner.hasNextLine()) {
-//        }
-//        login = scanner.nextLine();
-//        if (login.equals("0")) {
-//            return false;
-//        }
-//        opt = userRepository.getUser(login);
-//        if (opt.isEmpty()) {
-//            System.out.println("Такого логина не существует");
-//            enterYourLogin();
-//        } else {
-//            return true;
-//        }
-//        return false;
-//    }
-
-
-
-//    public boolean enterYourPassword() {
-//        System.out.println("Что бы вернуться назад нажмите 0");
-//        System.out.println("Введите пароль:");
-//        String pass = scanner.nextLine();
-//        if (pass.equals("0")) {
-//            return false;
-//        }
-//
-//        if (!(pass.equals(opt.get().getPass()))) {
-//            System.out.println("Не верный пароль!");
-//            enterYourPassword();
-//        } else {
-//            System.out.println("Добро пожаловать " + login + "!");
-//            return true;
-//        }
-//        return false;
-//    }
 }
