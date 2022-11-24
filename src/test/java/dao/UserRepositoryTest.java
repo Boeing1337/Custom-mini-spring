@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -40,14 +39,8 @@ class UserRepositoryTest {
     void testIfPassSaved() {
         boolean isPassCreated = repository.createPass(USER_LOGIN, PASS);
         Assertions.assertTrue(isPassCreated);
-        UserEntity result = repository.getUser(USER_LOGIN, PASS).orElseThrow();
+        UserEntity result = repository.getUser(USER_LOGIN).orElseThrow();
         Assertions.assertEquals(PASS, result.getPass());
-    }
-
-    @Test
-    void testCheckIfUserPresents() throws IOException {
-        boolean result = repository.isUserPresents(USER_LOGIN);
-        Assertions.assertTrue(result);
     }
 
     @AfterEach
