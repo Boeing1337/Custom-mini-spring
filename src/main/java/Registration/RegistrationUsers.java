@@ -8,7 +8,7 @@ public class RegistrationUsers {
     private final UserRepository userRepository;
     private Scanner scanner = new Scanner(System.in);
 
-    private RegistrationUsers(UserRepository userRepository) {
+    public RegistrationUsers(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
