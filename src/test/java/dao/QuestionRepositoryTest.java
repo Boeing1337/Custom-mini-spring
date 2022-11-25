@@ -8,37 +8,49 @@ import java.util.List;
 class QuestionRepositoryTest {
 
     @Test
-    void reading() {
+    void getAllAnswers() {
         QuestionRepository arr = new QuestionRepository();
-        Assertions.assertEquals(33, arr.getBukvi().length);
+        Assertions.assertEquals(33, arr.getAnswers().size());
     }
 
     @Test
-    void readAnswers() {
+    void getAllQuestions() {
         QuestionRepository arr = new QuestionRepository();
-        Assertions.assertEquals(33, arr.getAllAnswers().size());
+        Assertions.assertEquals(33, arr.getQuestions().size());
     }
 
     @Test
-    void readQuestions() {
+    void getQuestionByLetter() {
         QuestionRepository arr = new QuestionRepository();
-        Assertions.assertEquals(33, arr.getAllQuestions().size());
-    }
-
-    @Test
-    void getQuestionBy() {
-        QuestionRepository arr = new QuestionRepository();
-        List<String> a = arr.getQuestionBy("А");
+        List<String> a = arr.getQuestionByLetter("А");
         Assertions.assertEquals("АБРИКОС", a.get(2));
     }
 
     @Test
-    void submitQuestionsInAConvenient() {
+    void addQuestionsInAConvenient() {
         QuestionRepository arr = new QuestionRepository();
-        List<String> a = arr.getQuestionBy("Г");
-        Assertions.assertEquals(a.size(), arr.getQuestionBy("Г").size());
+        List<String> a = arr.getQuestionByLetter("Г");
+        Assertions.assertEquals(a.size(), arr.getQuestionByLetter("Г").size());
         arr.addQuestionAnswers("CCczcxc", "ГГ");
-        Assertions.assertEquals(a.size() + 2, arr.getQuestionBy("Г").size());
-        Assertions.assertEquals("ГГ", arr.getQuestionBy("Г").get(a.size() + 1));
+        Assertions.assertEquals(a.size() + 2, arr.getQuestionByLetter("Г").size());
+        Assertions.assertEquals("ГГ", arr.getQuestionByLetter("Г").get(a.size() + 1));
+    }
+
+    @Test
+    void setQuestions() {
+        QuestionRepository arr = new QuestionRepository();
+        List<String> a = arr.getQuestionByLetter("Г");
+        Assertions.assertEquals("Что за фрукт поспел в садочке? Кость внутри, в веснушках щечки.\n" +
+                "Прилетел к нему рой ос — Сладок мягкий", a.get(1));
+    }
+
+    @Test
+    void setAnswers() {
+        QuestionRepository arr = new QuestionRepository();
+        List<String> a = arr.getQuestionByLetter("А");
+        List<List<String>> b = arr.getAnswers();
+        Assertions.assertEquals("АБРИКОС", a.get(2));
+        arr.setAnswers("А", 2, "АБРИКОСФ");
+        Assertions.assertEquals("АБРИКОСф", arr.getQuestionByLetter("А").get(2));
     }
 }
