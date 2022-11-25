@@ -11,30 +11,40 @@ import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class QuestionRepository {
+
+
     private final ArrayList<List<String>> questions = new ArrayList<>();
+
+
     private final ArrayList<List<String>> answers = new ArrayList<>();
-    private String[] bukvi;
+    private String[] content;
 
     public QuestionRepository() {
         reading();
+        getAllQuestions();
+        getAllAnswers();
     }
 
     private void reading() {
         try {
-            bukvi = Files.readString(Paths.get("abc and questions"))
+            content = Files.readString(Paths.get("abc and questions"))
                     .split(";(\\r?\\n){2}");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String[] getBukvi() {
-        return bukvi;
+    public List<List<String>> getQuestions() {
+        return new ArrayList<>(questions);
     }
 
-    public List<List<String>> getAllAnswers() {
+    public List<List<String>> getAnswers() {
+        return new ArrayList<>(answers);
+    }
+
+    private List<List<String>> getAllAnswers() {
         answers.clear();
-        for (String s : bukvi) {
+        for (String s : content) {
             String[] splitAnswers = s.trim().split("/");
             List<String> listAnswers = new ArrayList<>();
             for (int j = 2; j < splitAnswers.length; j += 2) {
@@ -45,9 +55,9 @@ public class QuestionRepository {
         return answers;
     }
 
-    public List<List<String>> getAllQuestions() {
+    private List<List<String>> getAllQuestions() {
         questions.clear();
-        for (String s : bukvi) {
+        for (String s : content) {
             String[] splitQuestions = s.trim().split("/");
             List<String> listQuestions = new ArrayList<>();
             for (int j = 1; j < splitQuestions.length; j += 2) {
@@ -61,8 +71,8 @@ public class QuestionRepository {
 
     private void updateQuestion() {
         try (FileWriter writerFile = new FileWriter("." + separator + "abc and questions", UTF_8)) {
-            for (int i = 0; i < bukvi.length; i++) {
-                writerFile.write(bukvi[i].charAt(0) + ":\n");
+            for (int i = 0; i < content.length; i++) {
+                writerFile.write(content[i].charAt(0) + ":\n");
                 for (int j = 0; j < questions.get(i).size(); j++) {
                     writerFile.write("/" + questions.get(i).get(j) + "/\n");
                     writerFile.write(answers.get(i).get(j).toUpperCase() + "\n");
@@ -75,23 +85,9 @@ public class QuestionRepository {
         reading();
     }
 
-    public void addQuestionAnswers(String question, String answer) {
-        reading();
-        getAllQuestions();
-        getAllAnswers();
-        for (int i = 0; i < bukvi.length; i++) {
-            if (answer.charAt(0) == bukvi[i].charAt(0)) {
-                questions.get(i).add(question);
-                answers.get(i).add(answer.toUpperCase());
-            }
-        }
-        updateQuestion();
-    }
-
-    public List<String> getQuestionBy(String letter) {
-        reading();
+    public List<String> getQuestionByLetter(String letter) {
         ArrayList<String> a = new ArrayList<>();
-        for (String s : bukvi) {
+        for (String s : content) {
             if (s.trim().charAt(0) == letter.trim().toUpperCase().charAt(0)) {
                 String[] quest = s.trim().split("/");
                 for (String value : quest) {
@@ -100,5 +96,33 @@ public class QuestionRepository {
             }
         }
         return a;
+    }
+
+    public void addQuestionAnswers(String question, String answer) {
+        for (int i = 0; i < content.length; i++) {
+            if (answer.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+                questions.get(i).add(question);
+                answers.get(i).add(answer.toUpperCase());
+            }
+        }
+        updateQuestion();
+    }
+
+    public void setQuestions(String letter, int index, String newQuestions) {
+        for (int i = 0; i < content.length; i++) {
+            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+                questions.get(i).set(index, newQuestions);
+            }
+        }
+        updateQuestion();
+    }
+
+    public void setAnswers(String letter, int index, String newQuestions) {
+        for (int i = 0; i < content.length; i++) {
+            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+                answers.get(i).set(index, newQuestions);
+            }
+        }
+        updateQuestion();
     }
 }
