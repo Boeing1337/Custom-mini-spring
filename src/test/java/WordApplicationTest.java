@@ -1,13 +1,12 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class WordApplicationTest {
 
     @Test
-    void test(){
-        Assertions.assertDoesNotThrow(()->WordApplication.main(null));
+    void testBoot() {
+        assertDoesNotThrow(() -> WordApplication.main(null), "Приложение должно запускаться");
     }
 
 }
