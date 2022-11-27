@@ -42,20 +42,19 @@ public class QuestionRepository {
         return new ArrayList<>(answers);
     }
 
-    private List<List<String>> getAllAnswers() {
+    private void getAllAnswers() {
         answers.clear();
         for (String s : content) {
             String[] splitAnswers = s.trim().split("/");
             List<String> listAnswers = new ArrayList<>();
             for (int j = 2; j < splitAnswers.length; j += 2) {
-                listAnswers.add(splitAnswers[j].trim());
+                listAnswers.add(splitAnswers[j].toUpperCase().trim());
             }
             answers.add(listAnswers);
         }
-        return answers;
     }
 
-    private List<List<String>> getAllQuestions() {
+    private void getAllQuestions() {
         questions.clear();
         for (String s : content) {
             String[] splitQuestions = s.trim().split("/");
@@ -65,7 +64,6 @@ public class QuestionRepository {
             }
             questions.add(listQuestions);
         }
-        return questions;
     }
 
 
@@ -121,6 +119,24 @@ public class QuestionRepository {
         for (int i = 0; i < content.length; i++) {
             if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
                 answers.get(i).set(index, newQuestions);
+            }
+        }
+        updateQuestion();
+    }
+
+    public void deleteQuestions(String letter, int index) {
+        for (int i = 0; i < content.length; i++) {
+            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+                questions.get(i).remove(index);
+            }
+        }
+        updateQuestion();
+    }
+
+    public void deleteAnswers(String letter, int index) {
+        for (int i = 0; i < content.length; i++) {
+            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+                answers.get(i).remove(index);
             }
         }
         updateQuestion();
