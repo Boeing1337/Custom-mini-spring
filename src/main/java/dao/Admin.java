@@ -10,6 +10,10 @@ public class Admin {
     static Scanner scanner = new Scanner(System.in);
     String aaaa = "Неверная команда.";
 
+    public static void main(String[] args) {
+        Admin admin = new Admin();
+    }
+
     public Admin() {
         boolean flag = true;
         do {
@@ -60,12 +64,12 @@ public class Admin {
                         System.out.print("Введите слово которое хотите изменить: ");
                         String a1 = scanner.nextLine();
                         System.out.println("Введите новое слово");
-                        String a2 = scanner.nextLine();
+                        String a2 = scanner.nextLine().toUpperCase();
                         keywordsRepository.editKeywords(a1, a2);
                     }
                     case "4" -> {
                         System.out.print("Введите слово которое хотите удалить: ");
-                        keywordsRepository.deleteKeyword(scanner.nextLine());
+                        keywordsRepository.deleteKeyword(scanner.nextLine().toUpperCase());
                     }
                     case "0" -> flag = false;
                     default -> System.out.println(aaaa);
