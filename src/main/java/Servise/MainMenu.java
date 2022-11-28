@@ -30,10 +30,18 @@ public class MainMenu {
         while (reran) {
             input = scanner.nextLine();
             switch (input) {
-                case "1" -> loginSevise.authorization();
-                case "2" -> registrationUsers.registrationUser();
-                case "0" -> reran = false;
-                default -> System.out.println("Нет такой команды. Попробуйте ещё раз");
+                case "1":
+                    loginSevise.authorization();
+                break;
+                case "2":
+                    registrationUsers.registrationUser();
+                    break;
+                case "0":
+                    reran = false;
+                    break;
+                default:
+                    System.out.println("Нет такой команды. Попробуйте ещё раз");
+                    break;
             }
         }
     }
