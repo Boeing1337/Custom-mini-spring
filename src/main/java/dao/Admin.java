@@ -5,103 +5,121 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Admin {
-    static QuestionRepository questionRepository = new QuestionRepository();
-    static KeywordsRepository keywordsRepository = new KeywordsRepository();
-    static Scanner scanner = new Scanner(System.in);
+    QuestionRepository questionRepository = new QuestionRepository();
+    KeywordsRepository keywordsRepository = new KeywordsRepository();
+    Scanner scanner = new Scanner(System.in);
     String aaaa = "Неверная команда.";
-
-    public static void main(String[] args) {
-        Admin admin = new Admin();
-    }
 
     public Admin() {
         boolean flag = true;
         do {
-            System.out.print("""
-
-                    -----Категория файлов-----
-                    1) Загаданные слова.
-                    2) Вопросы и ответы.
-                    0) Выход из Админ-панели.
-                    Выберете вариант:\s""");
+            System.out.print("\n-----Категория файлов-----\n" +
+                    "1) Загаданные слова.\n" +
+                    "2) Вопросы и ответы.\n" +
+                    "0) Выход из Админ-панели.\n" +
+                    "Выберете вариант: ");
 
             switch (scanner.nextLine()) {
-                case "1" -> menuWords();
-                case "2" -> menuQuestsAnswers();
-                case "0" -> flag = false;
-                default -> System.out.println(aaaa);
+                case "1":
+                    menuWords();
+                    break;
+                case "2":
+                    menuQuestsAnswers();
+                    break;
+                case "0":
+                    flag = false;
+                    break;
+                default:
+                    System.out.println(aaaa);
+                    break;
             }
         } while (flag);
         scanner.close();
     }
 
-    private void menuWords() {
+    private StringBuilder menuWords() {
         try {
             boolean flag = true;
             do {
-                System.out.print("""
-
-                        -----Работа с загаданными словами-----
-                        1) Прочитать все загаданные слова.
-                        2) Добавить слово.
-                        3) Изменит слово.
-                        4) Удалить слово.
-                        0) назад.
-                        Выберете вариант:\s""");
+                System.out.print("\n-----Работа с загаданными словами-----\n" +
+                        "1) Прочитать все загаданные слова.\n" +
+                        "2) Добавить слово.\n" +
+                        "3) Изменит слово.\n" +
+                        "4) Удалить слово.\n" +
+                        "0) назад.\n" +
+                        "Выберете вариант: ");
 
                 switch (scanner.nextLine()) {
-                    case "1" -> {
+                    case "1":
                         List<String> a = keywordsRepository.readKeywords();
                         for (String s : a) {
                             System.out.println(s);
                         }
-                    }
-                    case "2" -> {
+                        break;
+                    case "2":
                         System.out.print("Введите новое слово: ");
                         keywordsRepository.addKeywords(Collections.singleton(scanner.nextLine().toUpperCase()));
-                    }
-                    case "3" -> {
+                        break;
+                    case "3":
                         System.out.print("Введите слово которое хотите изменить: ");
-                        String a1 = scanner.nextLine();
+                        String a1 = scanner.nextLine().toUpperCase();
                         System.out.println("Введите новое слово");
                         String a2 = scanner.nextLine().toUpperCase();
                         keywordsRepository.editKeywords(a1, a2);
-                    }
-                    case "4" -> {
+                        break;
+                    case "4":
                         System.out.print("Введите слово которое хотите удалить: ");
                         keywordsRepository.deleteKeyword(scanner.nextLine().toUpperCase());
-                    }
-                    case "0" -> flag = false;
-                    default -> System.out.println(aaaa);
+                        break;
+                    case "0":
+                        flag = false;
+                        break;
+                    default:
+                        System.out.println(aaaa);
+                        break;
                 }
+
             } while (flag);
         } catch (Exception e) {
             System.out.println("Неправильный ввод");
         }
+        return null;
     }
 
     private void menuQuestsAnswers() {
         try {
             boolean flag = true;
             do {
-                System.out.print("""
-
-                        -----Работа с вопросами-----
-                        1) Прочитать все вопросы и ответы на выбранную букву.
-                        2) Добавить вопрос и ответ.
-                        3) Изменить вопрос.
-                        4) Изменить ответ.
-                        5) Удалить вопрос и ответ.
-                        0) назад.
-                        Выберете вариант:\s""");
+                System.out.print("\n-----Работа с вопросами и ответами-----\n" +
+                        "1) Прочитать все вопросы и ответы на выбранную букву.\n" +
+                        "2) Добавить вопрос и ответ.\n" +
+                        "3) Изменить вопрос.\n" +
+                        "4) Изменить ответ.\n" +
+                        "5) Удалить вопрос и ответ.\n" +
+                        "0) назад.\n" +
+                        "Выберете вариант: ");
                 switch (scanner.nextLine()) {
-                    case "1" -> printQuestAnswer();
-                    case "2" -> addQuestAnswer();
-                    case "3" -> changeQuest();
-                    case "4" -> changeAnswer();
-                    case "5" -> deleteQuestAnswer();
-                    case "0" -> flag = false;
-                    default -> System.out.println(aaaa);
+                    case "1":
+                        printQuestAnswer();
+                        break;
+                    case "2":
+                        addQuestAnswer();
+                        break;
+                    case "3":
+                        changeQuest();
+                        break;
+                    case "4":
+                        changeAnswer();
+                        break;
+                    case "5":
+                        deleteQuestAnswer();
+                        break;
+                    case "0":
+                        flag = false;
+                        break;
+                    default:
+                        System.out.println(aaaa);
+                        break;
                 }
             } while (flag);
         } catch (Exception e) {
@@ -163,7 +181,7 @@ public class Admin {
         System.out.print("Выберете вариант ответа: ");
         int numbe = Integer.parseInt(scanner.nextLine().trim()) - 1;
         System.out.println();
-        System.out.print("Введите новый ответ: ");
+        System.out.print("Введите новый ответ на выбранную букву: ");
         String qw = scanner.nextLine();
         questionRepository.setAnswers(w, numbe, qw);
     }
