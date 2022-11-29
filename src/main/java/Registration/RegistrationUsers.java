@@ -1,13 +1,13 @@
 package Registration;
 
 import context.GlobalVariable;
+import dao.UserEntity;
 import dao.UserRepository;
 
 import java.util.Scanner;
 
 public class RegistrationUsers {
     private final UserRepository userRepository;
-    private final GlobalVariable globalVariable = new GlobalVariable();
     private Scanner scanner = new Scanner(System.in);
 
     public RegistrationUsers(UserRepository userRepository) {
@@ -63,7 +63,7 @@ public class RegistrationUsers {
             }
             if (!allows) {
                 createdFiles(login, pass1);
-                GlobalVariable.setStaticLogin(login);
+                GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
             }
         }
     }
