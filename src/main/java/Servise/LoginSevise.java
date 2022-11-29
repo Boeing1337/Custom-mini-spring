@@ -1,5 +1,6 @@
 package Servise;
 
+import context.GlobalVariable;
 import dao.UserEntity;
 import dao.UserRepository;
 
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 public class LoginSevise {
     private final UserRepository userRepository;
+    GlobalVariable globalVariable = new GlobalVariable();
     private Optional<UserEntity> opt;
     private boolean allows = true;
     private String login;
@@ -50,5 +52,6 @@ public class LoginSevise {
                 }
             }
         }
+        GlobalVariable.setStaticLogin(login);
     }
 }
