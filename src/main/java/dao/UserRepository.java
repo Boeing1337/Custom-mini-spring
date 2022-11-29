@@ -1,7 +1,6 @@
 package dao;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -20,6 +19,7 @@ public class UserRepository {
         try {
             Files.createDirectory(Path.of("." + separator + BASE_DIRECTORY + separator + login));
             Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "pass"));
+            Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "progress"));
             return true;
         } catch (Exception e) {
             return false;
