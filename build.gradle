@@ -13,6 +13,17 @@ repositories {
 }
 
 dependencies {
+    //Application context
+    implementation 'cglib:cglib:3.3.0'
+    implementation 'org.reflections:reflections:0.10.2'
+    implementation 'javax.annotation:jsr250-api:1.0'
+    //Application context
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:4.9.0'
