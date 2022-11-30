@@ -1,8 +1,8 @@
 package Game;
 
+import context.GlobalVariable;
 import dao.KeywordsRepository;
 import dao.QuestionRepository;
-import dao.UserEntity;
 import dao.UserGameStateRepository;
 
 import java.util.Arrays;
@@ -12,13 +12,11 @@ import java.util.Scanner;
 
 public class begin {
     private final Random random = new Random();
-    private final KeywordsRepository words = new KeywordsRepository();
-    private final QuestionRepository base = new QuestionRepository();
+    private final KeywordsRepository words;
+    private final QuestionRepository base;
     private final UserGameStateRepository userGameStateRepository;
-    private final UserEntity userEntity;
+
     //    private final List<List<String>> ans = base.getAnswers();
-    private final List<List<String>> qes = base.getQuestions();
-    private final String[] content = base.getReading();
     private Scanner scanner;
     private String randomWord;
     private char[] arrayRandomWord;
@@ -28,9 +26,11 @@ public class begin {
     private int back = 1;
     private int lengthThisWord;
 
-    public begin(UserGameStateRepository userGameStateRepository, UserEntity userEntity) {
+    public begin(KeywordsRepository words, QuestionRepository base, UserGameStateRepository userGameStateRepository) {
+        this.words = words;
+        this.base = base;
         this.userGameStateRepository = userGameStateRepository;
-        this.userEntity = userEntity;
+
     }
 
 
@@ -42,7 +42,7 @@ public class begin {
 
     public void theGameContinue() {
         scanner = new Scanner(System.in);
-        String progress = userGameStateRepository.getProgress(userEntity.getLogin());
+        String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if ("".equals(progress)) {
             System.out.println("Нет игры, кторую можно продолжить. Начни новую игру");
         }
@@ -94,6 +94,8 @@ public class begin {
     }
 
     private void startGame() {
+        List<List<String>> qes = base.getQuestions();
+        String[] content = base.getReading();
         while (stopped) {
             boolean retern = true;
             System.out.println("Выбери номер буквы или нажми 0, чтобы вернуться назад");
@@ -154,6 +156,6 @@ public class begin {
             }
         }
         guessedLetters[choosePersonLetter - 1] = choosePersonLetter;
-        userGameStateRepository.writeProgress(userEntity.getLogin(), randomWord, arrayRandomWord);
+        userGameStateRepository.writeProgress(GlobalVariable.getCurrentUser().getLogin(), randomWord, arrayRandomWord);
     }
 }
