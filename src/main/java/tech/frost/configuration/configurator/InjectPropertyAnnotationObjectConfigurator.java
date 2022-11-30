@@ -1,7 +1,7 @@
 package tech.frost.configuration.configurator;
 
 import lombok.SneakyThrows;
-import tech.frost.configuration.configurator.interfaces.InjectProperty;
+import tech.frost.configuration.configurator.annotation.InjectProperty;
 import tech.frost.configuration.infrastucture.ApplicationContext;
 
 import java.io.File;
