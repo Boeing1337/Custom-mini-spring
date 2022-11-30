@@ -3,6 +3,7 @@ package Game;
 import context.GlobalVariable;
 import dao.KeywordsRepository;
 import dao.QuestionRepository;
+import dao.UserEntity;
 import dao.UserGameStateRepository;
 
 import java.util.Arrays;
@@ -34,11 +35,13 @@ public class begin {
     }
 
 
-//    public static void main(String[] args) {
-//        begin a = new begin();
-//        a.theGameNew();
-//
-//    }
+    public static void main(String[] args) {
+        String login = "Art";
+        GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
+        begin a = new begin(new KeywordsRepository(), new QuestionRepository(), new UserGameStateRepository());
+        a.theGameContinue();
+
+    }
 
     public void theGameContinue() {
         scanner = new Scanner(System.in);
@@ -49,12 +52,15 @@ public class begin {
         String[] a = progress.trim().split(";");
         randomWord = a[0];
         lengthThisWord = randomWord.length();
+        arrayRandomWord = new char[lengthThisWord];
+        guessedLetters = new int[lengthThisWord];
         for (int i = 0; i < lengthThisWord; i++) {
             arrayRandomWord[i] = a[1].charAt(i);
-            if (arrayRandomWord[i] == '*') {
+            if (arrayRandomWord[i] != '*') {
                 guessedLetters[i] = i + 1;
             }
         }
+        System.out.println(Arrays.toString(arrayRandomWord));
         while (back == 1) {
             stopped = true;
             startGame();
@@ -94,8 +100,6 @@ public class begin {
     }
 
     private void startGame() {
-        List<List<String>> qes = base.getQuestions();
-        String[] content = base.getReading();
         while (stopped) {
             boolean retern = true;
             System.out.println("Выбери номер буквы или нажми 0, чтобы вернуться назад");
@@ -121,12 +125,14 @@ public class begin {
                 continue;
             }
             char a = randomWord.charAt(choosePersonLetter - 1);
-            for (int i = 0; i < content.length; i++) {
-                if (content[i].charAt(0) != a) {
-                    continue;
-                }
-                String broughtOut = qes.get(i).get(random.nextInt(qes.get(i).size()));
-                System.out.println(broughtOut);
+            List<String> quesans = base.getQuestionByLetter(String.valueOf(a));
+            String[] question = new String[quesans.size() / 2];
+            for (int i = 1, j = 0; i < quesans.size(); i += 2, j++) {
+                question[j] = quesans.get(i);
+            }
+            String broughtOut = question[random.nextInt(question.length)];
+            System.out.println(broughtOut);
+            while (stopped) {
                 System.out.println("Введите первую букву ответа в выбранное поле или нажми 0, чтобы вернуться назад");
                 String answer = scanner.nextLine();
                 if ("0".equals(answer)) {
@@ -137,10 +143,7 @@ public class begin {
                     stopped = false;
                 } else {
                     System.out.println("Введена не верная буква, попробуте еще раз");
-                    i = 0;
-                    continue;
                 }
-                break;
             }
         }
     }
