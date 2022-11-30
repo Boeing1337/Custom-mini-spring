@@ -1,4 +1,4 @@
-package tech.frost.configuration.configurator.interfaces;
+package tech.frost.configuration.configurator.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

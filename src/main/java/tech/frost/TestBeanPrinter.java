@@ -1,14 +1,17 @@
 package tech.frost;
 
-import tech.frost.configuration.configurator.interfaces.InjectObject;
-import tech.frost.configuration.configurator.interfaces.InjectProperty;
+import tech.frost.configuration.configurator.annotation.InjectObject;
+import tech.frost.configuration.configurator.annotation.InjectProperty;
+import tech.frost.configuration.infrastucture.Component;
 
 import java.util.List;
 
+@Component
 public class TestBeanPrinter {
 
     @InjectProperty
     private String value;
+
     @InjectObject
     private SOMEINT testBeanDependency;
     @InjectObject
@@ -19,7 +22,7 @@ public class TestBeanPrinter {
     }
 
     public void print(String message) {
-        // testBeanDependency.print();
+        testBeanDependency.print();
         testBeanDependencies.forEach(e -> e.print());
         System.out.println(value + " value");
     }

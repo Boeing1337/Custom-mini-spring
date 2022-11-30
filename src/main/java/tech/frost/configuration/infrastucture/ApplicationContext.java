@@ -27,9 +27,7 @@ public class ApplicationContext {
         if (type.isInterface()) {
             implClass = config.getImplClass(type);
         }
-        if (implClass == null) {
-            return null;
-        }
+
         T object = factory.createBean(implClass);
 
         cache.put(type, object);
@@ -38,9 +36,9 @@ public class ApplicationContext {
     }
 
     public <T> List<Object> getObjects(Class<T> type) {
-        List<String> implClasses = config.getImplClasses(type);
+        List<Class<? extends T>> implClasses = config.getImplClasses(type);
         List<Object> list = new ArrayList<>();
-        implClasses.forEach(e -> list.add(factory.createBean(e)));
+        implClasses.forEach(e -> list.add(getObject((Class<? extends T>) e)));
         return list;
     }
 }

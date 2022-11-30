@@ -1,6 +1,6 @@
 package tech.frost.configuration.configurator;
 
-import tech.frost.configuration.configurator.interfaces.InjectObject;
+import tech.frost.configuration.configurator.annotation.InjectObject;
 import tech.frost.configuration.infrastucture.ApplicationContext;
 
 import java.lang.reflect.Field;

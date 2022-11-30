@@ -35,6 +35,7 @@ public class ObjectFactory {
     public <T> T createBean(Class<T> implClass) {
 
         T t = implClass.getDeclaredConstructor().newInstance();
+
         for (ObjectConfigurator configurator : simpleObjectConfigurators) {
             configurator.configure(t, context);
         }
@@ -44,20 +45,4 @@ public class ObjectFactory {
         return t;
 
     }
-
-    @SneakyThrows
-    public Object createBean(String beanName) {
-
-        Object t = config.getScanner().forClass(beanName).getDeclaredConstructor().newInstance();
-        for (ObjectConfigurator configurator : simpleObjectConfigurators) {
-            configurator.configure(t, context);
-        }
-        for (ProxyObjectConfigurator configurator : proxyObjectConfigurators) {
-            t = configurator.configure(t, context);
-        }
-        return t;
-
-    }
-
-
 }

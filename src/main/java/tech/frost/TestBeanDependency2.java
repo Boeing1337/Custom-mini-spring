@@ -1,5 +1,8 @@
 package tech.frost;
 
+import tech.frost.configuration.infrastucture.Component;
+
+@Component
 public class TestBeanDependency2 implements SOMEINT {
 
     public TestBeanDependency2() {
