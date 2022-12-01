@@ -9,6 +9,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class KeywordsRepository {
     private final Set<String> cash = new LinkedHashSet<>();
 
+    public KeywordsRepository() {
+        readKeywords();
+    }
+
 
     public List<String> readKeywords() {
         if (cash.isEmpty()) {
@@ -19,30 +23,33 @@ public class KeywordsRepository {
                 }
             } catch (Exception e) {
                 cash.clear();
-                System.out.println("нет файла со словами");
+                System.out.println("Нет файла со словами");
             }
         }
         return List.copyOf(cash);
     }
 
     public List<String> addKeywords(Collection<String> newKeywords) {
-        readKeywords();
         cash.addAll(newKeywords);
         File file = new File("slova");
         try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
             writer.write(String.join("\n", cash));
         } catch (Exception e) {
-            System.out.println("не получилось добавить слова");
+            System.out.println("Не получилось добавить слова");
         }
         cash.clear();
+        readKeywords();
         return readKeywords();
     }
 
     public List<String> editKeywords(String oldKeyword, String newKeyword) {
         File file = new File("slova");
-        readKeywords();
-        cash.remove(oldKeyword);
-        cash.add(newKeyword);
+        if (cash.contains(oldKeyword)) {
+            cash.remove(oldKeyword);
+            cash.add(newKeyword);
+        } else {
+            System.out.println("Нет такого слова");
+        }
         String perenosStroki = "\n";
         StringBuilder sb = new StringBuilder();
         for (String element : cash) {
@@ -53,19 +60,22 @@ public class KeywordsRepository {
         try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
             writer.write(res);
         } catch (Exception e) {
-            System.out.println("не удалось заменить слово");
+            System.out.println("Не удалось заменить слово");
         }
         cash.clear();
+        readKeywords();
         return readKeywords();
     }
 
     public void deleteKeyword(String wrongWord){
         File file = new File("slova");
-        try (PrintWriter writer = new PrintWriter(file, UTF_8)){
+        try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
             cash.remove(wrongWord);
             writer.write(String.join("\n", cash));
+            cash.clear();
+            readKeywords();
         } catch (Exception e) {
-            System.out.println("не удалось удалить слово");
+            System.out.println("Не удалось удалить слово");
         }
     }
 }
