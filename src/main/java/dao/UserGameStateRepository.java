@@ -15,13 +15,11 @@ public class UserGameStateRepository {
         try (Scanner scanner = new Scanner(file, UTF_8)) {
             if (scanner.hasNextLine()) {
                 return scanner.nextLine();
-            } else {
-                return "";
             }
         } catch (Exception ignore) {
-            ignore.printStackTrace();
-            return "";
+            System.out.println("Чувак ты все нахуй сломал, идиот");
         }
+        return "";
     }
 
     public boolean writeProgress(String login, String word, char[] progress) {
