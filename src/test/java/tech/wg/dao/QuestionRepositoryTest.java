@@ -56,11 +56,8 @@ class QuestionRepositoryTest {
     @Test
     void setAnswers() {
         QuestionRepository arr = new QuestionRepository();
-        List<String> a = arr.getQuestionAnswerByLetter("А");
-        List<List<String>> b = arr.getAnswers();
-        Assertions.assertEquals("АБРИКОС", a.get(2));
-        arr.setAnswers("А", 0, "АБРИКОСФ");
-        Assertions.assertEquals("АБРИКОСФ", arr.getQuestionAnswerByLetter("А").get(2));
-        arr.setAnswers("А", 0, "АБРИКОС");
+        List<String> a = arr.getQuestionAnswerByLetter("Ъ");
+        arr.setAnswers("Ъ", a.size() - 3, "ответ из теста " + a.size());
+        Assertions.assertEquals("ОТВЕТ ИЗ ТЕСТА " + a.size(), arr.getQuestionAnswerByLetter("Ъ").get(a.size() - 1));
     }
 }
