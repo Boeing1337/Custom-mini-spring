@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class BeginTest {
     private final PrintStream originalOut = System.out;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     @InjectMocks
-    BeginingTheGame targetToTest;
+    TheGameService targetToTest;
     @Mock
     UserGameStateRepository userGameStateRepository;
     @Mock

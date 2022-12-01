@@ -20,7 +20,7 @@ public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigu
 
     @SneakyThrows
     public InjectPropertyAnnotationObjectConfigurator() {
-        String url = getClass().getClassLoader().getResource("application.properties").getPath().replace("%20", " ");
+        String url = getClass().getClassLoader().getResource("application.txt").getPath().replace("%20", " ");
         properties = readAllLines(new File(url).toPath())
                 .stream()
                 .map(line -> line.split("="))
@@ -33,15 +33,15 @@ public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigu
         for (Field field : t.getClass().getDeclaredFields()) {
             InjectProperty annotation = field.getAnnotation(InjectProperty.class);
             if (annotation != null) {
-                String value = annotation.value();
-                if (value.isEmpty()) {
-                    value = field.getName();
+                String key = annotation.value();
+                if (key.isEmpty()) {
+                    key = field.getName();
                 }
-                if (value == null) {
-                    System.out.println("Не найдена настройка для поля:" + field.getName() + " для: " + t.getClass());
+                if (!properties.containsKey(key)) {
+                    System.out.println("[WARN] Не найдена настройка для поля:" + field.getName() + " для: " + t.getClass());
                 }
                 field.setAccessible(true);
-                field.set(t, value);
+                field.set(t, properties.get(key));
             }
         }
     }

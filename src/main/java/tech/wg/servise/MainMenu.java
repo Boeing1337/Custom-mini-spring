@@ -1,17 +1,16 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import java.util.Scanner;
 
 public class MainMenu {
 
     private final RegistrationUsers registrationUsers;
-    private final LoginSevise loginSevise;
+    private final LoginService loginService;
     private Scanner scanner = new Scanner(System.in);
 
-    public MainMenu(LoginSevise loginSevise, RegistrationUsers registrationUsers) {
-          this.loginSevise = loginSevise;
-          this.registrationUsers = registrationUsers;
-
+    public MainMenu(LoginService loginService, RegistrationUsers registrationUsers) {
+        this.loginService = loginService;
+        this.registrationUsers = registrationUsers;
     }
 
     private void initScanner() {
@@ -29,7 +28,7 @@ public class MainMenu {
             input = scanner.nextLine();
             switch (input) {
                 case "1":
-                    loginSevise.authorization();
+                    loginService.authorization();
                 break;
                 case "2":
                     registrationUsers.registrationUser();

@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionRepository;

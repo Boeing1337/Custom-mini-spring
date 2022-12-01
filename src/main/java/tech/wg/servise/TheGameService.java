@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.KeywordsRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class BeginingTheGame {
+public class TheGameService {
     private final Random random = new Random();
     private final KeywordsRepository wordsRepository;
     private final QuestionRepository questionRepository;
@@ -23,8 +23,8 @@ public class BeginingTheGame {
     private int choosePersonLetter;
     private int back = 1;
 
-    public BeginingTheGame(KeywordsRepository wordsRepository, QuestionRepository questionRepository,
-                           UserGameStateRepository userGameStateRepository) {
+    public TheGameService(KeywordsRepository wordsRepository, QuestionRepository questionRepository,
+                          UserGameStateRepository userGameStateRepository) {
         this.wordsRepository = wordsRepository;
         this.questionRepository = questionRepository;
         this.userGameStateRepository = userGameStateRepository;
