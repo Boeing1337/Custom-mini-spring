@@ -1,10 +1,5 @@
-package Game;
+package tech.wg.Servise;
 
-import context.GlobalVariable;
-import dao.KeywordsRepository;
-import dao.QuestionRepository;
-import dao.UserEntity;
-import dao.UserGameStateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tech.wg.context.GlobalVariable;
+import tech.wg.dao.KeywordsRepository;
+import tech.wg.dao.QuestionRepository;
+import tech.wg.dao.UserEntity;
+import tech.wg.dao.UserGameStateRepository;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,13 +27,13 @@ class BeginTest {
     private final PrintStream originalOut = System.out;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     @InjectMocks
-    BeginingTheGame game;
+    BeginingTheGame targetToTest;
     @Mock
     UserGameStateRepository userGameStateRepository;
     @Mock
-    KeywordsRepository words;
+    KeywordsRepository keywordsRepository;
     @Mock
-    QuestionRepository base;
+    QuestionRepository questionRepository;
 
     @BeforeEach
     void initialization() {
@@ -41,7 +41,7 @@ class BeginTest {
         String login = "Art";
         GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
         Mockito.when(userGameStateRepository.writeProgress(any(), any(), any())).thenReturn(true);
-        Mockito.when(base.getQuestionByLetter(any())).thenReturn(List.of("Короткая черточка, употребляется как знак переноса",
+        Mockito.when(questionRepository.getQuestionAnswerByLetter(any())).thenReturn(List.of("Короткая черточка, употребляется как знак переноса",
                 "Короткая черточка, употребляется как знак переноса", "Короткая черточка, употребляется как знак переноса"));
     }
 
@@ -49,7 +49,7 @@ class BeginTest {
     void theGameContinue() {
         Mockito.when(userGameStateRepository.getProgress(any())).thenReturn("ДОКЛАД;****А*");
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n0\n".getBytes()));
-        game.theGameContinue();
+        targetToTest.theGameContinue();
         System.setOut(originalOut);
         Assertions.assertEquals("[*, *, *, *, А, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +
@@ -71,9 +71,9 @@ class BeginTest {
 
     @Test
     void theGameNew() {
-        Mockito.when(words.readKeywords()).thenReturn(List.of("ДОКЛАД"));
+        Mockito.when(keywordsRepository.readKeywords()).thenReturn(List.of("ДОКЛАД"));
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n0\n".getBytes()));
-        game.theGameNew();
+        targetToTest.theGameNew();
         System.setOut(originalOut);
         Assertions.assertEquals("[*, *, *, *, *, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +
@@ -93,9 +93,9 @@ class BeginTest {
 
     @Test
     void theGameNew2() {
-        Mockito.when(words.readKeywords()).thenReturn(List.of("ДОКЛАД"));
+        Mockito.when(keywordsRepository.readKeywords()).thenReturn(List.of("ДОКЛАД"));
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n2\nо\n4\nл\n5\nа\n6\nд\n".getBytes()));
-        game.theGameNew();
+        targetToTest.theGameNew();
         System.setOut(originalOut);
         Assertions.assertEquals("[*, *, *, *, *, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +

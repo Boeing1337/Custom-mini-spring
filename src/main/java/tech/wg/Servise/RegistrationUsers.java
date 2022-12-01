@@ -1,4 +1,4 @@
-package tech.wg.Registration;
+package tech.wg.Servise;
 
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.UserEntity;

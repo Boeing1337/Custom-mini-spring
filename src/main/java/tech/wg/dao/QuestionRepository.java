@@ -11,11 +11,10 @@ import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class QuestionRepository {
-
-
+    private static final String ANY_NEW_LINE = "\\n|\\r\\n";
+    private static final String SIMPLE_NEW_LINE = "\n";
+    private static final String QUESTIONS_BLOCK_SEPARATOR = ";(\\r?\\n){2}";
     private final ArrayList<List<String>> questions = new ArrayList<>();
-
-
     private final ArrayList<List<String>> answers = new ArrayList<>();
     private String[] content;
 
@@ -28,9 +27,10 @@ public class QuestionRepository {
     private void reading() {
         try {
             content = Files.readString(Paths.get("abc and questions"))
-                    .split(";(\\r?\\n){2}");
-        } catch (Exception e) {
-            e.printStackTrace();
+                    .replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE)
+                    .split(QUESTIONS_BLOCK_SEPARATOR);
+        } catch (IOException e) {
+            System.out.println(e.getCause());
         }
     }
 
@@ -111,6 +111,7 @@ public class QuestionRepository {
         for (int i = 0; i < content.length; i++) {
             if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
                 questions.get(i).set(index, newQuestions);
+                break;
             }
         }
         updateQuestion();
@@ -120,6 +121,7 @@ public class QuestionRepository {
         for (int i = 0; i < content.length; i++) {
             if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
                 answers.get(i).set(index, newQuestions);
+                break;
             }
         }
         updateQuestion();
@@ -129,6 +131,7 @@ public class QuestionRepository {
         for (int i = 0; i < content.length; i++) {
             if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
                 questions.get(i).remove(index);
+                break;
             }
         }
         updateQuestion();
@@ -138,6 +141,7 @@ public class QuestionRepository {
         for (int i = 0; i < content.length; i++) {
             if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
                 answers.get(i).remove(index);
+                break;
             }
         }
         updateQuestion();

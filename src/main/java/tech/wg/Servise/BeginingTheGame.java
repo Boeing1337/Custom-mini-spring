@@ -1,9 +1,9 @@
-package Game;
+package tech.wg.Servise;
 
-import context.GlobalVariable;
-import dao.KeywordsRepository;
-import dao.QuestionRepository;
-import dao.UserGameStateRepository;
+import tech.wg.context.GlobalVariable;
+import tech.wg.dao.KeywordsRepository;
+import tech.wg.dao.QuestionRepository;
+import tech.wg.dao.UserGameStateRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -112,7 +112,7 @@ public class BeginingTheGame {
                 continue;
             }
             char randomChar = wordToGuess.charAt(choosePersonLetter - 1);
-            List<String> quesans = questionRepository.getQuestionByLetter(String.valueOf(randomChar));
+            List<String> quesans = questionRepository.getQuestionAnswerByLetter(String.valueOf(randomChar));
             String[] questions = new String[quesans.size() / 2];
             for (int i = 1, j = 0; i < quesans.size(); i += 2, j++) {
                 questions[j] = quesans.get(i);

@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tech.wg.Registration.RegistrationUsers;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
