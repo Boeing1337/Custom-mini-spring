@@ -30,7 +30,7 @@ class MainMenuTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        System.setIn(new ByteArrayInputStream("1".getBytes()));
+        System.setIn(new ByteArrayInputStream("1\n0".getBytes()));
         servise.startMainMenu();
         Mockito.verify(loginSevise, Mockito.times(1)).authorization();
         System.setOut(originalOut);
@@ -42,7 +42,7 @@ class MainMenuTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        System.setIn(new ByteArrayInputStream("2".getBytes()));
+        System.setIn(new ByteArrayInputStream("2\n0".getBytes()));
         servise.startMainMenu();
         Mockito.verify(registrationUsers, Mockito.times(1)).registrationUser();
         System.setOut(originalOut);
