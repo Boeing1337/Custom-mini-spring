@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public class Admin {
+public class AdminService {
     private final QuestionRepository questionRepository = new QuestionRepository();
     private final KeywordsRepository keywordsRepository = new KeywordsRepository();
     private final Scanner scanner = new Scanner(System.in);
     private final String except = "Неверная команда.";
 
-    public Admin() {
+    public AdminService() {
         action();
     }
 
@@ -25,7 +25,7 @@ public class Admin {
 
             switch (scanner.nextLine()) {
                 case "1":
-                    menuWords();
+                    menuWordsOperation();
                     break;
                 case "2":
                     menuQuestsAnswers();
@@ -41,7 +41,7 @@ public class Admin {
         scanner.close();
     }
 
-    private StringBuilder menuWords() {
+    private void menuWordsOperation() {
         try {
             boolean flag = true;
             do {
@@ -77,8 +77,7 @@ public class Admin {
                         keywordsRepository.deleteKeyword(scanner.nextLine().toUpperCase());
                         break;
                     case "0":
-                        flag = false;
-                        break;
+                        return;
                     default:
                         System.out.println(except);
                         break;
@@ -88,7 +87,6 @@ public class Admin {
         } catch (Exception e) {
             System.out.println("Неправильный ввод");
         }
-        return null;
     }
 
     private void menuQuestsAnswers() {
@@ -105,7 +103,7 @@ public class Admin {
                         "Выберете вариант: ");
                 switch (scanner.nextLine()) {
                     case "1":
-                        printQuestAnswer();
+                        printQuestsAnswers();
                         break;
                     case "2":
                         addQuestAnswer();
@@ -132,7 +130,7 @@ public class Admin {
         }
     }
 
-    private void printQuestAnswer() {
+    private void printQuestsAnswers() {
         System.out.print("Введите букву русского алфавита: ");
         List<String> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(scanner.nextLine());
         System.out.println();
@@ -165,12 +163,19 @@ public class Admin {
             System.out.println(numChangeQuest + ") " + listChangeQuest.get(i));
             numChangeQuest++;
         }
-        System.out.print("Выберете вариант вопроса: ");
-        int number = Integer.parseInt(scanner.nextLine().trim()) - 1;
-        System.out.println();
-        System.out.println("Введите новый вопрос в одну строку: ");
-        String questChangeQuest = scanner.nextLine();
-        questionRepository.setQuestions(wordChangeQuest, number, questChangeQuest);
+        while (true) {
+            System.out.print("Выберете вариант вопроса: ");
+            if (scanner.hasNextInt()) {
+                int number = Integer.parseInt(scanner.nextLine().trim()) - 1;
+                System.out.println();
+                System.out.println("Введите новый вопрос в одну строку: ");
+                String questChangeQuest = scanner.nextLine();
+                questionRepository.setQuestions(wordChangeQuest, number, questChangeQuest);
+                break;
+            } else {
+                System.out.println("\nНе правильный ввод.\n");
+            }
+        }
     }
 
     private void changeAnswer() {
@@ -211,9 +216,16 @@ public class Admin {
                 countDeleteQuestAnswer++;
             }
         }
-        System.out.print("Выберете вариант: ");
-        int optionDeleteQuestAnswer = Integer.parseInt(scanner.nextLine().trim()) - 1;
-        questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
-        questionRepository.deleteAnswers(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
+        while (true) {
+            System.out.print("Выберете вариант: ");
+            if (scanner.hasNextInt()) {
+                int optionDeleteQuestAnswer = Integer.parseInt(scanner.nextLine().trim()) - 1;
+                questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
+                questionRepository.deleteAnswers(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
+                break;
+            } else {
+                System.out.println("\nНе правильный ввод.\n");
+            }
+        }
     }
 }

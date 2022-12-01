@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-class AdminTest {
+class AdminServiceTest {
 
     @Test
     void testMenuWords() {
@@ -15,7 +15,7 @@ class AdminTest {
         System.setOut(new PrintStream(outContent));
         System.setIn(new ByteArrayInputStream("1\n1\n2\nФифА\n1\n3\nФифа\nФуфлО\n1\n4\nфуфло\n1\n0\n0".getBytes()));
         System.setOut(originalOut);
-        Admin admin = new Admin();
+        AdminService adminService = new AdminService();
     }
 
     @Test
@@ -25,6 +25,6 @@ class AdminTest {
         System.setOut(new PrintStream(outContent));
         System.setIn(new ByteArrayInputStream("2\n1\nг\n2\nФифА\nГГГГ\n1\nг\n3\nг\n1\nФуфлО\n1\nг\n4\nг\n1\nгг\n1\nг\n5\nг\n1\n1\nг\n0\n0".getBytes()));
         System.setOut(originalOut);
-        Admin admin = new Admin();
+        AdminService adminService = new AdminService();
     }
 }
