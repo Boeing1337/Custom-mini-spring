@@ -1,7 +1,5 @@
 package tech.wg.Servise;
 
-import tech.wg.Registration.RegistrationUsers;
-
 import java.util.Scanner;
 
 public class MainMenu {

@@ -1,12 +1,12 @@
-package dao;
+package tech.wg.dao;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import static dao.Constants.BASE_DIRECTORY;
 import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static tech.wg.dao.Constants.BASE_DIRECTORY;
 
 public class UserGameStateRepository {
 

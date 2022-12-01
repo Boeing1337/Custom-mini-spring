@@ -1,6 +1,7 @@
-package dao;
+package tech.wg.dao;
 
 import org.junit.jupiter.api.Test;
+import tech.wg.Servise.AdminService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
