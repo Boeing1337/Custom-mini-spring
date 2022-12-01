@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.UserEntity;

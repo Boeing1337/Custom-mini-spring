@@ -1,5 +1,8 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
+import tech.ioc.annotations.InjectProperty;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.UserEntity;
 import tech.wg.dao.UserRepository;
@@ -7,21 +10,22 @@ import tech.wg.dao.UserRepository;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class LoginSevise {
-    private final UserRepository userRepository;
-    private Optional<UserEntity> opt;
+@Component
+public class LoginService {
 
+    @InjectObject
+    private UserRepository userRepository;
+
+    @InjectProperty(value = "path.to.score")
+    private String path;
     private Scanner scanner = new Scanner(System.in);
-
-    public LoginSevise(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     private void initScanner() {
         scanner = new Scanner(System.in);
     }
 
     public void authorization() {
+        Optional<UserEntity> opt;
         boolean allows = true;
         String login;
         initScanner();

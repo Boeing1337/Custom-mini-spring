@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +15,10 @@ import java.io.PrintStream;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-class LoginSeviseTest {
+class LoginServiceTest {
 
     @InjectMocks
-    LoginSevise service;
+    LoginService service;
 
     @Mock
     UserRepository userRepository;

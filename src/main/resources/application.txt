@@ -1,0 +1,2 @@
+value=КОЛЯ-ШНЮК
+path.to.score=scr/users/score.txt

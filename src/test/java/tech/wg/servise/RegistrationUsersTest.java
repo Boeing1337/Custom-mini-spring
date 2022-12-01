@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package tech.wg.Servise;
+package tech.wg.servise;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,7 @@ import java.io.PrintStream;
 class MainMenuTest {
 
     @Mock
-    LoginSevise loginSevise;
+    LoginService loginService;
 
     @Mock
     RegistrationUsers registrationUsers;
@@ -31,7 +31,7 @@ class MainMenuTest {
 
         System.setIn(new ByteArrayInputStream("1\n0".getBytes()));
         servise.startMainMenu();
-        Mockito.verify(loginSevise, Mockito.times(1)).authorization();
+        Mockito.verify(loginService, Mockito.times(1)).authorization();
         System.setOut(originalOut);
     }
 
