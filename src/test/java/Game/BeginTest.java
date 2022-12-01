@@ -26,10 +26,8 @@ import static org.mockito.ArgumentMatchers.any;
 class BeginTest {
     private final PrintStream originalOut = System.out;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
     @InjectMocks
     BeginingTheGame game;
-
     @Mock
     UserGameStateRepository userGameStateRepository;
     @Mock
