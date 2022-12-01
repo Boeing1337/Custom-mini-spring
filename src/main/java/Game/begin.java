@@ -3,7 +3,6 @@ package Game;
 import context.GlobalVariable;
 import dao.KeywordsRepository;
 import dao.QuestionRepository;
-import dao.UserEntity;
 import dao.UserGameStateRepository;
 
 import java.util.Arrays;
@@ -33,16 +32,6 @@ public class begin {
         this.userGameStateRepository = userGameStateRepository;
 
     }
-
-
-    public static void main(String[] args) {
-        String login = "Art";
-        GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
-        begin a = new begin(new KeywordsRepository(), new QuestionRepository(), new UserGameStateRepository());
-        a.theGameContinue();
-
-    }
-
     public void theGameContinue() {
         scanner = new Scanner(System.in);
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
@@ -68,7 +57,9 @@ public class begin {
                 disclosure();
             }
         }
-        System.out.println("Поздравляю, вы набрали 100 очков");
+        if (stopped) {
+            System.out.println("Поздравляю, вы набрали 100 очков");
+        }
     }
 
     public void theGameNew() {
@@ -82,7 +73,9 @@ public class begin {
                 disclosure();
             }
         }
-        System.out.println("Поздравляю, вы набрали 100 очков");
+        if (stopped) {
+            System.out.println("Поздравляю, вы набрали 100 очков");
+        }
     }
 
     private String chooseCharter() {
@@ -112,6 +105,7 @@ public class begin {
             scanner.nextLine();
             if (choosePersonLetter == 0) {
                 back = 0;
+                stopped = false;
                 break;
             }
             for (int i = 0; i < lengthThisWord; i++) {
@@ -152,9 +146,11 @@ public class begin {
         arrayRandomWord[choosePersonLetter - 1] = randomWord.charAt(choosePersonLetter - 1);
         System.out.println(Arrays.toString(arrayRandomWord));
         back = 0;
+        stopped = true;
         for (int i = 0; i < lengthThisWord; i++) {
             if ('*' == arrayRandomWord[i]) {
                 back = 1;
+                stopped = false;
                 break;
             }
         }
