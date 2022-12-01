@@ -1,6 +1,5 @@
-package Servise;
+package Registration;
 
-import Registration.RegistrationUsers;
 import dao.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
