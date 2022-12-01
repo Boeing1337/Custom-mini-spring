@@ -83,7 +83,7 @@ public class QuestionRepository {
         reading();
     }
 
-    public List<String> getQuestionByLetter(String letter) {
+    public List<String> getQuestionAnswerByLetter(String letter) {
         ArrayList<String> a = new ArrayList<>();
         for (String s : content) {
             if (s.trim().charAt(0) == letter.trim().toUpperCase().charAt(0)) {
