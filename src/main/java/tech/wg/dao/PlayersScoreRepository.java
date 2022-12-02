@@ -23,11 +23,11 @@ public class PlayersScoreRepository {
     private String scoreFileName;
     private final List<ScoreEntity> cache = new ArrayList<>();
 
-     String convertScoreEntityToString(ScoreEntity in) {
+    String convertScoreEntityToString(ScoreEntity in) {
         return String.format("%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate());
     }
 
-     ScoreEntity convertStringToScoreEntity(String in) {
+    ScoreEntity convertStringToScoreEntity(String in) {
         String[] result = in.split(SEPARATOR);
         return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]));
     }
