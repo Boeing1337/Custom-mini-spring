@@ -1,4 +1,4 @@
-package dao;
+package tech.wg.dao;
 
 import java.util.Objects;
 

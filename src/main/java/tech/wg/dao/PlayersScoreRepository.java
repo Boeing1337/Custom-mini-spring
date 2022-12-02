@@ -1,4 +1,6 @@
-package dao;
+package tech.wg.dao;
+
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,15 +13,12 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Log4j2
 public class PlayersScoreRepository {
     private final static String SEPARATOR = ";";
     private final static String FILE = "PlayerScore";
     private final List<ScoreEntity> cache = new ArrayList<>();
 
-
-    public PlayersScoreRepository() {
-        findAllPlayerScore();
-    }
 
     private String convertScoreEntityToString(ScoreEntity in) {
         return String.format("%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate());
@@ -28,7 +27,6 @@ public class PlayersScoreRepository {
     private ScoreEntity convertStringToScoreEntity(String in) {
         String[] result = in.split(SEPARATOR);
         return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]));
-
     }
 
 
@@ -49,6 +47,9 @@ public class PlayersScoreRepository {
     }
 
     public List<ScoreEntity> findAllPlayerScore() {
+        log.info("Стартануло ЗАЕБИСь");
+        log.warn("Такой пользователь не найден");
+        log.error("Не созданы файлы!");
         if (cache.isEmpty()) {
             File file = new File("PlayerScore");
             try (Scanner scanner = new Scanner(file, UTF_8)) {
