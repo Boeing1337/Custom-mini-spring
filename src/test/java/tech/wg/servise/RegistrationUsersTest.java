@@ -14,6 +14,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import static tech.wg.dao.QuestionRepository.ANY_NEW_LINE;
+import static tech.wg.dao.QuestionRepository.SIMPLE_NEW_LINE;
+
 @ExtendWith(MockitoExtension.class)
 class RegistrationUsersTest {
     private final PrintStream originalOut = System.out;
@@ -37,13 +40,12 @@ class RegistrationUsersTest {
         System.setIn(new ByteArrayInputStream("login\n0\nlogin\npass\npass".getBytes()));
         service.registrationUser();
         System.setOut(originalOut);
-//        System.out.println(outContent);
-        Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
+        Assertions.assertEquals(("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
-                "Вы успешно зарегистрировались в Диминой игре!\r\n", outContent.toString());
+                "Вы успешно зарегистрировались в Диминой игре!\r\n").replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE).trim(), outContent.toString().trim());
 
     }
 
@@ -52,8 +54,7 @@ class RegistrationUsersTest {
         System.setIn(new ByteArrayInputStream("login\n0\nlogin\npass\n0\n0\nlogin\npass\npass".getBytes()));
         service.registrationUser();
         System.setOut(originalOut);
-//        System.out.println(outContent);
-        Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
+        Assertions.assertEquals(("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
@@ -62,7 +63,7 @@ class RegistrationUsersTest {
                 "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
                 "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\r\n" +
-                "Вы успешно зарегистрировались в Диминой игре!\r\n", outContent.toString());
+                "Вы успешно зарегистрировались в Диминой игре!\r\n").replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE).trim(), outContent.toString().trim());
     }
 }
 
