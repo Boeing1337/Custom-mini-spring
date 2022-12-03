@@ -1,6 +1,7 @@
 package tech.ioc.configurator;
 
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import tech.ioc.ApplicationContext;
 import tech.ioc.annotations.InjectProperty;
 import tech.ioc.configurator.interfaces.ObjectConfigurator;
@@ -15,6 +16,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Подставляет в поля класса значения из конфигурационного файла. Работает в паре с аннотацией {@link InjectProperty}
  */
+@Log4j2
 public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigurator {
     private final Map<String, String> properties;
 
@@ -38,7 +40,7 @@ public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigu
                     key = field.getName();
                 }
                 if (!properties.containsKey(key)) {
-                    System.out.println("[WARN] Не найдена настройка для поля:" + field.getName() + " для: " + t.getClass());
+                    log.warn("Не найдена настройка для поля: {} класса: {}", field.getName(), t.getClass());
                 }
                 field.setAccessible(true);
                 field.set(t, properties.get(key));
