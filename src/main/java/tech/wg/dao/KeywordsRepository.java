@@ -1,54 +1,59 @@
 package tech.wg.dao;
 
+import lombok.extern.log4j.Log4j2;
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectProperty;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.*;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Component
+@Log4j2
 public class KeywordsRepository {
     private final Set<String> cash = new LinkedHashSet<>();
 
-    public KeywordsRepository() {
-        readKeywords();
-    }
-
+    @InjectProperty
+    private String keywordsFileName;
 
     public List<String> readKeywords() {
         if (cash.isEmpty()) {
-            File file = new File("slova");
+            File file = new File(keywordsFileName);
             try (Scanner scanner = new Scanner(file, UTF_8)) {
                 while (scanner.hasNextLine()) {
                     cash.add(scanner.nextLine());
                 }
             } catch (Exception e) {
                 cash.clear();
-                System.out.println("Нет файла со словами");
+                log.error("Нет файла со словами", e);
             }
         }
         return List.copyOf(cash);
     }
 
     public List<String> addKeywords(Collection<String> newKeywords) {
+        readKeywords();
         cash.addAll(newKeywords);
-        File file = new File("slova");
+        File file = new File(keywordsFileName);
         try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
             writer.write(String.join("\n", cash));
         } catch (Exception e) {
-            System.out.println("Не получилось добавить слова");
+            log.error("Не получилось добавить слова", e);
         }
         cash.clear();
-        readKeywords();
         return readKeywords();
     }
 
     public List<String> editKeywords(String oldKeyword, String newKeyword) {
-        File file = new File("slova");
+        readKeywords();
         if (cash.contains(oldKeyword)) {
             cash.remove(oldKeyword);
             cash.add(newKeyword);
         } else {
-            System.out.println("Нет такого слова");
+            log.warn("Нет такого слова");
+            return List.of();
         }
         String perenosStroki = "\n";
         StringBuilder sb = new StringBuilder();
@@ -57,25 +62,23 @@ public class KeywordsRepository {
             sb.append(perenosStroki);
         }
         String res = sb.toString();
-        try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
+        try (PrintWriter writer = new PrintWriter(keywordsFileName, UTF_8)) {
             writer.write(res);
         } catch (Exception e) {
-            System.out.println("Не удалось заменить слово");
+            log.error("Не удалось заменить слово", e);
         }
         cash.clear();
-        readKeywords();
         return readKeywords();
     }
 
     public void deleteKeyword(String wrongWord){
-        File file = new File("slova");
-        try (PrintWriter writer = new PrintWriter(file, UTF_8)) {
+        try (PrintWriter writer = new PrintWriter(keywordsFileName, UTF_8)) {
             cash.remove(wrongWord);
             writer.write(String.join("\n", cash));
             cash.clear();
             readKeywords();
         } catch (Exception e) {
-            System.out.println("Не удалось удалить слово");
+            log.error("Не удалось удалить слово", e);
         }
     }
 }

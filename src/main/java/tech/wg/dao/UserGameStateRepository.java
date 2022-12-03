@@ -1,13 +1,16 @@
 package tech.wg.dao;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
 import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static tech.wg.dao.Constants.BASE_DIRECTORY;
+import static tech.wg.servise.Constants.BASE_DIRECTORY;
 
+@Log4j2
 public class UserGameStateRepository {
 
     public String getProgress(String login) {
@@ -16,8 +19,8 @@ public class UserGameStateRepository {
             if (scanner.hasNextLine()) {
                 return scanner.nextLine();
             }
-        } catch (Exception ignore) {
-            System.out.println("Чувак ты все нахуй сломал, идиот");
+        } catch (Exception e) {
+            log.warn(e);
         }
         return "";
     }
@@ -29,7 +32,7 @@ public class UserGameStateRepository {
             writer.println(word + ";" + userProgress);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
             return false;
         }
     }

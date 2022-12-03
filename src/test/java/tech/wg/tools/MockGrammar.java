@@ -1,6 +1,4 @@
-package tech.wg.servise;
-
-import tech.wg.dao.Grammar;
+package tech.wg.tools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

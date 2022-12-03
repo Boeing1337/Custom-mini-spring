@@ -21,7 +21,7 @@ class MainMenuTest {
     RegistrationUsers registrationUsers;
 
     @InjectMocks
-    MainMenu servise;
+    MainMenu service;
 
     @Test
     void startMainMenu() {
@@ -30,7 +30,7 @@ class MainMenuTest {
         System.setOut(new PrintStream(outContent));
 
         System.setIn(new ByteArrayInputStream("1\n0".getBytes()));
-        servise.startMainMenu();
+        service.startMainMenu();
         Mockito.verify(loginService, Mockito.times(1)).authorization();
         System.setOut(originalOut);
     }
@@ -42,7 +42,7 @@ class MainMenuTest {
         System.setOut(new PrintStream(outContent));
 
         System.setIn(new ByteArrayInputStream("2\n0".getBytes()));
-        servise.startMainMenu();
+        service.startMainMenu();
         Mockito.verify(registrationUsers, Mockito.times(1)).registrationUser();
         System.setOut(originalOut);
     }
@@ -53,7 +53,7 @@ class MainMenuTest {
         System.setOut(new PrintStream(outContent));
 
         System.setIn(new ByteArrayInputStream("3\n2\n0".getBytes()));
-        servise.startMainMenu();
+        service.startMainMenu();
         Mockito.verify(registrationUsers, Mockito.times(1)).registrationUser();
         System.setOut(originalOut);
     }

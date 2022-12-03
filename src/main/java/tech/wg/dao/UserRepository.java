@@ -1,6 +1,9 @@
 package tech.wg.dao;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -10,8 +13,9 @@ import java.util.Scanner;
 
 import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static tech.wg.dao.Constants.BASE_DIRECTORY;
+import static tech.wg.servise.Constants.BASE_DIRECTORY;
 
+@Log4j2
 public class UserRepository {
 
 
@@ -22,6 +26,7 @@ public class UserRepository {
             Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "progress"));
             return true;
         } catch (Exception e) {
+            log.warn(e);
             return false;
         }
     }
@@ -32,7 +37,7 @@ public class UserRepository {
             writer.println(pass);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
             return false;
         }
     }
@@ -44,8 +49,10 @@ public class UserRepository {
             Files.delete(path);
             return false;
         } catch (FileAlreadyExistsException e) {
+            log.warn(e);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            log.warn(e);
             return false;
         }
     }
@@ -56,8 +63,8 @@ public class UserRepository {
             if (scanner.hasNextLine()) {
                 return Optional.of(new UserEntity(login, scanner.nextLine()));
             }
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
+        } catch (Exception e) {
+            log.warn(e);
         }
         return Optional.empty();
     }
