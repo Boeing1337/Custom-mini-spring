@@ -18,12 +18,10 @@ import tech.wg.dao.UserGameStateRepository;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static tech.wg.dao.QuestionRepository.ANY_NEW_LINE;
-import static tech.wg.dao.QuestionRepository.SIMPLE_NEW_LINE;
 
 
 @ExtendWith(MockitoExtension.class)
-class BeginTest {
+class TheGameServiceTest {
 
     public static final String TEST_QUESTION = "TEST QUESTION";
     @Spy
@@ -36,7 +34,7 @@ class BeginTest {
     QuestionRepository questionRepository;
 
     @InjectMocks
-    BeginingTheGame targetToTest;
+    TheGameService targetToTest;
 
     @BeforeEach
     void initialization() {
