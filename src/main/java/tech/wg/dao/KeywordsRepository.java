@@ -48,6 +48,7 @@ public class KeywordsRepository {
 
     public List<String> editKeywords(String oldKeyword, String newKeyword) {
         readKeywords();
+        readKeywords();
         if (cash.contains(oldKeyword)) {
             cash.remove(oldKeyword);
             cash.add(newKeyword);
@@ -71,14 +72,18 @@ public class KeywordsRepository {
         return readKeywords();
     }
 
-    public void deleteKeyword(String wrongWord){
+    public void deleteKeyword(String wrongWord) {
         try (PrintWriter writer = new PrintWriter(keywordsFileName, UTF_8)) {
-            cash.remove(wrongWord);
+            if(cash.contains(wrongWord)) {
+                cash.remove(wrongWord);
+            } else {
+                System.out.println("Нет такого слова в списке слов.");
+            }
             writer.write(String.join("\n", cash));
             cash.clear();
             readKeywords();
         } catch (Exception e) {
-            log.error("Не удалось удалить слово", e);
+            log.error("Не удалось удалить слово.", e);
         }
     }
 }
