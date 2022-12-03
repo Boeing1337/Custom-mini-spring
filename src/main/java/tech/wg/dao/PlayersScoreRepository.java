@@ -60,7 +60,7 @@ public class PlayersScoreRepository {
                 }
             } catch (Exception e) {
                 cache.clear();
-                System.out.println("нет файла со словами");
+                log.error("нет файла со словами", e);
             }
         }
         return List.copyOf(cache);
@@ -88,7 +88,7 @@ public class PlayersScoreRepository {
         try (FileWriter file = new FileWriter(scoreFileName)) {
             file.write(result.toString());
         } catch (Exception e) {
-            System.out.println("Не получилось записать данные.");
+            log.warn("Не получилось записать данные.", e);
             return false;
         }
         return true;
@@ -99,10 +99,10 @@ public class PlayersScoreRepository {
         boolean remove = cache.remove(entity);
         if (remove) {
             if (!writeCash()) {
-                System.out.println("Не удалось удалить счёт игрока.");
+                log.info("Не удалось удалить счёт игрока.");
             }
         } else {
-            System.out.println("Не удалось удалить счёт игрока.");
+            log.info("Не удалось удалить счёт игрока.");
         }
         cache.clear();
         findAllPlayerScore();
