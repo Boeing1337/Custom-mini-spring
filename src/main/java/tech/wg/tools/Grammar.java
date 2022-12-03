@@ -1,4 +1,4 @@
-package tech.wg.dao;
+package tech.wg.tools;
 
 import java.io.PrintStream;
 import java.util.Scanner;

@@ -8,14 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AdminService {
-    private final QuestionRepository questionRepository = new QuestionRepository();
-    private final KeywordsRepository keywordsRepository = new KeywordsRepository();
+    private QuestionRepository questionRepository;
+    private KeywordsRepository keywordsRepository;
     private final Scanner scanner = new Scanner(System.in);
     private final String except = "Неверная команда.";
-
-    public AdminService() {
-        action();
-    }
 
     public void action() {
         boolean flag = true;

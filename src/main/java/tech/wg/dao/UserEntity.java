@@ -1,5 +1,8 @@
 package tech.wg.dao;
 
+import lombok.Getter;
+
+@Getter
 public class UserEntity {
     private final String login;
     private final String pass;
@@ -10,11 +13,4 @@ public class UserEntity {
         this.pass = pass;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPass() {
-        return pass;
-    }
 }

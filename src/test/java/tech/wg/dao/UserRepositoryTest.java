@@ -10,12 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static java.io.File.separator;
-import static tech.wg.dao.Constants.BASE_DIRECTORY;
+import static tech.wg.servise.Constants.BASE_DIRECTORY;
 
 class UserRepositoryTest {
-    static final String PASS = "pass";
-    static String USER_LOGIN = "ArtiWell";
-    UserRepository repository = new UserRepository();
+    private static final String PASS = "pass";
+    private static final String PROGRESS = "progress";
+    private static final String USER_LOGIN = "ArtiWell";
+    private final UserRepository repository = new UserRepository();
 
     @BeforeEach
     void prepare() {
@@ -52,10 +53,12 @@ class UserRepositoryTest {
     @AfterEach
     void deleted() {
         try {
-            Path path1 = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN + separator + PASS);
-            Path path = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN);
-            Files.delete(path1);
-            Files.delete(path);
+            Path file = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN + separator + PASS);
+            Path file2 = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN + separator + PROGRESS);
+            Path directory = Path.of("." + separator + BASE_DIRECTORY + separator + USER_LOGIN);
+            Files.deleteIfExists(file);
+            Files.deleteIfExists(file2);
+            Files.deleteIfExists(directory);
         } catch (Exception e) {
             e.printStackTrace();
         }

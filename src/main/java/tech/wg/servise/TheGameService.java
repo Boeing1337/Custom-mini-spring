@@ -1,10 +1,10 @@
 package tech.wg.servise;
 
 import tech.wg.context.GlobalVariable;
-import tech.wg.dao.Grammar;
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionRepository;
 import tech.wg.dao.UserGameStateRepository;
+import tech.wg.tools.Grammar;
 
 import java.util.Arrays;
 import java.util.List;

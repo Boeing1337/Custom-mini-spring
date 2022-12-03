@@ -1,5 +1,7 @@
 package tech.wg.dao;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +12,7 @@ import java.util.List;
 import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Log4j2
 public class QuestionRepository {
     public static final String ANY_NEW_LINE = "\\n|\\r\\n";
     public static final String SIMPLE_NEW_LINE = "\n";
@@ -30,7 +33,7 @@ public class QuestionRepository {
                     .replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE)
                     .split(QUESTIONS_BLOCK_SEPARATOR);
         } catch (IOException e) {
-            System.out.println(e.getCause());
+            log.warn(e);
         }
     }
 
@@ -79,7 +82,7 @@ public class QuestionRepository {
                 writerFile.write(";\n\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn(e);
         }
         reading();
     }

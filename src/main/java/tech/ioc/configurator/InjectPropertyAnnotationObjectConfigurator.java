@@ -22,7 +22,7 @@ public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigu
 
     @SneakyThrows
     public InjectPropertyAnnotationObjectConfigurator() {
-        String url = getClass().getClassLoader().getResource("application.txt").getPath().replace("%20", " ");
+        String url = getClass().getClassLoader().getResource("application.properties").getPath().replace("%20", " ");
         properties = readAllLines(new File(url).toPath())
                 .stream()
                 .map(line -> line.split("="))

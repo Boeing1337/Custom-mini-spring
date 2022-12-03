@@ -1,16 +1,18 @@
 package tech.ioc.see_here;
 
+import lombok.extern.log4j.Log4j2;
 import tech.ioc.annotations.Component;
 
+@Log4j2
 @Component(isMain = true)
 public class TestBeanDependency1 implements SomeInterface {
 
     public TestBeanDependency1() {
-        System.out.println("TestBeanDependency1 created");
+        log.info("TestBeanDependency1 created");
     }
 
     @Override
     public void print(String msg) {
-        System.out.println(msg + "FROM TestBeanDependency1");
+        log.info(msg + "FROM TestBeanDependency1");
     }
 }
