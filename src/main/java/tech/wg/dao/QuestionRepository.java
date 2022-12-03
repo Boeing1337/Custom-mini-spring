@@ -11,8 +11,8 @@ import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class QuestionRepository {
-    private static final String ANY_NEW_LINE = "\\n|\\r\\n";
-    private static final String SIMPLE_NEW_LINE = "\n";
+    public static final String ANY_NEW_LINE = "\\n|\\r\\n";
+    public static final String SIMPLE_NEW_LINE = "\n";
     private static final String QUESTIONS_BLOCK_SEPARATOR = ";(\\r?\\n){2}";
     private final ArrayList<List<String>> questions = new ArrayList<>();
     private final ArrayList<List<String>> answers = new ArrayList<>();

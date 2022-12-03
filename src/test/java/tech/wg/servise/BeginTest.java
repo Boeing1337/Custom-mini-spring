@@ -20,6 +20,8 @@ import java.io.PrintStream;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static tech.wg.dao.QuestionRepository.ANY_NEW_LINE;
+import static tech.wg.dao.QuestionRepository.SIMPLE_NEW_LINE;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +53,7 @@ class BeginTest {
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n0\n".getBytes()));
         targetToTest.theGameContinue();
         System.setOut(originalOut);
-        Assertions.assertEquals("[*, *, *, *, А, *]\r\n" +
+        Assertions.assertEquals(("[*, *, *, *, А, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +
                 "Короткая черточка, употребляется как знак переноса\r\n" +
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
@@ -64,7 +66,7 @@ class BeginTest {
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
                 "Верно\r\n" +
                 "[Д, *, К, *, А, *]\r\n" +
-                "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n", outContent.toString());
+                "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n").replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE).trim(), outContent.toString().trim());
 
     }
 
@@ -75,7 +77,7 @@ class BeginTest {
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n0\n".getBytes()));
         targetToTest.theGameNew();
         System.setOut(originalOut);
-        Assertions.assertEquals("[*, *, *, *, *, *]\r\n" +
+        Assertions.assertEquals(("[*, *, *, *, *, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +
                 "Короткая черточка, употребляется как знак переноса\r\n" +
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
@@ -88,7 +90,7 @@ class BeginTest {
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
                 "Верно\r\n" +
                 "[Д, *, К, *, *, *]\r\n" +
-                "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n", outContent.toString());
+                "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n").replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE).trim(), outContent.toString().trim());
     }
 
     @Test
@@ -97,7 +99,7 @@ class BeginTest {
         System.setIn(new ByteArrayInputStream("1\nд\n3\nа\nк\n2\nо\n4\nл\n5\nа\n6\nд\n".getBytes()));
         targetToTest.theGameNew();
         System.setOut(originalOut);
-        Assertions.assertEquals("[*, *, *, *, *, *]\r\n" +
+        Assertions.assertEquals(("[*, *, *, *, *, *]\r\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\r\n" +
                 "Короткая черточка, употребляется как знак переноса\r\n" +
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
@@ -130,6 +132,6 @@ class BeginTest {
                 "Введите первую букву ответа или нажми 0, чтобы вернуться назад\r\n" +
                 "Верно\r\n" +
                 "[Д, О, К, Л, А, Д]\r\n" +
-                "Поздравляю, вы набрали 100 очков\r\n", outContent.toString());
+                "Поздравляю, вы набрали 100 очков\r\n").replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE).trim(), outContent.toString().trim());
     }
 }
