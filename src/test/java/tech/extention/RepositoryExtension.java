@@ -2,8 +2,7 @@ package tech.extention;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.junit.jupiter.api.extension.*;
 import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectProperty;
 
@@ -32,26 +31,31 @@ public class RepositoryExtension implements TestInstancePostProcessor {
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         for (Field testField : testInstance.getClass().getDeclaredFields()) {
+            injectProperty(testInstance, testField);
             testField.setAccessible(true);
             Object fieldValue = testField.get(testInstance);
             if (!fieldValue.getClass().isAnnotationPresent(Component.class)) {
                 return;
             }
             for (Field field : fieldValue.getClass().getDeclaredFields()) {
-                InjectProperty annotation = field.getAnnotation(InjectProperty.class);
-                if (annotation != null) {
-                    String key = annotation.value();
-                    if (key.isEmpty()) {
-                        key = field.getName();
-                    }
-                    if (!properties.containsKey(key)) {
-                        throw new MissingResourceException("Не найдена конфигурация", testInstance.getClass().getName(), key);
-                    }
-                    field.setAccessible(true);
-                    field.set(fieldValue, properties.get(key));
-                }
+                injectProperty(fieldValue, field);
             }
         }
     }
 
+    @SneakyThrows
+    private void injectProperty(Object instance, Field field) {
+        InjectProperty annotation = field.getAnnotation(InjectProperty.class);
+        if (annotation != null) {
+            String key = annotation.value();
+            if (key.isEmpty()) {
+                key = field.getName();
+            }
+            if (!properties.containsKey(key)) {
+                throw new MissingResourceException("Не найдена конфигурация", instance.getClass().getName(), key);
+            }
+            field.setAccessible(true);
+            field.set(instance, properties.get(key));
+        }
+    }
 }

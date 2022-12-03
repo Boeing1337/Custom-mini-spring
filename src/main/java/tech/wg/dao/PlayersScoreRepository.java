@@ -1,6 +1,8 @@
 package tech.wg.dao;
 
 import lombok.extern.log4j.Log4j2;
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectProperty;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,18 +15,20 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Component
 @Log4j2
 public class PlayersScoreRepository {
     private final static String SEPARATOR = ";";
-    private final static String FILE = "PlayerScore";
+    @InjectProperty
+    private String scoreFileName;
     private final List<ScoreEntity> cache = new ArrayList<>();
 
 
-    private String convertScoreEntityToString(ScoreEntity in) {
+     String convertScoreEntityToString(ScoreEntity in) {
         return String.format("%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate());
     }
 
-    private ScoreEntity convertStringToScoreEntity(String in) {
+     ScoreEntity convertStringToScoreEntity(String in) {
         String[] result = in.split(SEPARATOR);
         return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]));
     }
@@ -47,11 +51,8 @@ public class PlayersScoreRepository {
     }
 
     public List<ScoreEntity> findAllPlayerScore() {
-        log.info("Стартануло ЗАЕБИСь");
-        log.warn("Такой пользователь не найден");
-        log.error("Не созданы файлы!");
         if (cache.isEmpty()) {
-            File file = new File("PlayerScore");
+            File file = new File(scoreFileName);
             try (Scanner scanner = new Scanner(file, UTF_8)) {
                 while (scanner.hasNextLine()) {
                     ScoreEntity scoreEntity = convertStringToScoreEntity(scanner.nextLine());
@@ -84,7 +85,7 @@ public class PlayersScoreRepository {
         for (ScoreEntity scoreEntity : cache) {
             result.append(convertScoreEntityToString(scoreEntity)).append("\n");
         }
-        try (FileWriter file = new FileWriter(FILE)) {
+        try (FileWriter file = new FileWriter(scoreFileName)) {
             file.write(result.toString());
         } catch (Exception e) {
             System.out.println("Не получилось записать данные.");
