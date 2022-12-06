@@ -27,21 +27,21 @@ class LoginServiceTest {
 
     @Test
     void enterYourLogin() {
-        grammar.setInputContent("login\ngfhgfhg\njhghjg\n0\n0");
+        grammar.initWithInput("login\ngfhgfhg\njhghjg\n0\n0");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
         service.authorization();
     }
 
     @Test
     void enterYourLogin1() {
-        grammar.setInputContent("login\npass");
+        grammar.initWithInput("login\npass");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
         service.authorization();
     }
 
     @Test
     void enterYourLogin2() {
-        grammar.setInputContent("pizduk\nlogin\n0\nlogin\npazz\npass");
+        grammar.initWithInput("pizduk\nlogin\n0\nlogin\npazz\npass");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
         Mockito.when(userRepository.getUser("pizduk")).thenReturn(Optional.empty());
         service.authorization();
