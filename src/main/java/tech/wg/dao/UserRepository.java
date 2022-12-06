@@ -33,36 +33,30 @@ public class UserRepository {
 //    }
 
     public boolean createUser(String login, String pass) {
+        PrintWriter writer = null;
         try {
             Files.createDirectory(Path.of(BASE_PATH + login));
             Files.createFile(Path.of(BASE_PATH + login + separator + "pass"));
             Files.createFile(Path.of(BASE_PATH + login + separator + "progress"));
-            try (PrintWriter writer = new PrintWriter(BASE_PATH + login +
-                    separator + "pass", UTF_8)) {
-                writer.println(pass);
-                return true;
-            } catch (Exception e) {
-                try {
-                    Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
-                    Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
-                    Files.deleteIfExists(Path.of(BASE_PATH + login));
-                    return false;
-                } catch (Exception ex) {
-                    log.warn(ex);
-                    return false;
-                }
-            }
-        } catch (Exception e) {
+            writer = new PrintWriter(BASE_PATH + login + separator + "pass", UTF_8);
+            writer.println(pass);
+            return true;
+        } catch (IOException e) {
+            log.warn(e);
             try {
                 Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
                 Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
                 Files.deleteIfExists(Path.of(BASE_PATH + login));
-                return false;
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 log.warn(ex);
-                return false;
+            }
+        } finally {
+            if (writer != null) {
+                writer.flush();
+                writer.close();
             }
         }
+        return false;
     }
 
 

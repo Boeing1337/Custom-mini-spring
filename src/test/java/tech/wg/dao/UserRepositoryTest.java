@@ -37,8 +37,7 @@ class UserRepositoryTest {
 
     @Test
     void testIfPassSaved() {
-        boolean isPassCreated = repository.createUser(USER_LOGIN, PASS);
-        Assertions.assertTrue(isPassCreated);
+
         UserEntity result = repository.getUser(USER_LOGIN).orElseThrow();
         Assertions.assertEquals(PASS, result.getPass());
     }
