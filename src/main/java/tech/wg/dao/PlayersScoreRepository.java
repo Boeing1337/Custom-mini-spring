@@ -23,7 +23,6 @@ public class PlayersScoreRepository {
     private String scoreFileName;
     private final List<ScoreEntity> cache = new ArrayList<>();
 
-
      String convertScoreEntityToString(ScoreEntity in) {
         return String.format("%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate());
     }

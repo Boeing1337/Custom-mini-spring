@@ -42,6 +42,17 @@ public class UserRepository {
         }
     }
 
+    public void deleteUser(String login) {
+        try {
+            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "progress"));
+            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "pass"));
+            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login));
+        } catch (Exception e) {
+            log.warn(e);
+        }
+    }
+
+
     public boolean isUserPresents(String login) {
         try {
             Path path = Path.of("." + separator + BASE_DIRECTORY + separator + login);
