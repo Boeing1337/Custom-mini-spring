@@ -21,28 +21,28 @@ public class LoginService {
 
         String login;
         while (true) {
-            grammar.write("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
+            grammar.print("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
             login = grammar.readLine();
             if ("0".equals(login)) {
                 return;
             }
             Optional<UserEntity> user = userRepository.getUser(login);
             if ((user.isEmpty())) {
-                grammar.write("Такого логина не существует. Пожалуйста, попробуйте еще раз");
+                grammar.print("Такого логина не существует. Пожалуйста, попробуйте еще раз");
                 continue;
             }
             while (true) {
-                grammar.write("Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню");
+                grammar.print("Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню");
                 String pass = grammar.readLine();
                 if ("0".equals(pass)) {
                     break;
                 }
                 if (pass.equals(user.get().getPass())) {
-                    grammar.write("Добро пожаловать " + login + "!");
+                    grammar.print("Добро пожаловать " + login + "!");
                     GlobalVariable.setCurrentUser(new UserEntity(login, pass));
                     return;
                 }
-                grammar.write("Не верный пароль! Попробуйте ещё раз.");
+                grammar.print("Не верный пароль! Попробуйте ещё раз.");
             }
         }
     }

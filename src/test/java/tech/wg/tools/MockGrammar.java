@@ -14,17 +14,17 @@ public class MockGrammar extends Grammar {
     private Scanner scanner;
 
     @Override
-    public void write(String value) {
+    public void print(String value) {
         printStream.println(value);
     }
 
     @Override
-    public void write(int value) {
+    public void print(int value) {
         printStream.println(value);
     }
 
     @Override
-    public void write(char value) {
+    public void print(char value) {
         printStream.println(value);
     }
 

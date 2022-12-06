@@ -12,11 +12,15 @@ public class Grammar {
         printStream.println(value);
     }
 
-    public void write(int value) {
+    public void print(String value) {
+        printStream.print(value);
+    }
+
+    public void print(int value) {
         printStream.println(value);
     }
 
-    public void write(char value) {
+    public void print(char value) {
         printStream.println(value);
     }
 

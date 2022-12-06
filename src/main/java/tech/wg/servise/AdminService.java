@@ -2,27 +2,25 @@ package tech.wg.servise;
 
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionRepository;
+import tech.wg.tools.Grammar;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class AdminService {
+    private final String except = "\nНеверная команда.\n";
     private QuestionRepository questionRepository;
     private KeywordsRepository keywordsRepository;
-    private final Scanner scanner = new Scanner(System.in);
-    private final String except = "Неверная команда.";
+    private Grammar grammar;
 
     public void action() {
-        boolean flag = true;
         do {
-            System.out.print("\n-----Категория файлов-----\n" +
+            grammar.print("\n-----Категория файлов-----\n" +
                     "1) Загаданные слова.\n" +
                     "2) Вопросы и ответы.\n" +
                     "0) Выход из Админ-панели.\n" +
                     "Выберете вариант: ");
-
-            switch (scanner.nextLine()) {
+            switch (grammar.readLine()) {
                 case "1":
                     menuWordsOperation();
                     break;
@@ -30,61 +28,56 @@ public class AdminService {
                     menuQuestsAnswers();
                     break;
                 case "0":
-                    flag = false;
-                    break;
+                    return;
                 default:
-                    System.out.println(except);
+                    grammar.write(except);
                     break;
             }
-        } while (flag);
-        scanner.close();
+        } while (true);
     }
 
     private void menuWordsOperation() {
         try {
-            boolean flag = true;
             do {
-                System.out.print("\n-----Работа с загаданными словами-----\n" +
+                grammar.print("\n-----Работа с загаданными словами-----\n" +
                         "1) Прочитать все загаданные слова.\n" +
                         "2) Добавить слово.\n" +
                         "3) Изменит слово.\n" +
                         "4) Удалить слово.\n" +
                         "0) назад.\n" +
                         "Выберете вариант: ");
-
-                switch (scanner.nextLine()) {
+                switch (grammar.readLine()) {
                     case "1":
                         List<String> listMenuWords = keywordsRepository.readKeywords();
                         for (String s : listMenuWords) {
-                            System.out.println(s);
+                            grammar.write(s);
                         }
                         break;
                     case "2":
-                        System.out.print("Введите новое слово: ");
-                        keywordsRepository.addKeywords(Collections.singleton(scanner.nextLine().toUpperCase()));
+                        grammar.print("Введите новое слово: ");
+                        keywordsRepository.addKeywords(Collections.singleton(grammar.readLine().toUpperCase()));
                         break;
                     case "3":
-                        System.out.print("Введите слово которое хотите изменить: ");
-                        String inputWord = scanner.nextLine().toUpperCase();
-                        System.out.println("Введите новое слово");
-                        String inputNewWord = scanner.nextLine().toUpperCase();
+                        grammar.print("Введите слово которое хотите изменить: ");
+                        String inputWord = grammar.readLine().toUpperCase();
+                        grammar.write("Введите новое слово");
+                        String inputNewWord = grammar.readLine().toUpperCase();
                         keywordsRepository.editKeywords(inputWord, inputNewWord);
                         break;
 
                     case "4":
-                        System.out.print("Введите слово которое хотите удалить: ");
-                        keywordsRepository.deleteKeyword(scanner.nextLine().toUpperCase());
+                        grammar.print("Введите слово которое хотите удалить: ");
+                        keywordsRepository.deleteKeyword(grammar.readLine().toUpperCase());
                         break;
                     case "0":
                         return;
                     default:
-                        System.out.println(except);
+                        grammar.write(except);
                         break;
                 }
-
-            } while (flag);
+            } while (true);
         } catch (Exception e) {
-            System.out.println("Неправильный ввод");
+            grammar.write("\nНеправильный ввод.\n");
         }
     }
 
@@ -92,7 +85,7 @@ public class AdminService {
         try {
             boolean flag = true;
             do {
-                System.out.print("\n-----Работа с вопросами и ответами-----\n" +
+                grammar.print("\n-----Работа с вопросами и ответами-----\n" +
                         "1) Прочитать все вопросы и ответы на выбранную букву.\n" +
                         "2) Добавить вопрос и ответ.\n" +
                         "3) Изменить вопрос.\n" +
@@ -100,7 +93,7 @@ public class AdminService {
                         "5) Удалить вопрос и ответ.\n" +
                         "0) назад.\n" +
                         "Выберете вариант: ");
-                switch (scanner.nextLine()) {
+                switch (grammar.readLine()) {
                     case "1":
                         printQuestsAnswers();
                         break;
@@ -120,22 +113,22 @@ public class AdminService {
                         flag = false;
                         break;
                     default:
-                        System.out.println(except);
+                        grammar.write(except);
                         break;
                 }
             } while (flag);
         } catch (Exception e) {
-            System.out.println("Неправильный ввод");
+            grammar.write("\nНеправильный ввод.\n");
         }
     }
 
     private void printQuestsAnswers() {
-        System.out.print("Введите букву русского алфавита: ");
-        List<String> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(scanner.nextLine());
-        System.out.println();
+        grammar.print("Введите букву русского алфавита: ");
+        List<String> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.readLine());
+        grammar.write("");
         int numPrintQuestAnswer = 1;
         for (int i = 1; i < listPrintQuestAnswer.size(); i++) {
-            System.out.println(numPrintQuestAnswer + ") " + listPrintQuestAnswer.get(i));
+            grammar.write(numPrintQuestAnswer + ") " + listPrintQuestAnswer.get(i));
             if (i % 2 == 0) {
                 numPrintQuestAnswer++;
             }
@@ -143,87 +136,87 @@ public class AdminService {
     }
 
     private void addQuestAnswer() {
-        System.out.print("Введите вопрос: ");
-        String questAddQuestAnswer = scanner.nextLine().trim();
-        System.out.println();
-        System.out.print("Введите ответ: ");
-        String answerAddQuestAnswer = scanner.nextLine();
+        grammar.print("Введите вопрос: ");
+        String questAddQuestAnswer = grammar.readLine().trim();
+        grammar.write("");
+        grammar.print("Введите ответ: ");
+        String answerAddQuestAnswer = grammar.readLine();
         questionRepository.addQuestionAnswers(questAddQuestAnswer, answerAddQuestAnswer);
     }
 
     private void changeQuest() {
-        System.out.print("Какая первая буква ответа на вопрос который хотите изменить: ");
-        String wordChangeQuest = scanner.nextLine();
-        System.out.println();
+        grammar.print("Какая первая буква ответа на вопрос который хотите изменить: ");
+        String wordChangeQuest = grammar.readLine();
+        grammar.write("");
         List<String> listChangeQuest = questionRepository.getQuestionAnswerByLetter(wordChangeQuest);
-        System.out.println();
+        grammar.write("");
         int numChangeQuest = 1;
         for (int i = 1; i < listChangeQuest.size(); i = i + 2) {
-            System.out.println(numChangeQuest + ") " + listChangeQuest.get(i));
+            grammar.write(numChangeQuest + ") " + listChangeQuest.get(i));
             numChangeQuest++;
         }
         while (true) {
-            System.out.print("Выберете вариант вопроса: ");
-            if (scanner.hasNextInt()) {
-                int number = Integer.parseInt(scanner.nextLine().trim()) - 1;
-                System.out.println();
-                System.out.println("Введите новый вопрос в одну строку: ");
-                String questChangeQuest = scanner.nextLine();
+            grammar.print("Выберете вариант вопроса: ");
+            if (grammar.hasNextInt()) {
+                int number = Integer.parseInt(grammar.readLine().trim()) - 1;
+                grammar.write("");
+                grammar.write("Введите новый вопрос в одну строку: ");
+                String questChangeQuest = grammar.readLine();
                 questionRepository.setQuestions(wordChangeQuest, number, questChangeQuest);
                 break;
             } else {
-                System.out.println("\nНе правильный ввод.\n");
+                grammar.write("\nНеправильный ввод.\n");
             }
         }
     }
 
     private void changeAnswer() {
-        System.out.print("Какая первая буква ответа: ");
-        String wordChangeAnswer = scanner.nextLine();
+        grammar.print("Какая первая буква ответа: ");
+        String wordChangeAnswer = grammar.readLine();
         List<String> listChangeAnswer = questionRepository.getQuestionAnswerByLetter(wordChangeAnswer);
-        System.out.println();
+        grammar.write("");
         int numChangeAnswer = 1;
         for (int i = 2; i < listChangeAnswer.size(); i = i + 2) {
-            System.out.println(numChangeAnswer + ") " + listChangeAnswer.get(i));
+            grammar.write(numChangeAnswer + ") " + listChangeAnswer.get(i));
             numChangeAnswer++;
         }
         while (true) {
-            System.out.print("Выберете вариант ответа: ");
+            grammar.print("Выберете вариант ответа: ");
 
-            if (scanner.hasNextInt()) {
-                int optionChangeAnswer = Integer.parseInt(scanner.nextLine().trim()) - 1;
-                System.out.println();
-                System.out.print("Введите новый ответ на выбранную букву: ");
-                String newAnswer = scanner.nextLine();
+            if (grammar.hasNextInt()) {
+                int optionChangeAnswer = grammar.readInt() - 1;
+                grammar.write("");
+                grammar.print("Введите новый ответ на выбранную букву: ");
+                String newAnswer = grammar.readLine();
                 questionRepository.setAnswers(wordChangeAnswer, optionChangeAnswer, newAnswer);
                 break;
             } else {
-                System.out.println("\nНе правильный ввод.\n");
+                grammar.write("\nНеправильный ввод.\n");
             }
         }
     }
 
     private void deleteQuestAnswer() {
-        System.out.print("Введите букву русского алфавита: ");
-        String wordDeleteQuestAnswer = scanner.nextLine();
+        grammar.print("Введите букву русского алфавита: ");
+        String wordDeleteQuestAnswer = grammar.readLine();
         List<String> listDeleteQuestAnswer = questionRepository.getQuestionAnswerByLetter(wordDeleteQuestAnswer);
-        System.out.println();
+        grammar.write("");
         int countDeleteQuestAnswer = 1;
         for (int i = 1; i < listDeleteQuestAnswer.size(); i++) {
-            System.out.println(countDeleteQuestAnswer + ") " + listDeleteQuestAnswer.get(i));
+            grammar.write(countDeleteQuestAnswer + ") " + listDeleteQuestAnswer.get(i));
             if (i % 2 == 0) {
                 countDeleteQuestAnswer++;
             }
         }
         while (true) {
-            System.out.print("Выберете вариант: ");
-            if (scanner.hasNextInt()) {
-                int optionDeleteQuestAnswer = Integer.parseInt(scanner.nextLine().trim()) - 1;
+            grammar.print("Выберете вариант: ");
+            if (grammar.hasNextInt()) {
+                int optionDeleteQuestAnswer = grammar.readInt() - 1;
                 questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
                 questionRepository.deleteAnswers(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
                 break;
             } else {
-                System.out.println("\nНе правильный ввод.\n");
+                grammar.write("\nНеправильный ввод.\n");
             }
         }
     }
