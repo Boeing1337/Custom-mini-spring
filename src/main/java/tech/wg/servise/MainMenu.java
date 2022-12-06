@@ -1,35 +1,30 @@
 package tech.wg.servise;
 
-import java.util.Scanner;
+import tech.wg.tools.Grammar;
 
 public class MainMenu {
-
+    private final Grammar grammar;
     private final RegistrationUsers registrationUsers;
     private final LoginService loginService;
-    private Scanner scanner = new Scanner(System.in);
 
-    public MainMenu(LoginService loginService, RegistrationUsers registrationUsers) {
+    public MainMenu(Grammar grammar, LoginService loginService, RegistrationUsers registrationUsers) {
+        this.grammar = grammar;
         this.loginService = loginService;
         this.registrationUsers = registrationUsers;
-    }
-
-    private void initScanner() {
-        scanner = new Scanner(System.in);
     }
 
     public void startMainMenu() {
         boolean reran = true;
         String input;
-        initScanner();
-        System.out.println("Введите 1 для входа в аккаунт");
-        System.out.println("Введите 2 для регистрации аккаунта");
-        System.out.println("Введите 0 для выхода из игры");
+        grammar.write("Введите 1 для входа в аккаунт");
+        grammar.write("Введите 2 для регистрации аккаунта");
+        grammar.write("Введите 0 для выхода из игры");
         while (reran) {
-            input = scanner.nextLine();
+            input = grammar.readLine();
             switch (input) {
                 case "1":
                     loginService.authorization();
-                break;
+                    break;
                 case "2":
                     registrationUsers.registrationUser();
                     break;
@@ -37,7 +32,7 @@ public class MainMenu {
                     reran = false;
                     break;
                 default:
-                    System.out.println("Нет такой команды. Попробуйте ещё раз");
+                    grammar.write("Нет такой команды. Попробуйте ещё раз");
                     break;
             }
         }

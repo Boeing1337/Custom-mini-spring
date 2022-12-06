@@ -3,9 +3,13 @@ package tech.ioc.infrastucture;
 import org.reflections.Reflections;
 import tech.ioc.annotations.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static org.reflections.scanners.Scanners.SubTypes;
 
 /**
@@ -15,12 +19,10 @@ public class JavaApplicationConfig implements ApplicationConfig {
     private final Reflections scanner;
     private final Map<Class<?>, List<Class<?>>> listCache = new HashMap<>();
     private final Map<String, Class<?>> stringCache = new HashMap<>();
-    private final Set<Class<?>> rawObjects;
 
     JavaApplicationConfig(String packageToScan) {
         this.scanner = new Reflections(packageToScan, SubTypes.filterResultsBy(e -> true));
-        rawObjects = scanner.getSubTypesOf(Object.class);
-        rawObjects.forEach((Class<?> object) -> {
+        scanner.getSubTypesOf(Object.class).forEach((Class<?> object) -> {
             if (!object.isAnnotationPresent(Component.class)) {
                 return;
             }
@@ -28,10 +30,14 @@ public class JavaApplicationConfig implements ApplicationConfig {
             if (objName.isBlank()) {
                 objName = object.getName();
             }
+            if (stringCache.containsKey(objName)) {
+                throw new IllegalStateException(
+                        format("Найдено повторение имени %s: %s и %s", objName, object, stringCache.get(objName)));
+            }
             stringCache.put(objName, object);
             listCache.computeIfAbsent(object, o -> new ArrayList<>()).add(object);
-            for (Class<?> intrfc : object.getInterfaces()) {
-                listCache.computeIfAbsent(intrfc, o -> new ArrayList<>()).add(object);
+            for (Class<?> interfaze : object.getInterfaces()) {
+                listCache.computeIfAbsent(interfaze, o -> new ArrayList<>()).add(object);
             }
         });
     }
