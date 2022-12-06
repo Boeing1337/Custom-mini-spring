@@ -4,12 +4,16 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Grammar {
-    private final Scanner scanner = new Scanner(System.in);
-    private final PrintStream printStream = System.out;
+    Scanner scanner = new Scanner(System.in);
+    PrintStream printStream = System.out;
 
 
     public void write(String value) {
         printStream.println(value);
+    }
+
+    public void print(String value) {
+        printStream.print(value);
     }
 
     public void write(int value) {

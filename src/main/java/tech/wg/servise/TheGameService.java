@@ -34,7 +34,7 @@ public class TheGameService {
     public void theGameContinue() {
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if ("".equals(progress)) {
-            grammar.write("Нет игры, кторую можно продолжить. Начни новую игру");
+            grammar.write("Нет игры, которую можно продолжить. Начни новую игру");
             return;
         }
         String[] a = progress.trim().split(";");
