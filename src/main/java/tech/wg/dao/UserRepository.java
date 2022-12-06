@@ -17,45 +17,69 @@ import static tech.wg.servise.Constants.BASE_DIRECTORY;
 
 @Log4j2
 public class UserRepository {
+    private static final String BASE_PATH = "." + separator + BASE_DIRECTORY + separator;
 
 
-    public boolean createUser(String login) {
+//    public boolean createUser(String login) {
+//        try {
+//            Files.createDirectory(Path.of(BASE_PATH + login));
+//            Files.createFile(Path.of(BASE_PATH + login + separator + "pass"));
+//            Files.createFile(Path.of(BASE_PATH + login + separator + "progress"));
+//            return true;
+//        } catch (Exception e) {
+//            log.warn(e);
+//            return false;
+//        }
+//    }
+
+    public boolean createUser(String login, String pass) {
         try {
-            Files.createDirectory(Path.of("." + separator + BASE_DIRECTORY + separator + login));
-            Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "pass"));
-            Files.createFile(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "progress"));
-            return true;
+            Files.createDirectory(Path.of(BASE_PATH + login));
+            Files.createFile(Path.of(BASE_PATH + login + separator + "pass"));
+            Files.createFile(Path.of(BASE_PATH + login + separator + "progress"));
+            try (PrintWriter writer = new PrintWriter(BASE_PATH + login +
+                    separator + "pass", UTF_8)) {
+                writer.println(pass);
+                return true;
+            } catch (Exception e) {
+                try {
+                    Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
+                    Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
+                    Files.deleteIfExists(Path.of(BASE_PATH + login));
+                    return false;
+                } catch (Exception ex) {
+                    log.warn(ex);
+                    return false;
+                }
+            }
         } catch (Exception e) {
-            log.warn(e);
-            return false;
+            try {
+                Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
+                Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
+                Files.deleteIfExists(Path.of(BASE_PATH + login));
+                return false;
+            } catch (Exception ex) {
+                log.warn(ex);
+                return false;
+            }
         }
     }
 
-    public boolean createPass(String login, String pass) {
-        try (PrintWriter writer = new PrintWriter("." + separator + BASE_DIRECTORY + separator + login +
-                separator + "pass", UTF_8)) {
-            writer.println(pass);
-            return true;
-        } catch (Exception e) {
-            log.warn(e);
-            return false;
-        }
-    }
 
-    public void deleteUser(String login) {
-        try {
-            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "progress"));
-            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login + separator + "pass"));
-            Files.delete(Path.of("." + separator + BASE_DIRECTORY + separator + login));
-        } catch (Exception e) {
-            log.warn(e);
-        }
-    }
+//    public void deleteUser(String login) {
+//        try {
+//            Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
+//            Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
+//            Files.deleteIfExists(Path.of(BASE_PATH + login));
+//        } catch (Exception e) {
+//            log.warn(e);
+//        }
+//    }
 
 
     public boolean isUserPresents(String login) {
         try {
-            Path path = Path.of("." + separator + BASE_DIRECTORY + separator + login);
+            Path path = Path.of(BASE_PATH + login);
             Files.createDirectory(path);
             Files.delete(path);
             return false;
@@ -69,7 +93,7 @@ public class UserRepository {
     }
 
     public Optional<UserEntity> getUser(String login) {
-        File file = new File("." + separator + BASE_DIRECTORY + separator + login + separator + "pass");
+        File file = new File(BASE_PATH + login + separator + "pass");
         try (Scanner scanner = new Scanner(file, UTF_8)) {
             if (scanner.hasNextLine()) {
                 return Optional.of(new UserEntity(login, scanner.nextLine()));

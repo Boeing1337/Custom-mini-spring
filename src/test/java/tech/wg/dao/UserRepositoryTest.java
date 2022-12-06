@@ -20,7 +20,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void prepare() {
-        repository.createUser(USER_LOGIN);
+        repository.createUser(USER_LOGIN, PASS);
     }
 
     @Test
@@ -37,7 +37,7 @@ class UserRepositoryTest {
 
     @Test
     void testIfPassSaved() {
-        boolean isPassCreated = repository.createPass(USER_LOGIN, PASS);
+        boolean isPassCreated = repository.createUser(USER_LOGIN, PASS);
         Assertions.assertTrue(isPassCreated);
         UserEntity result = repository.getUser(USER_LOGIN).orElseThrow();
         Assertions.assertEquals(PASS, result.getPass());
