@@ -64,7 +64,7 @@ public class RegistrationUsers {
     }
 
     private void createdFiles(String login, String pass1) {
-        if (userRepository.createUser(login) && userRepository.createPass(login, pass1)) {
+        if (userRepository.createUser(login, pass1)) {
             grammar.write("Вы успешно зарегистрировались в Диминой игре!");
         } else {
             grammar.write("К сожалению произошла критическая ошибка при создании логина, пожалуйста" +

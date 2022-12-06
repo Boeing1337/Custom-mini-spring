@@ -23,8 +23,8 @@ class RegistrationUsersTest {
 
     @BeforeEach
     void soglasovanie() {
-        Mockito.when(userRepository.createUser("login")).thenReturn(true);
-        Mockito.when(userRepository.createPass("login", "pass")).thenReturn(true);
+        Mockito.when(userRepository.createUser("login", "pass")).thenReturn(true);
+
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
     }
 
