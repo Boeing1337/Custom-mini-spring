@@ -1,5 +1,6 @@
 package tech.wg.servise;
 
+import lombok.extern.log4j.Log4j2;
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionRepository;
 import tech.wg.tools.Grammar;
@@ -7,6 +8,7 @@ import tech.wg.tools.Grammar;
 import java.util.Collections;
 import java.util.List;
 
+@Log4j2
 public class AdminService {
     private final String except = "\nНеверная команда.\n";
     private QuestionRepository questionRepository;
@@ -77,6 +79,7 @@ public class AdminService {
                 }
             } while (true);
         } catch (Exception e) {
+            log.error(e);
             grammar.write("\nНеправильный ввод.\n");
         }
     }
@@ -184,7 +187,7 @@ public class AdminService {
             grammar.print("Выберете вариант ответа: ");
 
             if (grammar.hasNextInt()) {
-                int optionChangeAnswer = grammar.readInt() - 1;
+                int optionChangeAnswer = Integer.parseInt(grammar.readLine().trim()) - 1;
                 grammar.write("");
                 grammar.print("Введите новый ответ на выбранную букву: ");
                 String newAnswer = grammar.readLine();
@@ -211,7 +214,7 @@ public class AdminService {
         while (true) {
             grammar.print("Выберете вариант: ");
             if (grammar.hasNextInt()) {
-                int optionDeleteQuestAnswer = grammar.readInt() - 1;
+                int optionDeleteQuestAnswer = Integer.parseInt(grammar.readLine().trim()) - 1;
                 questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
                 questionRepository.deleteAnswers(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
                 break;
