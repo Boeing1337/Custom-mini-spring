@@ -5,10 +5,10 @@ import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectObject;
 
 @Log4j2
-@Component
+@Component(name = "dep2")
 public class TestBeanDependency2 implements SomeInterface {
 
-    @InjectObject
+    @InjectObject("dep2")
     private SomeInterface someInterface;
 
     public TestBeanDependency2() {
@@ -18,6 +18,6 @@ public class TestBeanDependency2 implements SomeInterface {
     @Override
     public void print(String msg) {
         log.info(msg + "FROM TestBeanDependency2");
-        someInterface.print("To nested someInterface FROM TestBeanDependency2");
+//        someInterface.print("To nested someInterface FROM TestBeanDependency2");
     }
 }

@@ -2,10 +2,13 @@ package tech.ioc;
 
 import lombok.Setter;
 import tech.ioc.annotations.Component;
+import tech.ioc.configurator.BeanWeaver;
 import tech.ioc.infrastucture.ApplicationConfig;
+import tech.ioc.infrastucture.BeanContainer;
 import tech.ioc.infrastucture.ObjectFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,9 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * для инициализации зависимостей самостоятельно
  */
 public class ApplicationContext {
-    private final Map<Class<?>, Object> listCache = new ConcurrentHashMap<>();
-    private final Map<String, Object> stringCache = new ConcurrentHashMap<>();
+
     private final ApplicationConfig config;
+    private final BeanWeaver beanWeaver = new BeanWeaver();
+    private final Map<Class<?>, BeanContainer> beanCacheByClass = new ConcurrentHashMap<>();
+    private final Map<String, BeanContainer> beanCacheByName = new ConcurrentHashMap<>();
     @Setter
     private ObjectFactory factory;
 
@@ -33,21 +38,15 @@ public class ApplicationContext {
      * @return созданный и настроенный объект.
      */
     public <T> T getObject(Class<T> type) {
-        if (listCache.containsKey(type)) {
-            return (T) listCache.get(type);
-        }
-
         Class<? extends T> implClass = type;
+
         if (type.isInterface()) {
             implClass = config.getImplClass(type);
         }
-
-        T object = factory.createBean(implClass);
-
-        listCache.put(type, object);
-        listCache.put(object.getClass(), object);
-
-        return object;
+        if (!beanCacheByClass.containsKey(implClass)) {
+            throw new IllegalStateException("Нет зависимости для: " + implClass);
+        }
+        return (T) beanCacheByClass.get(implClass).getProxy();
     }
 
     /**
@@ -57,17 +56,10 @@ public class ApplicationContext {
      * @return созданный и настроенный объект. Кастить тип придётся самостоятельно
      */
     public Object getObject(String name) {
-        if (stringCache.containsKey(name)) {
-            return stringCache.get(name);
+        if (!beanCacheByName.containsKey(name)) {
+            throw new IllegalStateException("Нет зависимости с именем: " + name);
         }
-
-        Class<?> implClass = config.getImplClassByName(name);
-
-        Object object = getObject(implClass);
-
-        stringCache.put(name, object);
-
-        return object;
+        return beanCacheByName.get(name).getProxy();
     }
 
     /**
@@ -83,4 +75,14 @@ public class ApplicationContext {
         return list;
     }
 
+    public ApplicationContext init() {
+        Collection<BeanContainer> values = config.getAllTypes().values();
+        values.forEach((BeanContainer beanContainer) -> {
+            factory.createBean(beanContainer);
+            beanCacheByClass.put(beanContainer.getImplClass(), beanContainer);
+            beanCacheByName.put(beanContainer.getBeanName(), beanContainer);
+        });
+        values.forEach((BeanContainer beanContainer) -> beanWeaver.weave(beanContainer, this));
+        return this;
+    }
 }

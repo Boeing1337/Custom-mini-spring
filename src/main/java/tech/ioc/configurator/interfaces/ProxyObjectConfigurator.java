@@ -2,6 +2,7 @@ package tech.ioc.configurator.interfaces;
 
 import tech.ioc.ApplicationContext;
 import tech.ioc.annotations.Component;
+import tech.ioc.infrastucture.BeanContainer;
 
 /**
  * Реализовав этот интерфейс вы можете добавить свою настройку компонентов.
@@ -9,5 +10,5 @@ import tech.ioc.annotations.Component;
  * Отличается от {@link ObjectConfigurator} тем что оборачивает настоящий объект свойм
  */
 public interface ProxyObjectConfigurator {
-    <T> T configure(T t, ApplicationContext context);
+    void configure(BeanContainer container, ApplicationContext context);
 }

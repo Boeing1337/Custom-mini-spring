@@ -20,6 +20,6 @@ public class Application {
         ApplicationContext context = new ApplicationContext(config);
         ObjectFactory objectFactory = new ObjectFactory(context, config);
         context.setFactory(objectFactory);
-        return context;
+        return context.init();
     }
 }
