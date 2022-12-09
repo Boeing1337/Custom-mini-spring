@@ -24,20 +24,20 @@ class MainMenuTest {
 
     @Test
     void startMainMenu() {
-        mockGrammar.setInputContent("1\n0");
+        mockGrammar.initWithInput("1\n0");
         service.startMainMenu();
         Mockito.verify(loginService, Mockito.times(1)).authorization();
     }
 
     @Test
     void startMainMenu1() {
-        mockGrammar.setInputContent("2\n0");
+        mockGrammar.initWithInput("2\n0");
         service.startMainMenu();
         Mockito.verify(registrationUsers, Mockito.times(1)).registrationUser();
     }
     @Test
     void startMainMenu2() {
-        mockGrammar.setInputContent("3\n2\n0");
+        mockGrammar.initWithInput("3\n2\n0");
         service.startMainMenu();
         Mockito.verify(registrationUsers, Mockito.times(1)).registrationUser();
     }

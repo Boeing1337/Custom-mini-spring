@@ -30,7 +30,7 @@ class RegistrationUsersTest {
 
     @Test
     void registrationUser() {
-        mockGrammar.setInputContent("login\n0\nlogin\npass\npass");
+        mockGrammar.initWithInput("login\n0\nlogin\npass\npass");
         service.registrationUser();
         Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
@@ -43,7 +43,7 @@ class RegistrationUsersTest {
 
     @Test
     void registrationUser2() {
-        mockGrammar.setInputContent("login\n0\nlogin\npass\n0\n0\nlogin\npass\npass");
+        mockGrammar.initWithInput("login\n0\nlogin\npass\n0\n0\nlogin\npass\npass");
         service.registrationUser();
         Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +

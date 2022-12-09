@@ -12,7 +12,7 @@ public interface ApplicationConfig {
 
     <T> List<Class<? extends T>> getImplClasses(Class<T> type);
 
-    Map<String, Class<?>> getAllTypes();
+    Map<String, BeanContainer> getAllTypes();
 
     Reflections getScanner();
 }

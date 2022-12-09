@@ -8,7 +8,7 @@ import tech.ioc.annotations.InjectProperty;
 import java.util.List;
 
 @Log4j2
-@Component
+@Component(name = "testPritner")
 public class TestBeanPrinter {
 
     @InjectProperty
