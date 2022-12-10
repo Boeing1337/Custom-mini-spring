@@ -21,48 +21,44 @@ public class PlayersScoreRepository {
     private final static String SEPARATOR = ";";
     @InjectProperty
     private String scoreFileName;
-    private final List<ScoreEntity> cache = new ArrayList<>();
 
-    String convertScoreEntityToString(ScoreEntity in) {
-        return String.format("%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate());
+   public String convertScoreEntityToString(ScoreEntity in) {
+        return String.format("%s;%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate(), in.getScore());
     }
 
-    ScoreEntity convertStringToScoreEntity(String in) {
+    public ScoreEntity convertStringToScoreEntity(String in) {
         String[] result = in.split(SEPARATOR);
-        return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]));
+        return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]), Long.parseLong(result[4]));
     }
 
 
     public void saveScore(ScoreEntity scoreEntity) {
-        findAllPlayerScore();
-        int i = cache.indexOf(scoreEntity);
+        List<ScoreEntity> allPlayerScore = findAllPlayerScore();
+        int i = allPlayerScore.indexOf(scoreEntity);
         if (i == -1) {
-            cache.add(scoreEntity);
+            allPlayerScore.add(scoreEntity);
         } else {
-            ScoreEntity result = cache.get(i);
+            ScoreEntity result = allPlayerScore.get(i);
             result.setWin(scoreEntity.getWin());
             result.setLoss(scoreEntity.getLoss());
             result.setWinRate(scoreEntity.getWinRate());
+            result.setScore(scoreEntity.getScore());
         }
-        writeCash();
-        cache.clear();
-        findAllPlayerScore();
+        writeScores(allPlayerScore);
     }
 
     public List<ScoreEntity> findAllPlayerScore() {
-        if (cache.isEmpty()) {
-            File file = new File(scoreFileName);
-            try (Scanner scanner = new Scanner(file, UTF_8)) {
-                while (scanner.hasNextLine()) {
-                    ScoreEntity scoreEntity = convertStringToScoreEntity(scanner.nextLine());
-                    cache.add(scoreEntity);
-                }
-            } catch (Exception e) {
-                cache.clear();
-                log.error("нет файла со словами", e);
+        var resultList = new ArrayList<ScoreEntity>();
+        var file = new File(scoreFileName);
+        try (var scanner = new Scanner(file, UTF_8)) {
+            while (scanner.hasNextLine()) {
+                var scoreEntity = convertStringToScoreEntity(scanner.nextLine());
+                resultList.add(scoreEntity);
             }
+        } catch (Exception e) {
+            log.error("нет файла со словами", e);
         }
-        return List.copyOf(cache);
+        return resultList;
     }
 
     public Optional<ScoreEntity> findScoreBy(String login) {
@@ -70,18 +66,18 @@ public class PlayersScoreRepository {
         if (login == null || login.isBlank()) {
             return result;
         }
-        findAllPlayerScore();
-        for (ScoreEntity scoreEntity : cache) {
+        for (ScoreEntity scoreEntity : findAllPlayerScore()) {
             if (scoreEntity.getLogin().equals(login)) {
                 result = Optional.of(scoreEntity);
+                break;
             }
         }
         return result;
     }
 
-    private boolean writeCash() {
+    private boolean writeScores(List<ScoreEntity> dataToWrite) {
         StringBuilder result = new StringBuilder();
-        for (ScoreEntity scoreEntity : cache) {
+        for (ScoreEntity scoreEntity : dataToWrite) {
             result.append(convertScoreEntityToString(scoreEntity)).append("\n");
         }
         try (FileWriter file = new FileWriter(scoreFileName)) {
@@ -94,16 +90,11 @@ public class PlayersScoreRepository {
     }
 
     public void deleteScoreBy(ScoreEntity entity) {
-        findAllPlayerScore();
-        boolean remove = cache.remove(entity);
-        if (remove) {
-            if (!writeCash()) {
-                log.info("Не удалось удалить счёт игрока.");
-            }
+        List<ScoreEntity> allPlayerScore = findAllPlayerScore();
+        if (allPlayerScore.remove(entity)) {
+            writeScores(allPlayerScore);
         } else {
             log.info("Не удалось удалить счёт игрока.");
         }
-        cache.clear();
-        findAllPlayerScore();
     }
 }

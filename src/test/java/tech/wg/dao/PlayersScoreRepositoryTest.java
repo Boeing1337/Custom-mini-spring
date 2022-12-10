@@ -44,7 +44,7 @@ class PlayersScoreRepositoryTest {
 
     @Test
     void saveScoreTest() {
-        ScoreEntity expected = new ScoreEntity("pizduk", 5, 0, 100.0);
+        ScoreEntity expected = new ScoreEntity("pizduk", 5, 0, 100.0, 100);
         playersScoreRepository.saveScore(expected);
         expected.setWin(0);
         expected.setLoss(5);
@@ -62,8 +62,8 @@ class PlayersScoreRepositoryTest {
 
     @Test
     void findAllPlayerScoreTest() {
-        ScoreEntity p = new ScoreEntity("pizduk", 5, 0, 100.0);
-        ScoreEntity q = new ScoreEntity("pizdabol", 0, 5, 0.0);
+        ScoreEntity p = new ScoreEntity("pizduk", 5, 0, 100.0, 100);
+        ScoreEntity q = new ScoreEntity("pizdabol", 0, 5, 0.0,100);
         List<ScoreEntity> a = new ArrayList<>();
         a.add(p);
         a.add(q);
@@ -73,7 +73,7 @@ class PlayersScoreRepositoryTest {
 
     @Test
     void findScoreByTest() {
-        ScoreEntity expected = new ScoreEntity("pizduk", 5, 0, 100.0);
+        ScoreEntity expected = new ScoreEntity("pizduk", 5, 0, 100.0, 100);
         ScoreEntity result = playersScoreRepository.findScoreBy("pizduk").get();
         Assertions.assertEquals(expected.getLogin(), result.getLogin());
         Assertions.assertEquals(expected.getWin(), result.getWin());
@@ -83,7 +83,7 @@ class PlayersScoreRepositoryTest {
 
     @Test
     void deleteScoreByTest() {
-        ScoreEntity entity = new ScoreEntity("shnuk", 5, 0, 100.0);
+        ScoreEntity entity = new ScoreEntity("shnuk", 5, 0, 100.0, 100);
         playersScoreRepository.saveScore(entity);
         Optional<ScoreEntity> expected = playersScoreRepository.findScoreBy("shnuk");
         Assertions.assertFalse(expected.isEmpty(), "Не сохранилось");
