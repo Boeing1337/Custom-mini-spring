@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.wg.dao.KeywordsRepository;
+import tech.wg.dao.QuestionEntity;
 import tech.wg.dao.QuestionRepository;
 import tech.wg.tools.MockGrammar;
 
@@ -219,7 +220,7 @@ class AdminServiceTest {
 
     @Test
     void testMenuQuestsAnswers1() {
-        List<String> list = List.of();
+        List<QuestionEntity> list = List.of();
         String input = "2\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
@@ -256,7 +257,7 @@ class AdminServiceTest {
 
     @Test
     void testMenuQuestsAnswers2() {
-        List<String> list = List.of("Г", "Фифа", "гГгГ");
+        List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
         String input = "2\n2\nФифа\nгГгГ\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
@@ -305,7 +306,7 @@ class AdminServiceTest {
 
     @Test
     void testMenuQuestsAnswers3() {
-        List<String> list = List.of("Г", "Фифа", "гГгГ");
+        List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
         String input = "2\n3\nг\n1\nфуфло\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
@@ -358,7 +359,7 @@ class AdminServiceTest {
 
     @Test
     void testMenuQuestsAnswers4() {
-        List<String> list = List.of("Г", "Фифа", "гГгГ");
+        List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
         String input = "2\n4\nг\n1\nггг\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
@@ -409,7 +410,7 @@ class AdminServiceTest {
 
     @Test
     void testMenuQuestsAnswers5() {
-        List<String> list = List.of("");
+        List<QuestionEntity> list = List.of();
         String input = "2\n5\nг\n1\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
@@ -452,6 +453,5 @@ class AdminServiceTest {
                 "0) Выход из Админ-панели.\n" +
                 "Выберете вариант:", result);
         Mockito.verify(questionRepository, Mockito.times(1)).deleteQuestions("г", 0);
-        Mockito.verify(questionRepository, Mockito.times(1)).deleteAnswers("г", 0);
     }
 }
