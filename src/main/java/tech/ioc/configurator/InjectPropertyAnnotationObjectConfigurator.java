@@ -2,34 +2,27 @@ package tech.ioc.configurator;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import tech.ioc.ApplicationContext;
 import tech.ioc.annotations.InjectProperty;
 import tech.ioc.configurator.interfaces.ObjectConfigurator;
+import tech.ioc.infrastucture.ApplicationContext;
+import tech.ioc.infrastucture.resolver.PropertyResolver;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.util.Map;
 
-import static java.nio.file.Files.readAllLines;
-import static java.util.stream.Collectors.toMap;
+import static java.lang.String.format;
 
 /**
  * Подставляет в поля класса значения из конфигурационного файла. Работает в паре с аннотацией {@link InjectProperty}
  */
 @Log4j2
 public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigurator {
-    private final Map<String, String> properties;
+    private final PropertyResolver resolver;
 
     @SneakyThrows
-    public InjectPropertyAnnotationObjectConfigurator() {
-        String url = getClass().getClassLoader().getResource("application.properties").getPath().replace("%20", " ");
-        properties = readAllLines(new File(url).toPath())
-                .stream()
-                .map(line -> line.split("="))
-                .collect(toMap(e -> e[0], e -> e[1]));
+    public InjectPropertyAnnotationObjectConfigurator(ApplicationContext context) {
+        this.resolver = context.getPropertyResolver();
     }
 
-    @SneakyThrows
     @Override
     public void configure(Object t, ApplicationContext context) {
         for (Field field : t.getClass().getDeclaredFields()) {
@@ -39,12 +32,27 @@ public class InjectPropertyAnnotationObjectConfigurator implements ObjectConfigu
                 if (key.isEmpty()) {
                     key = field.getName();
                 }
-                if (!properties.containsKey(key)) {
-                    log.warn("Не найдена настройка для поля: {} класса: {}", field.getName(), t.getClass());
-                }
                 field.setAccessible(true);
-                field.set(t, properties.get(key));
+                try {
+                    field.set(t, resolver.getPropertyAs(key, field.getType()));
+                } catch (RuntimeException | IllegalAccessException e) {
+                    throw new InjectPropertyException(key, field, t, e);
+                }
             }
+        }
+    }
+
+    private static class InjectPropertyException extends RuntimeException {
+        public InjectPropertyException(String name, Field field, Object t, Throwable cause) {
+            super(
+                    format("%s Не удалось вставить проперти %s для поля %s компонента %s! ",
+                            cause.getMessage(),
+                            name,
+                            field.getName(),
+                            t.getClass().getName())
+                    , cause
+            );
+
         }
     }
 }

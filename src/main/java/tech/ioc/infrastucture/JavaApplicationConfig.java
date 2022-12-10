@@ -3,6 +3,8 @@ package tech.ioc.infrastucture;
 import lombok.extern.log4j.Log4j2;
 import org.reflections.Reflections;
 import tech.ioc.annotations.Component;
+import tech.ioc.dto.BeanContainer;
+import tech.ioc.infrastucture.interfaces.ApplicationConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,14 +62,6 @@ public class JavaApplicationConfig implements ApplicationConfig {
             }
         }
         return (Class<? extends T>) candidates.get(0).getImplClass();
-    }
-
-    @Override
-    public Class<?> getImplClassByName(String name) {
-        if (!beanStringCache.containsKey(name)) {
-            throw new IllegalStateException("Не найдено реализации для имени компонента: " + name);
-        }
-        return getImplClass(beanStringCache.get(name).getImplClass());
     }
 
     @Override

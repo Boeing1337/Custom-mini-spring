@@ -18,6 +18,5 @@ public class TestBeanDependency2 implements SomeInterface {
     @Override
     public void print(String msg) {
         log.info(msg + "FROM TestBeanDependency2");
-//        someInterface.print("To nested someInterface FROM TestBeanDependency2");
     }
 }

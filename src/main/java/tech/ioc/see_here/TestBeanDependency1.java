@@ -8,7 +8,7 @@ import tech.ioc.annotations.InjectObject;
 @Component(isMain = true)
 public class TestBeanDependency1 implements SomeInterface {
 
-    @InjectObject(value = "testPritner")
+    @InjectObject(value = "testPrinter")
     private TestBeanPrinter testBeanPrinter;
 
     public TestBeanDependency1() {

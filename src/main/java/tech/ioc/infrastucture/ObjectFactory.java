@@ -1,9 +1,9 @@
 package tech.ioc.infrastucture;
 
 import lombok.SneakyThrows;
-import tech.ioc.ApplicationContext;
 import tech.ioc.configurator.interfaces.ObjectConfigurator;
 import tech.ioc.configurator.interfaces.ProxyObjectConfigurator;
+import tech.ioc.dto.BeanContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,13 @@ public class ObjectFactory {
     @SneakyThrows
     ObjectFactory(ApplicationContext context, JavaApplicationConfig config) {
         this.context = context;
-        for (var objConfigurator : config.getScanner().getSubTypesOf(ObjectConfigurator.class)) {
-            simpleObjectConfigurators.add(objConfigurator.getDeclaredConstructor().newInstance());
+        for (var configurator : config.getScanner().getSubTypesOf(ObjectConfigurator.class)) {
+            simpleObjectConfigurators.add(
+                    configurator.getConstructor(ApplicationContext.class).newInstance(context));
         }
         for (var objConfigurator : config.getScanner().getSubTypesOf(ProxyObjectConfigurator.class)) {
-            proxyObjectConfigurators.add(objConfigurator.getDeclaredConstructor().newInstance());
+            proxyObjectConfigurators.add(
+                    objConfigurator.getConstructor(ApplicationContext.class).newInstance(context));
         }
     }
 

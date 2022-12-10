@@ -1,4 +1,4 @@
-package tech.ioc.infrastucture;
+package tech.ioc.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

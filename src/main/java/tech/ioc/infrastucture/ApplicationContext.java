@@ -1,11 +1,12 @@
-package tech.ioc;
+package tech.ioc.infrastucture;
 
+import lombok.Getter;
 import lombok.Setter;
 import tech.ioc.annotations.Component;
 import tech.ioc.configurator.BeanWeaver;
-import tech.ioc.infrastucture.ApplicationConfig;
-import tech.ioc.infrastucture.BeanContainer;
-import tech.ioc.infrastucture.ObjectFactory;
+import tech.ioc.dto.BeanContainer;
+import tech.ioc.infrastucture.interfaces.ApplicationConfig;
+import tech.ioc.infrastucture.resolver.ApplicationPropertiesResolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,14 +22,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApplicationContext {
 
     private final ApplicationConfig config;
-    private final BeanWeaver beanWeaver = new BeanWeaver();
+    @Getter
+    private final ApplicationPropertiesResolver propertyResolver;
     private final Map<Class<?>, BeanContainer> beanCacheByClass = new ConcurrentHashMap<>();
     private final Map<String, BeanContainer> beanCacheByName = new ConcurrentHashMap<>();
     @Setter
     private ObjectFactory factory;
 
-    public ApplicationContext(ApplicationConfig config) {
+    public ApplicationContext(ApplicationConfig config, ApplicationPropertiesResolver propertyResolver) {
         this.config = config;
+        this.propertyResolver = propertyResolver;
     }
 
     /**
@@ -76,6 +79,7 @@ public class ApplicationContext {
     }
 
     public ApplicationContext init() {
+        BeanWeaver beanWeaver = new BeanWeaver();
         Collection<BeanContainer> values = config.getAllTypes().values();
         values.forEach((BeanContainer beanContainer) -> {
             factory.createBean(beanContainer);

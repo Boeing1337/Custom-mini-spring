@@ -1,14 +1,13 @@
-package tech.ioc.infrastucture;
+package tech.ioc.infrastucture.interfaces;
 
 import org.reflections.Reflections;
+import tech.ioc.dto.BeanContainer;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ApplicationConfig {
     <T> Class<? extends T> getImplClass(Class<T> type);
-
-    Class<?> getImplClassByName(String name);
 
     <T> List<Class<? extends T>> getImplClasses(Class<T> type);
 

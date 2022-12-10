@@ -8,11 +8,16 @@ import tech.ioc.annotations.InjectProperty;
 import java.util.List;
 
 @Log4j2
-@Component(name = "testPritner")
+@Component(name = "testPrinter")
 public class TestBeanPrinter {
 
-    @InjectProperty
+    @InjectProperty(value = "OLEG")
     private String value;
+    @InjectProperty
+    private Integer numValue;
+
+    @InjectProperty
+    private Long intNumValue;
 
     @InjectObject
     private SomeInterface testBeanDependency;
@@ -27,5 +32,7 @@ public class TestBeanPrinter {
         testBeanDependency.print(message + "from dependency 1");
         testBeanDependencies.forEach(e -> e.print("calling list of dependencies"));
         log.info("Injected value: " + value);
+        log.info("Injected numValue: " + numValue);
+        log.info("Injected numValue: " + intNumValue);
     }
 }

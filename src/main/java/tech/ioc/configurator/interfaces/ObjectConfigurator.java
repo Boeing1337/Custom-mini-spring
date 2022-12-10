@@ -1,7 +1,7 @@
 package tech.ioc.configurator.interfaces;
 
-import tech.ioc.ApplicationContext;
 import tech.ioc.annotations.Component;
+import tech.ioc.infrastucture.ApplicationContext;
 
 /**
  * Реализовав этот интерфейс вы можете добавить свою настройку компонентов.
