@@ -1,8 +1,8 @@
 package tech.ioc.configurator;
 
-import tech.ioc.ApplicationContext;
 import tech.ioc.annotations.InjectObject;
-import tech.ioc.infrastucture.BeanContainer;
+import tech.ioc.dto.BeanContainer;
+import tech.ioc.infrastucture.ApplicationContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -43,7 +43,7 @@ public class BeanWeaver {
 
     private static class NoBeanFoundForInjectionException extends RuntimeException {
 
-        public NoBeanFoundForInjectionException(Class field, Class injectTarget, Throwable cause) {
+        public NoBeanFoundForInjectionException(Class<?> field, Class<?> injectTarget, Throwable cause) {
             super(format("Не найдена зависимость типа: %s для компонента: %s", field, injectTarget), cause);
         }
     }

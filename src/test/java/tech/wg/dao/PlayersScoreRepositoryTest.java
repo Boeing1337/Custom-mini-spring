@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
-import tech.extention.RepositoryExtension;
+import tech.extention.TechExtension;
 import tech.ioc.annotations.InjectProperty;
 
 import java.io.FileWriter;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@ExtendWith(RepositoryExtension.class)
+@ExtendWith(TechExtension.class)
 class PlayersScoreRepositoryTest {
     private final PlayersScoreRepository playersScoreRepository = new PlayersScoreRepository();
 

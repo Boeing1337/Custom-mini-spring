@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import tech.extention.RepositoryExtension;
+import tech.extention.TechExtension;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@ExtendWith(RepositoryExtension.class)
+@ExtendWith(TechExtension.class)
 class KeywordsRepositoryTest {
 
     private final KeywordsRepository repository = new KeywordsRepository();

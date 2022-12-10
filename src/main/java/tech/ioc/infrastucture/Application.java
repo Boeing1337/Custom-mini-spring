@@ -2,7 +2,7 @@ package tech.ioc.infrastucture;
 
 
 import lombok.NoArgsConstructor;
-import tech.ioc.ApplicationContext;
+import tech.ioc.infrastucture.resolver.ApplicationPropertiesResolver;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -17,7 +17,8 @@ public class Application {
      */
     public static ApplicationContext run(String packageToScan) {
         JavaApplicationConfig config = new JavaApplicationConfig(packageToScan);
-        ApplicationContext context = new ApplicationContext(config);
+        ApplicationPropertiesResolver properties = new ApplicationPropertiesResolver(config, "application.properties");
+        ApplicationContext context = new ApplicationContext(config, properties);
         ObjectFactory objectFactory = new ObjectFactory(context, config);
         context.setFactory(objectFactory);
         return context.init();
