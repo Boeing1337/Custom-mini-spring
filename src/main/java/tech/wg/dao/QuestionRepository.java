@@ -21,10 +21,6 @@ public class QuestionRepository {
     private final ArrayList<List<String>> answers = new ArrayList<>();
     private String[] letters;
 
-    public QuestionRepository() {
-        reading();
-    }
-
     private void reading() {
         try {
             String[] temp = Files.readString(Paths.get("abc and questions"))
@@ -56,15 +52,18 @@ public class QuestionRepository {
 
 
     public List<List<String>> getQuestions() {
+        reading();
         return new ArrayList<>(questions);
     }
 
     public List<List<String>> getAnswers() {
+        reading();
         return new ArrayList<>(answers);
     }
 
 
     private void updateQuestion() {
+        reading();
         try (FileWriter writerFile = new FileWriter("." + separator + "abc and questions", UTF_8)) {
             for (int i = 0; i < letters.length; i++) {
                 writerFile.write(letters[i].charAt(0) + ":\n");
@@ -81,6 +80,7 @@ public class QuestionRepository {
     }
 
     public List<QuestionEntity> getQuestionAnswerByLetter(String letter) {
+        reading();
         ArrayList<QuestionEntity> result = new ArrayList<>();
         for (int letterNum = 0; letterNum < letters.length; letterNum++) {
             String s = letters[letterNum];
@@ -98,6 +98,7 @@ public class QuestionRepository {
     }
 
     public void addQuestionAnswers(String question, String answer) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (answer.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).add(question);
@@ -108,6 +109,7 @@ public class QuestionRepository {
     }
 
     public void setQuestions(String letter, int index, String newQuestions) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).set(index, newQuestions);
@@ -118,6 +120,7 @@ public class QuestionRepository {
     }
 
     public void setAnswers(String letter, int index, String newQuestions) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 answers.get(i).set(index, newQuestions);
@@ -134,6 +137,7 @@ public class QuestionRepository {
      * @param index  позиция вопроса начиная с 0
      */
     public void deleteQuestions(String letter, int index) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).remove(index);
