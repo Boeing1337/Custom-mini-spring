@@ -17,7 +17,7 @@ public class Application {
      */
     public static ApplicationContext run(String packageToScan) {
         JavaApplicationConfig config = new JavaApplicationConfig(packageToScan);
-        ApplicationPropertiesResolver properties = new ApplicationPropertiesResolver(config);
+        ApplicationPropertiesResolver properties = new ApplicationPropertiesResolver(config, "application.properties");
         ApplicationContext context = new ApplicationContext(config, properties);
         ObjectFactory objectFactory = new ObjectFactory(context, config);
         context.setFactory(objectFactory);

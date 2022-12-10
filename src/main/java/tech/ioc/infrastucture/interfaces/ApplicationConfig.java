@@ -1,6 +1,5 @@
 package tech.ioc.infrastucture.interfaces;
 
-import org.reflections.Reflections;
 import tech.ioc.dto.BeanContainer;
 
 import java.util.List;
@@ -13,5 +12,4 @@ public interface ApplicationConfig {
 
     Map<String, BeanContainer> getAllTypes();
 
-    Reflections getScanner();
 }

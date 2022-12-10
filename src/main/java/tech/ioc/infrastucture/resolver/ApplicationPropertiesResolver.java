@@ -2,7 +2,7 @@ package tech.ioc.infrastucture.resolver;
 
 import lombok.SneakyThrows;
 import tech.ioc.casting.FromStringTypeCaster;
-import tech.ioc.infrastucture.interfaces.ApplicationConfig;
+import tech.ioc.infrastucture.interfaces.Scanner;
 
 import java.io.File;
 import java.util.HashMap;
@@ -17,13 +17,13 @@ public class ApplicationPropertiesResolver implements PropertyResolver {
     private final Map<Class<?>, FromStringTypeCaster> casters = new HashMap<>();
 
     @SneakyThrows
-    public ApplicationPropertiesResolver(ApplicationConfig config) {
-        String url = getClass().getClassLoader().getResource("application.properties").getPath().replace("%20", " ");
+    public ApplicationPropertiesResolver(Scanner scanner, String resource) {
+        String url = getClass().getClassLoader().getResource(resource).getPath().replace("%20", " ");
         properties = readAllLines(new File(url).toPath())
                 .stream()
                 .map(line -> line.split("="))
                 .collect(toMap(e -> e[0], e -> e[1]));
-        for (var caster : config.getScanner().getSubTypesOf(FromStringTypeCaster.class)) {
+        for (var caster : scanner.getScanner().getSubTypesOf(FromStringTypeCaster.class)) {
             FromStringTypeCaster fromStringTypeCaster = caster.getDeclaredConstructor().newInstance();
             if (casters.containsKey(fromStringTypeCaster)) {
                 throw new IllegalStateException("Найдено более 1 конвертера для: " + fromStringTypeCaster.fromType());

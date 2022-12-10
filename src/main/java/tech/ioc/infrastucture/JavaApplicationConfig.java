@@ -5,6 +5,7 @@ import org.reflections.Reflections;
 import tech.ioc.annotations.Component;
 import tech.ioc.dto.BeanContainer;
 import tech.ioc.infrastucture.interfaces.ApplicationConfig;
+import tech.ioc.infrastucture.interfaces.Scanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import static org.reflections.scanners.Scanners.SubTypes;
  * Сканирует все пакеты и решает какой класс или классы послужат прототипом для экземпляра определенного типа.
  */
 @Log4j2
-public class JavaApplicationConfig implements ApplicationConfig {
+public class JavaApplicationConfig implements ApplicationConfig, Scanner {
     private final Reflections scanner;
     private final Map<Class<?>, List<BeanContainer>> beanListCache = new HashMap<>();
     private final Map<String, BeanContainer> beanStringCache = new HashMap<>();
