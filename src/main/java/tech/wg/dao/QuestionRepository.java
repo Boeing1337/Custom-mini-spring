@@ -1,5 +1,6 @@
 package tech.wg.dao;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Log4j2
+@NoArgsConstructor
 public class QuestionRepository {
     public static final String ANY_NEW_LINE = "\\n|\\r\\n";
     public static final String SIMPLE_NEW_LINE = "\n";
@@ -63,7 +65,6 @@ public class QuestionRepository {
 
 
     private void updateQuestion() {
-        reading();
         try (FileWriter writerFile = new FileWriter("." + separator + "abc and questions", UTF_8)) {
             for (int i = 0; i < letters.length; i++) {
                 writerFile.write(letters[i].charAt(0) + ":\n");
