@@ -19,19 +19,36 @@ public class QuestionRepository {
     private static final String QUESTIONS_BLOCK_SEPARATOR = ";(\\r?\\n){2}";
     private final ArrayList<List<String>> questions = new ArrayList<>();
     private final ArrayList<List<String>> answers = new ArrayList<>();
-    private String[] content;
+    private String[] letters;
 
     public QuestionRepository() {
         reading();
-        getAllQuestions();
-        getAllAnswers();
     }
 
     private void reading() {
         try {
-            content = Files.readString(Paths.get("abc and questions"))
+            String[] temp = Files.readString(Paths.get("abc and questions"))
                     .replaceAll(ANY_NEW_LINE, SIMPLE_NEW_LINE)
                     .split(QUESTIONS_BLOCK_SEPARATOR);
+            answers.clear();
+            questions.clear();
+            letters = new String[temp.length];
+
+            for (int i = 0; i < temp.length; i++) {
+                String s = temp[i];
+
+                letters[i] = temp[i].substring(0, 1);
+
+                String[] rawAnswers = s.trim().split("/");
+                List<String> listQuestions = new ArrayList<>();
+                List<String> listAnswers = new ArrayList<>();
+                for (int j = 1; j < rawAnswers.length; j += 2) {
+                    listQuestions.add(rawAnswers[j].trim());
+                    listAnswers.add(rawAnswers[j + 1].toUpperCase().trim());
+                }
+                questions.add(listQuestions);
+                answers.add(listAnswers);
+            }
         } catch (IOException e) {
             log.warn(e);
         }
@@ -46,35 +63,11 @@ public class QuestionRepository {
         return new ArrayList<>(answers);
     }
 
-    private void getAllAnswers() {
-        answers.clear();
-        for (String s : content) {
-            String[] splitAnswers = s.trim().split("/");
-            List<String> listAnswers = new ArrayList<>();
-            for (int j = 2; j < splitAnswers.length; j += 2) {
-                listAnswers.add(splitAnswers[j].toUpperCase().trim());
-            }
-            answers.add(listAnswers);
-        }
-    }
-
-    private void getAllQuestions() {
-        questions.clear();
-        for (String s : content) {
-            String[] splitQuestions = s.trim().split("/");
-            List<String> listQuestions = new ArrayList<>();
-            for (int j = 1; j < splitQuestions.length; j += 2) {
-                listQuestions.add(splitQuestions[j].trim());
-            }
-            questions.add(listQuestions);
-        }
-    }
-
 
     private void updateQuestion() {
         try (FileWriter writerFile = new FileWriter("." + separator + "abc and questions", UTF_8)) {
-            for (int i = 0; i < content.length; i++) {
-                writerFile.write(content[i].charAt(0) + ":\n");
+            for (int i = 0; i < letters.length; i++) {
+                writerFile.write(letters[i].charAt(0) + ":\n");
                 for (int j = 0; j < questions.get(i).size(); j++) {
                     writerFile.write("/" + questions.get(i).get(j) + "/\n");
                     writerFile.write(answers.get(i).get(j).toUpperCase() + "\n");
@@ -87,22 +80,26 @@ public class QuestionRepository {
         reading();
     }
 
-    public List<String> getQuestionAnswerByLetter(String letter) {
-        ArrayList<String> a = new ArrayList<>();
-        for (String s : content) {
+    public List<QuestionEntity> getQuestionAnswerByLetter(String letter) {
+        ArrayList<QuestionEntity> result = new ArrayList<>();
+        for (int letterNum = 0; letterNum < letters.length; letterNum++) {
+            String s = letters[letterNum];
             if (s.trim().charAt(0) == letter.trim().toUpperCase().charAt(0)) {
-                String[] quest = s.trim().split("/");
-                for (String value : quest) {
-                    a.add(value.trim());
+                for (int qNum = 0; qNum < questions.get(letterNum).size(); qNum++) {
+                    result.add(new QuestionEntity(
+                            questions.get(letterNum).get(qNum)
+                            , answers.get(letterNum).get(qNum)
+                    ));
                 }
+                break;
             }
         }
-        return a;
+        return result;
     }
 
     public void addQuestionAnswers(String question, String answer) {
-        for (int i = 0; i < content.length; i++) {
-            if (answer.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+        for (int i = 0; i < letters.length; i++) {
+            if (answer.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).add(question);
                 answers.get(i).add(answer.toUpperCase());
             }
@@ -111,8 +108,8 @@ public class QuestionRepository {
     }
 
     public void setQuestions(String letter, int index, String newQuestions) {
-        for (int i = 0; i < content.length; i++) {
-            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+        for (int i = 0; i < letters.length; i++) {
+            if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).set(index, newQuestions);
                 break;
             }
@@ -121,8 +118,8 @@ public class QuestionRepository {
     }
 
     public void setAnswers(String letter, int index, String newQuestions) {
-        for (int i = 0; i < content.length; i++) {
-            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+        for (int i = 0; i < letters.length; i++) {
+            if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 answers.get(i).set(index, newQuestions);
                 break;
             }
@@ -130,9 +127,15 @@ public class QuestionRepository {
         updateQuestion();
     }
 
+    /**
+     * Удаляет вопрос с ответом но только в том случае если Запись в файл основывается на длинне массива Questions
+     *
+     * @param letter буква по которой удаляем вопрос
+     * @param index  позиция вопроса начиная с 0
+     */
     public void deleteQuestions(String letter, int index) {
-        for (int i = 0; i < content.length; i++) {
-            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
+        for (int i = 0; i < letters.length; i++) {
+            if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).remove(index);
                 break;
             }
@@ -140,13 +143,4 @@ public class QuestionRepository {
         updateQuestion();
     }
 
-    public void deleteAnswers(String letter, int index) {
-        for (int i = 0; i < content.length; i++) {
-            if (letter.toUpperCase().charAt(0) == content[i].toUpperCase().charAt(0)) {
-                answers.get(i).remove(index);
-                break;
-            }
-        }
-        updateQuestion();
-    }
 }

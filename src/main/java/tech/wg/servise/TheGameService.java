@@ -2,6 +2,7 @@ package tech.wg.servise;
 
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.KeywordsRepository;
+import tech.wg.dao.QuestionEntity;
 import tech.wg.dao.QuestionRepository;
 import tech.wg.dao.UserGameStateRepository;
 import tech.wg.tools.Grammar;
@@ -110,10 +111,10 @@ public class TheGameService {
                 continue;
             }
             char randomChar = wordToGuess.charAt(choosePersonLetter - 1);
-            List<String> quesans = questionRepository.getQuestionAnswerByLetter(String.valueOf(randomChar));
-            String[] questions = new String[quesans.size() / 2];
-            for (int i = 1, j = 0; i < quesans.size(); i += 2, j++) {
-                questions[j] = quesans.get(i);
+            List<QuestionEntity> quesans = questionRepository.getQuestionAnswerByLetter(String.valueOf(randomChar));
+            String[] questions = new String[quesans.size()];
+            for (int i = 0; i < quesans.size(); i++) {
+                questions[i] = quesans.get(i).getQuestion();
             }
             String question = questions[random.nextInt(questions.length)];
             grammar.write(question);

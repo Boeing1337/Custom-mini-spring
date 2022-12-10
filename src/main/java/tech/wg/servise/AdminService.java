@@ -2,6 +2,7 @@ package tech.wg.servise;
 
 import lombok.extern.log4j.Log4j2;
 import tech.wg.dao.KeywordsRepository;
+import tech.wg.dao.QuestionEntity;
 import tech.wg.dao.QuestionRepository;
 import tech.wg.tools.Grammar;
 
@@ -127,14 +128,11 @@ public class AdminService {
 
     private void printQuestsAnswers() {
         grammar.print("Введите букву русского алфавита: ");
-        List<String> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.readLine());
+        List<QuestionEntity> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.readLine());
         grammar.write("");
-        int numPrintQuestAnswer = 1;
-        for (int i = 1; i < listPrintQuestAnswer.size(); i++) {
-            grammar.write(numPrintQuestAnswer + ") " + listPrintQuestAnswer.get(i));
-            if (i % 2 == 0) {
-                numPrintQuestAnswer++;
-            }
+        for (int i = 0; i < listPrintQuestAnswer.size(); i++) {
+            grammar.write(i + 1 + ") " + listPrintQuestAnswer.get(i).getQuestion());
+            grammar.write(i + 1 + ") " + listPrintQuestAnswer.get(i).getAnswer());
         }
     }
 
@@ -151,12 +149,10 @@ public class AdminService {
         grammar.print("Какая первая буква ответа на вопрос который хотите изменить: ");
         String wordChangeQuest = grammar.readLine();
         grammar.write("");
-        List<String> listChangeQuest = questionRepository.getQuestionAnswerByLetter(wordChangeQuest);
         grammar.write("");
-        int numChangeQuest = 1;
-        for (int i = 1; i < listChangeQuest.size(); i = i + 2) {
-            grammar.write(numChangeQuest + ") " + listChangeQuest.get(i));
-            numChangeQuest++;
+        List<QuestionEntity> listChangeQuest = questionRepository.getQuestionAnswerByLetter(wordChangeQuest);
+        for (int i = 0; i < listChangeQuest.size(); i++) {
+            grammar.write(i + 1 + ") " + listChangeQuest.get(i).getQuestion());
         }
         while (true) {
             grammar.print("Выберете вариант вопроса: ");
@@ -176,16 +172,13 @@ public class AdminService {
     private void changeAnswer() {
         grammar.print("Какая первая буква ответа: ");
         String wordChangeAnswer = grammar.readLine();
-        List<String> listChangeAnswer = questionRepository.getQuestionAnswerByLetter(wordChangeAnswer);
+        List<QuestionEntity> listChangeAnswer = questionRepository.getQuestionAnswerByLetter(wordChangeAnswer);
         grammar.write("");
-        int numChangeAnswer = 1;
-        for (int i = 2; i < listChangeAnswer.size(); i = i + 2) {
-            grammar.write(numChangeAnswer + ") " + listChangeAnswer.get(i));
-            numChangeAnswer++;
+        for (int i = 0; i < listChangeAnswer.size(); i++) {
+            grammar.write(i + 1 + ") " + listChangeAnswer.get(i).getAnswer());
         }
         while (true) {
             grammar.print("Выберете вариант ответа: ");
-
             if (grammar.hasNextInt()) {
                 int optionChangeAnswer = Integer.parseInt(grammar.readLine().trim()) - 1;
                 grammar.write("");
@@ -202,21 +195,17 @@ public class AdminService {
     private void deleteQuestAnswer() {
         grammar.print("Введите букву русского алфавита: ");
         String wordDeleteQuestAnswer = grammar.readLine();
-        List<String> listDeleteQuestAnswer = questionRepository.getQuestionAnswerByLetter(wordDeleteQuestAnswer);
+        List<QuestionEntity> listDeleteQuestAnswer = questionRepository.getQuestionAnswerByLetter(wordDeleteQuestAnswer);
         grammar.write("");
-        int countDeleteQuestAnswer = 1;
-        for (int i = 1; i < listDeleteQuestAnswer.size(); i++) {
-            grammar.write(countDeleteQuestAnswer + ") " + listDeleteQuestAnswer.get(i));
-            if (i % 2 == 0) {
-                countDeleteQuestAnswer++;
-            }
+        for (int i = 0; i < listDeleteQuestAnswer.size(); i++) {
+            grammar.write(i + 1 + ") " + listDeleteQuestAnswer.get(i).getQuestion());
+            grammar.write(i + 1 + ") " + listDeleteQuestAnswer.get(i).getAnswer());
         }
         while (true) {
             grammar.print("Выберете вариант: ");
             if (grammar.hasNextInt()) {
                 int optionDeleteQuestAnswer = Integer.parseInt(grammar.readLine().trim()) - 1;
                 questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
-                questionRepository.deleteAnswers(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
                 break;
             } else {
                 grammar.write("\nНеправильный ввод.\n");

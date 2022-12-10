@@ -21,42 +21,46 @@ class QuestionRepositoryTest {
 
     @Test
     void getQuestionByLetter() {
-        List<String> a = repository.getQuestionAnswerByLetter("А");
-        Assertions.assertEquals("АБРИКОС", a.get(2));
+        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("А");
+        Assertions.assertEquals("АБРИКОС", a.get(0).getAnswer());
     }
 
     @Test
     void addQuestionsInAConvenient() {
-        String letter = "Ъ";
+        String question = "question";
         String answer = "Ъ";
-        List<String> result = repository.getQuestionAnswerByLetter(letter);
-        repository.addQuestionAnswers("question", answer);
-        Assertions.assertEquals(result.size() + 2, repository.getQuestionAnswerByLetter(letter).size());
-        Assertions.assertEquals(answer, repository.getQuestionAnswerByLetter(letter).get(result.size() + 1));
+        QuestionEntity addedEntity = new QuestionEntity(question, answer);
+        String letter = "Ъ";
+        List<QuestionEntity> result = repository.getQuestionAnswerByLetter(letter);
+        repository.addQuestionAnswers(question, answer);
+        Assertions.assertEquals(result.size() + 1, repository.getQuestionAnswerByLetter(letter).size());
+        Assertions.assertEquals(addedEntity, repository.getQuestionAnswerByLetter(letter).get(result.size()));
 
-        repository.deleteQuestions(letter, repository.getQuestionAnswerByLetter(letter).size() / 2 - 1);
-        repository.deleteAnswers(letter, repository.getQuestionAnswerByLetter(letter).size() / 2 - 1);
-
+        repository.deleteQuestions(letter, repository.getQuestionAnswerByLetter(letter).size() - 1);
         Assertions.assertEquals(result.size(), repository.getQuestionAnswerByLetter(letter).size());
     }
 
     @Test
     void setQuestions() {
-        List<String> a = repository.getQuestionAnswerByLetter("А");
+        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("А");
         Assertions.assertEquals(
                 "Что за фрукт поспел в садочке? Кость внутри, в веснушках щечки.\n" +
-                        "Прилетел к нему рой ос — Сладок мягкий", a.get(1)
+                        "Прилетел к нему рой ос — Сладок мягкий", a.get(0).getQuestion()
         );
         repository.setQuestions("А", 0, "обновлённый вопрос");
-        Assertions.assertEquals("обновлённый вопрос", repository.getQuestionAnswerByLetter("А").get(1));
+        Assertions.assertEquals("обновлённый вопрос", repository.getQuestionAnswerByLetter("А").get(0).getQuestion());
+
         repository.setQuestions("А", 0, "Что за фрукт поспел в садочке? Кость внутри, в веснушках щечки.\n" +
                 "Прилетел к нему рой ос — Сладок мягкий");
     }
 
     @Test
     void setAnswers() {
-        List<String> result = repository.getQuestionAnswerByLetter("Ъ");
-        repository.setAnswers("Ъ", result.size() - 3, "ответ из теста " + result.size());
-        Assertions.assertEquals("ОТВЕТ ИЗ ТЕСТА " + result.size(), repository.getQuestionAnswerByLetter("Ъ").get(result.size() - 1));
+        List<QuestionEntity> result = repository.getQuestionAnswerByLetter("Ъ");
+        repository.setAnswers("Ъ", result.size() - 1, "ответ из теста " + result.size());
+        Assertions.assertEquals(
+                "ОТВЕТ ИЗ ТЕСТА " + result.size(),
+                repository.getQuestionAnswerByLetter("Ъ").get(result.size() - 1).getAnswer()
+        );
     }
 }
