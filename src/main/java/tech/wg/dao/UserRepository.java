@@ -19,19 +19,6 @@ import static tech.wg.servise.Constants.BASE_DIRECTORY;
 public class UserRepository {
     private static final String BASE_PATH = "." + separator + BASE_DIRECTORY + separator;
 
-
-//    public boolean createUser(String login) {
-//        try {
-//            Files.createDirectory(Path.of(BASE_PATH + login));
-//            Files.createFile(Path.of(BASE_PATH + login + separator + "pass"));
-//            Files.createFile(Path.of(BASE_PATH + login + separator + "progress"));
-//            return true;
-//        } catch (Exception e) {
-//            log.warn(e);
-//            return false;
-//        }
-//    }
-
     public boolean createUser(String login, String pass) {
         PrintWriter writer = null;
         try {
@@ -58,18 +45,6 @@ public class UserRepository {
         }
         return false;
     }
-
-
-//    public void deleteUser(String login) {
-//        try {
-//            Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "progress"));
-//            Files.deleteIfExists(Path.of(BASE_PATH + login + separator + "pass"));
-//            Files.deleteIfExists(Path.of(BASE_PATH + login));
-//        } catch (Exception e) {
-//            log.warn(e);
-//        }
-//    }
-
 
     public boolean isUserPresents(String login) {
         try {

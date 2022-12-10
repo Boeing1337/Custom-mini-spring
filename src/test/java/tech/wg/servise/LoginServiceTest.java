@@ -1,5 +1,6 @@
 package tech.wg.servise;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,27 +27,46 @@ class LoginServiceTest {
     MockGrammar grammar;
 
     @Test
-    void enterYourLogin() {
-        grammar.initWithInput("login\ngfhgfhg\njhghjg\n0\n0");
+    void testEnterCorrectLogin() {
+        grammar.initWithInput("login\n0\n0");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
         service.authorization();
+        Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
+                "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
+                "Введите логин или 0, чтобы вернуться в предыдущее меню", grammar.getOut(), "вывод непонятем высшим силамом");
+
     }
 
     @Test
-    void enterYourLogin1() {
+    void testEnterIncorrectLogin() {
+        grammar.initWithInput("login\n0");
+        Mockito.when(userRepository.getUser("login")).thenReturn(Optional.empty());
+        service.authorization();
+        Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
+                "Такого логина не существует. Пожалуйста, попробуйте еще раз\n" +
+                "Введите логин или 0, чтобы вернуться в предыдущее меню", grammar.getOut(), "вывод непонятем высшим силамом");
+    }
+
+    @Test
+    void testCorrectPass() {
         grammar.initWithInput("login\npass");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
         service.authorization();
+        Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
+                "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
+                "Добро пожаловать login!", grammar.getOut(), "Не правильный вывод на консоль");
     }
 
     @Test
-    void enterYourLogin2() {
-        grammar.initWithInput("pizduk\nlogin\n0\nlogin\npazz\npass");
+    void testIncorrectPass() {
+        grammar.initWithInput("login\ngfhgfhg\n0\n0");
         Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
-        Mockito.when(userRepository.getUser("pizduk")).thenReturn(Optional.empty());
         service.authorization();
-
+        Mockito.verify(userRepository, Mockito.times(1)).getUser("login");
+        Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
+                "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
+                "Не верный пароль! Попробуйте ещё раз.\n" +
+                "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
+                "Введите логин или 0, чтобы вернуться в предыдущее меню", grammar.getOut(), "не верный вывод на экран кинотеатра аврора");
     }
-
-
 }

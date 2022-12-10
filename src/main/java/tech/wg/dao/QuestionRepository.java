@@ -1,5 +1,6 @@
 package tech.wg.dao;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ import static java.io.File.separator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Log4j2
+@NoArgsConstructor
 public class QuestionRepository {
     public static final String ANY_NEW_LINE = "\\n|\\r\\n";
     public static final String SIMPLE_NEW_LINE = "\n";
@@ -20,10 +22,6 @@ public class QuestionRepository {
     private final ArrayList<List<String>> questions = new ArrayList<>();
     private final ArrayList<List<String>> answers = new ArrayList<>();
     private String[] letters;
-
-    public QuestionRepository() {
-        reading();
-    }
 
     private void reading() {
         try {
@@ -56,10 +54,12 @@ public class QuestionRepository {
 
 
     public List<List<String>> getQuestions() {
+        reading();
         return new ArrayList<>(questions);
     }
 
     public List<List<String>> getAnswers() {
+        reading();
         return new ArrayList<>(answers);
     }
 
@@ -81,6 +81,7 @@ public class QuestionRepository {
     }
 
     public List<QuestionEntity> getQuestionAnswerByLetter(String letter) {
+        reading();
         ArrayList<QuestionEntity> result = new ArrayList<>();
         for (int letterNum = 0; letterNum < letters.length; letterNum++) {
             String s = letters[letterNum];
@@ -98,6 +99,7 @@ public class QuestionRepository {
     }
 
     public void addQuestionAnswers(String question, String answer) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (answer.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).add(question);
@@ -108,6 +110,7 @@ public class QuestionRepository {
     }
 
     public void setQuestions(String letter, int index, String newQuestions) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).set(index, newQuestions);
@@ -118,6 +121,7 @@ public class QuestionRepository {
     }
 
     public void setAnswers(String letter, int index, String newQuestions) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 answers.get(i).set(index, newQuestions);
@@ -134,6 +138,7 @@ public class QuestionRepository {
      * @param index  позиция вопроса начиная с 0
      */
     public void deleteQuestions(String letter, int index) {
+        reading();
         for (int i = 0; i < letters.length; i++) {
             if (letter.toUpperCase().charAt(0) == letters[i].toUpperCase().charAt(0)) {
                 questions.get(i).remove(index);
