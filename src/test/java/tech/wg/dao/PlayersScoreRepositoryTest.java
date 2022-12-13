@@ -27,7 +27,7 @@ class PlayersScoreRepositoryTest {
     @BeforeEach
     void createTestFile() {
         try (FileWriter writer = new FileWriter(scoreFileName)) {
-            writer.write("pizduk;5;0;100.0\npizdabol;0;5;0.0");
+            writer.write("pizduk;5;0;100.0;100\npizdabol;0;5;0.0;100");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,6 +79,7 @@ class PlayersScoreRepositoryTest {
         Assertions.assertEquals(expected.getWin(), result.getWin());
         Assertions.assertEquals(expected.getLoss(), result.getLoss());
         Assertions.assertEquals(expected.getWinRate(), result.getWinRate());
+        Assertions.assertEquals(expected.getScore(), result.getScore());
     }
 
     @Test

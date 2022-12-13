@@ -12,7 +12,6 @@ public class ScoreEntity  {
     private int win;
     private int loss;
     private double winRate;
-
     private long score;
 
 
