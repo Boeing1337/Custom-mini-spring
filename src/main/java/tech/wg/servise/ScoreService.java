@@ -12,7 +12,7 @@ public class ScoreService {
 
     private int winCount = 1;
     private int looseCount = 1;
-    PlayersScoreRepository playersScoreRepository;
+    private PlayersScoreRepository playersScoreRepository;
 
 
     public List<ScoreEntity> getTopPlayers(int count) {
