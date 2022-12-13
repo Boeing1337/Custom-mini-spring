@@ -1,15 +1,21 @@
 package tech.wg.dao;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
-public class ScoreEntity {
+@Getter
+@Setter
+public class ScoreEntity  {
     private final String login;
     private int win;
     private int loss;
     private double winRate;
+    private long score;
 
 
-    public ScoreEntity(String login, int win, int loss, double winRate) {
+    public ScoreEntity(String login, int win, int loss, double winRate, long score) {
         if(login == null) {
             throw new NullPointerException("Нельзя задать нулевой логин");
         }
@@ -17,34 +23,7 @@ public class ScoreEntity {
         this.win = win;
         this.loss = loss;
         this.winRate = winRate;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public int getWin() {
-        return win;
-    }
-
-    public void setWin(int win) {
-        this.win = win;
-    }
-
-    public int getLoss() {
-        return loss;
-    }
-
-    public void setLoss(int loss) {
-        this.loss = loss;
-    }
-
-    public double getWinRate() {
-        return winRate;
-    }
-
-    public void setWinRate(double winRate) {
-        this.winRate = winRate;
+        this.score = score;
     }
 
     @Override
