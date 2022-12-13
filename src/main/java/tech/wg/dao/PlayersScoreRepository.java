@@ -22,11 +22,11 @@ public class PlayersScoreRepository {
     @InjectProperty
     private String scoreFileName;
 
-   public String convertScoreEntityToString(ScoreEntity in) {
+   private String convertScoreEntityToString(ScoreEntity in) {
         return String.format("%s;%s;%s;%s;%s", in.getLogin(), in.getWin(), in.getLoss(), in.getWinRate(), in.getScore());
     }
 
-    public ScoreEntity convertStringToScoreEntity(String in) {
+    private ScoreEntity convertStringToScoreEntity(String in) {
         String[] result = in.split(SEPARATOR);
         return new ScoreEntity(result[0], parseInt(result[1]), parseInt(result[2]), parseDouble(result[3]), Long.parseLong(result[4]));
     }
