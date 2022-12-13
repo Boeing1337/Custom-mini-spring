@@ -1,38 +1,64 @@
 package tech.wg.dao;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import tech.extention.TechExtension;
+import tech.ioc.annotations.InjectProperty;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
+@ExtendWith(TechExtension.class)
 class QuestionRepositoryTest {
 
+    private static final String B_QUESTION = "Б_ВОПРОС";
+    private static final String B_ANSWER = "Б_ОТВЕТ";
     private final QuestionRepository repository = new QuestionRepository();
 
-    @Test
-    void getAllAnswers() {
-        Assertions.assertEquals(33, repository.getAnswers().size());
+    @InjectProperty
+    private String questionsFileName;
+
+    @BeforeEach
+    void createTestFile() {
+        try (FileWriter writer = new FileWriter(questionsFileName)) {
+            writer.write("А:\n" +
+                    ";\n\n" +
+                    "Б:\n" +
+                    "/" + B_QUESTION + "/\n" +
+                    B_ANSWER + "\n" +
+                    ";\n\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Test
-    void getAllQuestions() {
-        Assertions.assertEquals(33, repository.getQuestions().size());
+    @AfterEach
+    void deleteTestFile() {
+        try {
+            Files.deleteIfExists(Path.of(questionsFileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void getQuestionByLetter() {
-        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("А");
-        Assertions.assertEquals("АБРИКОС", a.get(0).getAnswer());
+        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("Б");
+        Assertions.assertEquals(new QuestionEntity(B_QUESTION, B_ANSWER), a.get(0));
     }
 
     @Test
     void addQuestionsInAConvenient() {
-        String question = "question";
-        String answer = "Ъ";
-        QuestionEntity addedEntity = new QuestionEntity(question, answer);
-        String letter = "Ъ";
+        QuestionEntity addedEntity = new QuestionEntity(B_QUESTION, B_ANSWER);
+        String letter = "Б";
         List<QuestionEntity> result = repository.getQuestionAnswerByLetter(letter);
-        repository.addQuestionAnswers(question, answer);
+        repository.addQuestionAnswers(B_QUESTION, B_ANSWER);
         Assertions.assertEquals(result.size() + 1, repository.getQuestionAnswerByLetter(letter).size());
         Assertions.assertEquals(addedEntity, repository.getQuestionAnswerByLetter(letter).get(result.size()));
 
@@ -42,25 +68,19 @@ class QuestionRepositoryTest {
 
     @Test
     void setQuestions() {
-        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("А");
-        Assertions.assertEquals(
-                "Что за фрукт поспел в садочке? Кость внутри, в веснушках щечки.\n" +
-                        "Прилетел к нему рой ос — Сладок мягкий", a.get(0).getQuestion()
-        );
-        repository.setQuestions("А", 0, "обновлённый вопрос");
-        Assertions.assertEquals("обновлённый вопрос", repository.getQuestionAnswerByLetter("А").get(0).getQuestion());
-
-        repository.setQuestions("А", 0, "Что за фрукт поспел в садочке? Кость внутри, в веснушках щечки.\n" +
-                "Прилетел к нему рой ос — Сладок мягкий");
+        List<QuestionEntity> a = repository.getQuestionAnswerByLetter("Б");
+        Assertions.assertEquals(B_QUESTION, a.get(0).getQuestion());
+        repository.setQuestions("Б", 0, "обновлённый вопрос");
+        Assertions.assertEquals("обновлённый вопрос", repository.getQuestionAnswerByLetter("Б").get(0).getQuestion());
     }
 
     @Test
-    void setAnswers() {
-        List<QuestionEntity> result = repository.getQuestionAnswerByLetter("Ъ");
-        repository.setAnswers("Ъ", result.size() - 1, "ответ из теста " + result.size());
+    void testSetAnswers() {
+        List<QuestionEntity> result = repository.getQuestionAnswerByLetter("Б");
+        repository.setAnswers("Б", 0, "ответ из теста " + result.size());
         Assertions.assertEquals(
                 "ОТВЕТ ИЗ ТЕСТА " + result.size(),
-                repository.getQuestionAnswerByLetter("Ъ").get(result.size() - 1).getAnswer()
+                repository.getQuestionAnswerByLetter("Б").get(result.size() - 1).getAnswer()
         );
     }
 }
