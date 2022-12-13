@@ -32,7 +32,7 @@ class LadderScoreServiceTest {
         Mockito.when(scoreService.getTopPlayers(10)).thenReturn(listScoreEntity);
         service.topTen();
         Assertions.assertEquals("Логин          |Побед|Поражений|Процент|Очки\n" +
-                "Atr            |10   |0        |100,00 |1000", mockGrammar.getOut());
+                "Atr            |10   |0        |100.00 |1000", mockGrammar.getOut());
 
     }
 }

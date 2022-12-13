@@ -4,6 +4,9 @@ import tech.wg.context.GlobalVariable;
 import tech.wg.dao.ScoreEntity;
 import tech.wg.tools.Grammar;
 
+import static java.lang.String.format;
+import static java.util.Locale.ENGLISH;
+
 public class MyScoreService {
 
     private final ScoreService scoreService;
@@ -16,7 +19,7 @@ public class MyScoreService {
 
     public void myStat() {
         ScoreEntity scoreEntity = scoreService.getScore().orElse(buildScoreEntity());
-        grammar.write(String.format("%-25s %s%n%-25s %d%n%-25s %d%n%-25s %.2f%%%n%-25s %s%n", "Логин:",
+        grammar.write(format(ENGLISH, "%-25s %s%n%-25s %d%n%-25s %d%n%-25s %.2f%%%n%-25s %s%n", "Логин:",
                 scoreEntity.getLogin(), "Количество побед:", scoreEntity.getWin(), "Количество поражений:",
                 scoreEntity.getLoss(), "Процент побед:", scoreEntity.getWinRate(), "Заработанно очков:",
                 scoreEntity.getScore()));
