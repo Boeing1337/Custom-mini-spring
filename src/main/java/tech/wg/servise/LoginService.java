@@ -11,6 +11,7 @@ public class LoginService {
 
     private UserRepository userRepository;
     private Grammar grammar;
+    private Encryption encryption;
 
 
     public void authorization() {
@@ -33,6 +34,7 @@ public class LoginService {
                 if ("0".equals(pass)) {
                     break;
                 }
+                pass = encryption.action(pass);
                 if (pass.equals(user.get().getPass())) {
                     grammar.write("Добро пожаловать " + login + "!");
                     GlobalVariable.setCurrentUser(new UserEntity(login, pass));
