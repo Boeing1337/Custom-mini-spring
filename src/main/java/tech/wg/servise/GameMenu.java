@@ -39,7 +39,7 @@ public class GameMenu {
                     refund();
                     break;
                 case "4":
-                    grammar.write(ladderScoreService.topTen());
+                    ladderScoreService.topTen();
                     refund();
                     break;
                 case "0":
