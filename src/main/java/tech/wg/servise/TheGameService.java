@@ -81,6 +81,7 @@ public class TheGameService {
         }
         gameBegin();
     }
+
     private void continuous() {
         while (back == 1) {
             stopped = true;
