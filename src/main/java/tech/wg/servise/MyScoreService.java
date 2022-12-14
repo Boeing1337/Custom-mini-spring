@@ -1,5 +1,7 @@
 package tech.wg.servise;
 
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.ScoreEntity;
 import tech.wg.tools.Grammar;
@@ -7,15 +9,13 @@ import tech.wg.tools.Grammar;
 import static java.lang.String.format;
 import static java.util.Locale.ENGLISH;
 
+@Component
 public class MyScoreService {
+    @InjectObject
+    private ScoreService scoreService;
+    @InjectObject
+    private Grammar grammar;
 
-    private final ScoreService scoreService;
-    private final Grammar grammar;
-
-    public MyScoreService(ScoreService scoreService, Grammar grammar) {
-        this.scoreService = scoreService;
-        this.grammar = grammar;
-    }
 
     public void showMyStat() {
         ScoreEntity scoreEntity = scoreService.getScore().orElse(buildScoreEntity());

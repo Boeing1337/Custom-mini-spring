@@ -8,7 +8,7 @@ class WordApplicationTest {
 
     @Test
     void testBoot() {
-        assertDoesNotThrow(() -> WordApplication.main(null), "Приложение должно запускаться");
+        assertDoesNotThrow(() -> WordApplication.main(new String[]{"test"}), "Приложение должно запускаться");
     }
 
 }

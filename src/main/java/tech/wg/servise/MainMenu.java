@@ -1,39 +1,39 @@
 package tech.wg.servise;
 
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.wg.tools.Grammar;
 
+@Component
 public class MainMenu {
-    private final Grammar grammar;
-    private final RegistrationUsers registrationUsers;
-    private final LoginService loginService;
-
-    public MainMenu(Grammar grammar, LoginService loginService, RegistrationUsers registrationUsers) {
-        this.grammar = grammar;
-        this.loginService = loginService;
-        this.registrationUsers = registrationUsers;
-    }
+    @InjectObject
+    private Grammar grammar;
+    @InjectObject
+    private RegistrationUsers registrationUsers;
+    @InjectObject
+    private LoginService loginService;
+    @InjectObject
+    private AdminService adminService;
 
     public void startMainMenu() {
-        boolean reran = true;
-        String input;
         grammar.write("Введите 1 для входа в аккаунт");
         grammar.write("Введите 2 для регистрации аккаунта");
         grammar.write("Введите 0 для выхода из игры");
-        while (reran) {
-            input = grammar.readLine();
-            switch (input) {
+        while (true) {
+            switch (grammar.readLine()) {
                 case "1":
                     loginService.authorization();
-                    break;
+                    return;
                 case "2":
                     registrationUsers.registrationUser();
+                    return;
+                case "/admin":
+                    adminService.action();
                     break;
                 case "0":
-                    reran = false;
-                    break;
+                    return;
                 default:
                     grammar.write("Нет такой команды. Попробуйте ещё раз");
-                    break;
             }
         }
     }

@@ -1,5 +1,7 @@
 package tech.wg.servise;
 
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionEntity;
@@ -11,13 +13,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Component
 public class TheGameService {
-    private final Random random = new Random();
+    @InjectObject
     private KeywordsRepository wordsRepository;
+    @InjectObject
     private QuestionRepository questionRepository;
+    @InjectObject
     private UserGameStateRepository userGameStateRepository;
+    @InjectObject
     private Grammar grammar;
+    @InjectObject
     private ScoreService scoreService;
+
+    private final Random random = new Random();
     private String wordToGuess;
     private char[] arrayRandomWord;
     private int[] guessedLetters;

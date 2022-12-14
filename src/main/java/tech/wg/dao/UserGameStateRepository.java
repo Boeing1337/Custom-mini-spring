@@ -1,6 +1,7 @@
 package tech.wg.dao;
 
 import lombok.extern.log4j.Log4j2;
+import tech.ioc.annotations.Component;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static tech.wg.servise.Constants.BASE_DIRECTORY;
 
 @Log4j2
+@Component
 public class UserGameStateRepository {
 
     public String getProgress(String login) {
