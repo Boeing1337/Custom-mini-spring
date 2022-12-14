@@ -30,7 +30,7 @@ class MyScoreServiceTest {
     void myStat() {
         String login = "Art";
         GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
-        mockGrammar.initWithInput("0");
+        mockGrammar.initWithInput("0\n");
         Mockito.when(scoreService.getScore()).thenReturn(Optional.empty());
 
         service.showMyStat();
