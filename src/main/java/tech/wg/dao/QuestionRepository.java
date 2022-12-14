@@ -43,7 +43,6 @@ public class QuestionRepository {
                 }
                 questionByLetters.put(rawQuestions[0].substring(0, 1), questionsWithOneLetter);
             }
-            System.out.println();
         } catch (IOException e) {
             log.warn(e);
         }
