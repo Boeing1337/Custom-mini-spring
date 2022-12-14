@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
+    public static final String ENCRYPTED_PASS = "encryptedPass";
+
 
     @InjectMocks
     LoginService service;
@@ -23,13 +25,17 @@ class LoginServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    Encryption encryption;
+
+
     @Spy
     MockGrammar grammar;
 
     @Test
     void testEnterCorrectLogin() {
         grammar.initWithInput("login\n0\n0");
-        Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
+        Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", ENCRYPTED_PASS)));
         service.authorization();
         Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
                 "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
@@ -50,7 +56,10 @@ class LoginServiceTest {
     @Test
     void testCorrectPass() {
         grammar.initWithInput("login\npass");
-        Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
+        Mockito.when(encryption.action("pass"))
+                .thenReturn(ENCRYPTED_PASS);
+        Mockito.when(userRepository.getUser("login"))
+                .thenReturn(Optional.of(new UserEntity("login", ENCRYPTED_PASS)));
         service.authorization();
         Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
                 "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
@@ -59,8 +68,11 @@ class LoginServiceTest {
 
     @Test
     void testIncorrectPass() {
-        grammar.initWithInput("login\ngfhgfhg\n0\n0");
-        Mockito.when(userRepository.getUser("login")).thenReturn(Optional.of(new UserEntity("login", "pass")));
+        grammar.initWithInput("login\nincorrectPass\n0\n0");
+        Mockito.when(encryption.action("incorrectPass"))
+                .thenReturn(ENCRYPTED_PASS);
+        Mockito.when(userRepository.getUser("login"))
+                .thenReturn(Optional.of(new UserEntity("login", "pass")));
         service.authorization();
         Mockito.verify(userRepository, Mockito.times(1)).getUser("login");
         Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +

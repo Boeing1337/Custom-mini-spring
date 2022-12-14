@@ -28,5 +28,4 @@ public class MethodsLogObjectProxyConfigurator implements ProxyObjectConfigurato
                 }
         ));
     }
-
 }
