@@ -35,10 +35,10 @@ public class GameMenu {
                     theGameService.theGameContinue();
                     break;
                 case "3":
-                    myScoreService.myStat();
+                    myScoreService.showMyStat();
                     break;
                 case "4":
-                    ladderScoreService.topTen();
+                    ladderScoreService.showLadderTop();
                     break;
                 case "0":
                     inTheProcess = false;

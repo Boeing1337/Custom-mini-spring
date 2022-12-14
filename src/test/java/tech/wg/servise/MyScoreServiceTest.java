@@ -33,7 +33,7 @@ class MyScoreServiceTest {
         mockGrammar.initWithInput("0");
         Mockito.when(scoreService.getScore()).thenReturn(Optional.empty());
 
-        service.myStat();
+        service.showMyStat();
         assertEquals("Логин:                    Art\n" +
                 "Количество побед:         0\n" +
                 "Количество поражений:     0\n" +

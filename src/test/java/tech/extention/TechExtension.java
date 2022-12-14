@@ -32,7 +32,7 @@ public class TechExtension implements TestInstancePostProcessor {
             testField.setAccessible(true);
             Object fieldValue = testField.get(testInstance);
             if (!fieldValue.getClass().isAnnotationPresent(Component.class)) {
-                return;
+                continue;
             }
             for (Field field : fieldValue.getClass().getDeclaredFields()) {
                 injectProperty(fieldValue, field);

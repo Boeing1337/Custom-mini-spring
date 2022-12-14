@@ -17,7 +17,7 @@ public class MyScoreService {
         this.grammar = grammar;
     }
 
-    public void myStat() {
+    public void showMyStat() {
         ScoreEntity scoreEntity = scoreService.getScore().orElse(buildScoreEntity());
         grammar.write(format(ENGLISH, "%-25s %s%n%-25s %d%n%-25s %d%n%-25s %.2f%%%n%-25s %s%n", "Логин:",
                 scoreEntity.getLogin(), "Количество побед:", scoreEntity.getWin(), "Количество поражений:",

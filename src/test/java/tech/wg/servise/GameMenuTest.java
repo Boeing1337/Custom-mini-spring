@@ -44,7 +44,7 @@ class GameMenuTest {
     void startGameMenu2() {
         mockGrammar.initWithInput("3\n0\n0");
         service.startGameMenu();
-        Mockito.verify(myScoreService, Mockito.times(1)).myStat();
+        Mockito.verify(myScoreService, Mockito.times(1)).showMyStat();
 
     }
 
@@ -52,7 +52,7 @@ class GameMenuTest {
     void startGameMenu3() {
         mockGrammar.initWithInput("4\n0\n");
         service.startGameMenu();
-        Mockito.verify(ladderScoreService, Mockito.times(1)).topTen();
+        Mockito.verify(ladderScoreService, Mockito.times(1)).showLadderTop();
 
     }
 

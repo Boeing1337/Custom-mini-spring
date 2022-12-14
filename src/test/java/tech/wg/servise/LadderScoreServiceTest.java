@@ -13,7 +13,6 @@ import tech.wg.tools.MockGrammar;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @ExtendWith(MockitoExtension.class)
 class LadderScoreServiceTest {
     @Spy
@@ -30,7 +29,7 @@ class LadderScoreServiceTest {
         listScoreEntity.add(player1);
         mockGrammar.initWithInput("0");
         Mockito.when(scoreService.getTopPlayers(10)).thenReturn(listScoreEntity);
-        service.topTen();
+        service.showLadderTop();
         Assertions.assertEquals("Логин          |Побед|Поражений|Процент|Очки\n" +
                 "Atr            |10   |0        |100.00 |1000\n" +
                 "\n" +
