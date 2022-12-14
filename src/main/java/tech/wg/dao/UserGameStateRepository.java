@@ -37,4 +37,13 @@ public class UserGameStateRepository {
         }
     }
 
+    public void deleteProgress(String login) {
+        try (PrintWriter writer = new PrintWriter("." + separator + BASE_DIRECTORY + separator + login +
+                separator + "progress", UTF_8)) {
+            writer.println("");
+        } catch (Exception e) {
+            log.warn(e);
+        }
+    }
+
 }

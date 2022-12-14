@@ -30,7 +30,8 @@ class TheGameServiceTest {
     KeywordsRepository keywordsRepository;
     @Mock
     QuestionRepository questionRepository;
-
+    @Mock
+    ScoreService scoreService;
     @InjectMocks
     TheGameService targetToTest;
 
@@ -66,12 +67,13 @@ class TheGameServiceTest {
         mockGrammar.initWithInput("1\nN\nR\n0");
         targetToTest.theGameContinue();
         Assertions.assertEquals(
-                "Нет игры, которую можно продолжить. Начни новую игру", mockGrammar.getOut());
+                "Нет игры, которую можно продолжить. Начните новую игру", mockGrammar.getOut());
 
     }
 
     @Test
     void theGameNew() {
+        Mockito.when(userGameStateRepository.getProgress(any())).thenReturn("");
         Mockito.when(keywordsRepository.readKeywords()).thenReturn(List.of("ДО"));
         Mockito.when(userGameStateRepository.writeProgress(any(), any(), any())).thenReturn(true);
         Mockito.when(questionRepository.getQuestionAnswerByLetter(any())).thenReturn(
