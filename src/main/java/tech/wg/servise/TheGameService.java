@@ -13,10 +13,11 @@ import java.util.Random;
 
 public class TheGameService {
     private final Random random = new Random();
-    private final KeywordsRepository wordsRepository;
-    private final QuestionRepository questionRepository;
-    private final UserGameStateRepository userGameStateRepository;
-    private final Grammar grammar;
+    private KeywordsRepository wordsRepository;
+    private QuestionRepository questionRepository;
+    private UserGameStateRepository userGameStateRepository;
+    private Grammar grammar;
+    private ScoreService scoreService;
     private String wordToGuess;
     private char[] arrayRandomWord;
     private int[] guessedLetters;
@@ -24,18 +25,10 @@ public class TheGameService {
     private int choosePersonLetter;
     private int back = 1;
 
-    public TheGameService(KeywordsRepository wordsRepository, QuestionRepository questionRepository,
-                          UserGameStateRepository userGameStateRepository, Grammar grammar) {
-        this.wordsRepository = wordsRepository;
-        this.questionRepository = questionRepository;
-        this.userGameStateRepository = userGameStateRepository;
-        this.grammar = grammar;
-    }
-
     public void theGameContinue() {
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if ("".equals(progress)) {
-            grammar.write("Нет игры, которую можно продолжить. Начни новую игру");
+            grammar.write("Нет игры, которую можно продолжить. Начните новую игру");
             return;
         }
         String[] a = progress.trim().split(";");
@@ -53,11 +46,32 @@ public class TheGameService {
     }
 
     public void theGameNew() {
+        String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
+        if (!("".equals(progress))) {
+            grammar.write(String.format("У вас есть незаконченная игра. Если вы начнете новую, будет защитано " +
+                    "поражени.%nВвежите 1, чтоб начать новую игру%n Введите 0, чтоб вернуться назад"));
+            boolean inTheProcess = true;
+            while (inTheProcess) {
+                String input = grammar.readLine();
+                switch (input) {
+                    case "1":
+                        grammar.write("Вы потеряли 100 очков");
+                        scoreService.commitWinLoose(-1);
+                        userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
+                        gameBegin();
+                        break;
+                    case "0":
+                        inTheProcess = false;
+                        break;
+                    default:
+                        grammar.write("Нет такой команды. Попробуйте ещё раз");
+                        break;
+                }
+            }
+            return;
+        }
         gameBegin();
-        guessedLetters = new int[wordToGuess.length()];
-        continuous();
     }
-
     private void continuous() {
         while (back == 1) {
             stopped = true;
@@ -68,6 +82,8 @@ public class TheGameService {
         }
         if (stopped) {
             grammar.write("Поздравляю, вы набрали 100 очков");
+            scoreService.commitWinLoose(1);
+            userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
         }
     }
 
@@ -82,6 +98,8 @@ public class TheGameService {
         arrayRandomWord = new char[chooseWordToGuess().length()];
         Arrays.fill(arrayRandomWord, 0, wordToGuess.length(), '*');
         grammar.write(Arrays.toString(arrayRandomWord));
+        guessedLetters = new int[wordToGuess.length()];
+        continuous();
     }
 
     private void startGame() {
@@ -129,6 +147,7 @@ public class TheGameService {
                     stopped = false;
                 } else {
                     grammar.write("Введена не верная буква, попробуте еще раз");
+                    scoreService.commitAnswerMismatch();
                 }
             }
         }

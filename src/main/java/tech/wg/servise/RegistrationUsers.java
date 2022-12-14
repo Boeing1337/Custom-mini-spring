@@ -1,6 +1,8 @@
 package tech.wg.servise;
 
 import tech.wg.context.GlobalVariable;
+import tech.wg.dao.PlayersScoreRepository;
+import tech.wg.dao.ScoreEntity;
 import tech.wg.dao.UserEntity;
 import tech.wg.dao.UserRepository;
 import tech.wg.tools.Grammar;
@@ -9,6 +11,7 @@ public class RegistrationUsers {
     private Grammar grammar;
     private UserRepository userRepository;
     private Encryption encryption;
+    private PlayersScoreRepository playersScoreRepository;
 
 
     private boolean checkDoublePass(String pass1, String pass2) {
@@ -53,6 +56,10 @@ public class RegistrationUsers {
             }
             if (!allows) {
                 createdFiles(login, pass1);
+                GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
+                playersScoreRepository.saveScore(new ScoreEntity(GlobalVariable.currentUser.getLogin(),
+                        0, 0, 0.00, 0));
+                grammar.write("Добро пожаловать " + login + "!");
             }
         }
     }
