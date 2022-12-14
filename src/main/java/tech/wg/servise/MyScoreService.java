@@ -35,5 +35,6 @@ public class MyScoreService {
         while (grammar.readInt() != 0) {
             grammar.write("Введена не верная команда");
         }
+        grammar.readLine();
     }
 }
