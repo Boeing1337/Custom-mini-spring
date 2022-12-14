@@ -18,7 +18,7 @@ public class Encryption {
             }
         } catch (NoSuchAlgorithmException e) {
             log.error(e);
-            throw new IllegalStateException("Нету нужного алгоритма", e);
+            throw new IllegalStateException("Нет нужного алгоритма", e);
         }
         return builder.toString();
     }

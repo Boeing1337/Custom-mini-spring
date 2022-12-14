@@ -59,7 +59,6 @@ public class RegistrationUsers {
 
     private void createdFiles(String login, String pass1) {
         if (userRepository.createUser(login, encryption.action(pass1))) {
-            grammar.write("Вы успешно зарегистрировались в нашем детище!");
             GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
         } else {
             grammar.write("К сожалению произошла критическая ошибка при создании логина, пожалуйста" +
