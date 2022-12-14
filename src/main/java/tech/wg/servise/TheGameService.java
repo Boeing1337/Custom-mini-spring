@@ -49,7 +49,7 @@ public class TheGameService {
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if (!("".equals(progress))) {
             grammar.write(String.format("У вас есть незаконченная игра. Если вы начнете новую, будет защитано " +
-                    "поражени.%nВвежите 1, чтоб начать новую игру%n Введите 0, чтоб вернуться назад"));
+                    "поражени.%nВвежите 1, чтоб начать новую игру%nВведите 0, чтоб вернуться назад"));
             boolean inTheProcess = true;
             while (inTheProcess) {
                 String input = grammar.readLine();
