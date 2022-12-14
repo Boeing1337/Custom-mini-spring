@@ -25,8 +25,6 @@ class RegistrationUsersTest {
     @Mock
     Encryption encryption;
     @Mock
-    GameMenu gameMenu;
-    @Mock
     PlayersScoreRepository playersScoreRepository;
 
     @BeforeEach

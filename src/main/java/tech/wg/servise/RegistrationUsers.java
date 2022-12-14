@@ -4,8 +4,8 @@ import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectObject;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.PlayersScoreRepository;
-import tech.wg.dao.ScoreEntity;
 import tech.wg.dao.UserEntity;
+import tech.wg.dao.ScoreEntity;
 import tech.wg.dao.UserRepository;
 import tech.wg.tools.Grammar;
 
