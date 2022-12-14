@@ -21,8 +21,6 @@ public class AdminService {
     private KeywordsRepository keywordsRepository;
     @InjectObject
     private Grammar grammar;
-    @InjectObject
-    private MainMenu mainMenu;
 
     public void action() {
         do {
@@ -39,7 +37,6 @@ public class AdminService {
                     menuQuestsAnswers();
                     break;
                 case "0":
-                    mainMenu.startMainMenu();
                     return;
                 default:
                     grammar.write(except);

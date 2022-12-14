@@ -16,10 +16,11 @@ public class MainMenu {
     private AdminService adminService;
 
     public void startMainMenu() {
-        grammar.write("Введите 1 для входа в аккаунт");
-        grammar.write("Введите 2 для регистрации аккаунта");
-        grammar.write("Введите 0 для выхода из игры");
         while (true) {
+            grammar.write("Введите 1 для входа в аккаунт");
+            grammar.write("Введите 2 для регистрации аккаунта");
+            grammar.write("Введите 0 для выхода из игры");
+
             switch (grammar.readLine()) {
                 case "1":
                     loginService.authorization();
