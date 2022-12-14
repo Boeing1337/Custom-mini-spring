@@ -23,9 +23,17 @@ public class MyScoreService {
                 scoreEntity.getLogin(), "Количество побед:", scoreEntity.getWin(), "Количество поражений:",
                 scoreEntity.getLoss(), "Процент побед:", scoreEntity.getWinRate(), "Заработанно очков:",
                 scoreEntity.getScore()));
+        refund();
     }
 
     private ScoreEntity buildScoreEntity() {
         return new ScoreEntity(GlobalVariable.currentUser.getLogin(), 0, 0, 0.00, 0);
+    }
+
+    private void refund() {
+        grammar.write("Введите 0, чтоб вернуться назад");
+        while (grammar.readInt() != 0) {
+            grammar.write("Введена не верная команда");
+        }
     }
 }

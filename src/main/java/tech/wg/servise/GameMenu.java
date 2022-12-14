@@ -36,11 +36,9 @@ public class GameMenu {
                     break;
                 case "3":
                     myScoreService.myStat();
-                    refund();
                     break;
                 case "4":
                     ladderScoreService.topTen();
-                    refund();
                     break;
                 case "0":
                     inTheProcess = false;
@@ -52,10 +50,5 @@ public class GameMenu {
         }
     }
 
-    private void refund() {
-        grammar.write("Введите 0, чтоб вернуться назад");
-        while (grammar.readInt() != 0) {
-            grammar.write("Введена не верная команда");
-        }
-    }
+
 }

@@ -21,6 +21,14 @@ public class LadderScoreService {
                     scoreEntity.getLoss(), scoreEntity.getWinRate(), scoreEntity.getScore());
         }
         grammar.write(top);
+        refund();
+    }
+
+    private void refund() {
+        grammar.write("Введите 0, чтоб вернуться назад");
+        while (grammar.readInt() != 0) {
+            grammar.write("Введена не верная команда");
+        }
     }
 
 }
