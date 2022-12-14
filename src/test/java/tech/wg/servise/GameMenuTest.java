@@ -50,10 +50,10 @@ class GameMenuTest {
 
     @Test
     void startGameMenu3() {
-        mockGrammar.initWithInput("4\n0\n2\n0");
+        mockGrammar.initWithInput("4\n0\n");
         service.startGameMenu();
         Mockito.verify(ladderScoreService, Mockito.times(1)).topTen();
-        Mockito.verify(theGameService, Mockito.times(1)).theGameContinue();
+
     }
 
 }

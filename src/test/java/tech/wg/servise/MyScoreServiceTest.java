@@ -30,7 +30,7 @@ class MyScoreServiceTest {
     void myStat() {
         String login = "Art";
         GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
-        mockGrammar.initWithInput("");
+        mockGrammar.initWithInput("0");
         Mockito.when(scoreService.getScore()).thenReturn(Optional.empty());
 
         service.myStat();
@@ -38,7 +38,9 @@ class MyScoreServiceTest {
                 "Количество побед:         0\n" +
                 "Количество поражений:     0\n" +
                 "Процент побед:            0.00%\n" +
-                "Заработанно очков:        0", mockGrammar.getOut());
+                "Заработанно очков:        0\n" +
+                "\n" +
+                "Введите 0, чтоб вернуться назад", mockGrammar.getOut());
 
     }
 }

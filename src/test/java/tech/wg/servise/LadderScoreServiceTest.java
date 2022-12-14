@@ -28,11 +28,13 @@ class LadderScoreServiceTest {
         List<ScoreEntity> listScoreEntity = new ArrayList<>();
         ScoreEntity player1 = new ScoreEntity("Atr", 10, 0, 100.00, 1000);
         listScoreEntity.add(player1);
-        mockGrammar.initWithInput("");
+        mockGrammar.initWithInput("0");
         Mockito.when(scoreService.getTopPlayers(10)).thenReturn(listScoreEntity);
         service.topTen();
         Assertions.assertEquals("Логин          |Побед|Поражений|Процент|Очки\n" +
-                "Atr            |10   |0        |100.00 |1000", mockGrammar.getOut());
+                "Atr            |10   |0        |100.00 |1000\n" +
+                "\n" +
+                "Введите 0, чтоб вернуться назад", mockGrammar.getOut());
 
     }
 }
