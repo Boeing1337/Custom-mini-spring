@@ -19,6 +19,7 @@ class QuestionRepositoryTest {
     private static final String B_QUESTION = "Б_ВОПРОС";
     private static final String B_ANSWER = "Б_ОТВЕТ";
     private final QuestionRepository repository = new QuestionRepository();
+    private static String letter;
 
     @InjectProperty
     private String questionsFileName;
@@ -55,7 +56,7 @@ class QuestionRepositoryTest {
     @Test
     void addQuestionsInAConvenient() {
         QuestionEntity addedEntity = new QuestionEntity(B_QUESTION, B_ANSWER);
-        String letter = "Б";
+        letter = "Б";
         List<QuestionEntity> result = repository.getQuestionAnswerByLetter(letter);
         repository.addQuestionAnswers(B_QUESTION, B_ANSWER);
         Assertions.assertEquals(result.size() + 1, repository.getQuestionAnswerByLetter(letter).size());

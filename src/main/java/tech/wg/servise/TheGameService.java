@@ -33,9 +33,13 @@ public class TheGameService {
     private boolean stopped = true;
     private int choosePersonLetter;
     private int back = 1;
+    private static String progress;
+    private static String question;
+    private static String answer;
+    static String input;
 
     public void theGameContinue() {
-        String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
+        progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if ("".equals(progress)) {
             grammar.write("Нет игры, которую можно продолжить. Начните новую игру");
             return;
@@ -56,13 +60,13 @@ public class TheGameService {
     }
 
     public void theGameNew() {
-        String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
+        progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if (!("".equals(progress))) {
             grammar.write(String.format("У вас есть незаконченная игра. Если вы начнете новую, будет защитано " +
                     "поражение%nВведите 1, чтоб начать новую игру%nВведите 0, чтоб вернуться назад"));
             boolean inTheProcess = true;
             while (inTheProcess) {
-                String input = grammar.readLine();
+                input = grammar.readLine();
                 switch (input) {
                     case "1":
                         grammar.write("Ваш счет изменился: " + scoreService.commitWinLoose(-1) + "очков");
@@ -150,11 +154,11 @@ public class TheGameService {
             for (int i = 0; i < quesans.size(); i++) {
                 questions[i] = quesans.get(i).getQuestion();
             }
-            String question = questions[random.nextInt(questions.length)];
+            question = questions[random.nextInt(questions.length)];
             grammar.write(question);
             while (stopped) {
                 grammar.write("Введите первую букву ответа или нажми 0, чтобы вернуться назад");
-                String answer = grammar.readLine();
+                answer = grammar.readLine();
                 if ("0".equals(answer)) {
                     break;
                 }

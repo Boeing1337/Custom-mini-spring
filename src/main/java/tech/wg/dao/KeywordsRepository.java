@@ -9,12 +9,13 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static tech.wg.servise.Constants.perenosStroki;
 
 @Component
 @Log4j2
 public class KeywordsRepository {
     private final Set<String> cash = new LinkedHashSet<>();
-
+    private static String res;
     @InjectProperty
     private String keywordsFileName;
 
@@ -56,13 +57,12 @@ public class KeywordsRepository {
             log.warn("Нет такого слова");
             return List.of();
         }
-        String perenosStroki = "\n";
         StringBuilder sb = new StringBuilder();
         for (String element : cash) {
             sb.append(element);
             sb.append(perenosStroki);
         }
-        String res = sb.toString();
+        res = sb.toString();
         try (PrintWriter writer = new PrintWriter(keywordsFileName, UTF_8)) {
             writer.write(res);
         } catch (Exception e) {

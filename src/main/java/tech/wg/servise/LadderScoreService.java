@@ -19,11 +19,12 @@ public class LadderScoreService {
     private Grammar grammar;
     @InjectProperty
     private int ladderCount;
+    private String top;
 
 
     public void showLadderTop() {
         List<ScoreEntity> topTen = scoreService.getTopPlayers(ladderCount);
-        String top = format(ENGLISH, "%-15s|%-5s|%-9s|%-7s|%-4s%n", "Логин", "Побед", "Поражений", "Процент", "Очки");
+        top = format(ENGLISH, "%-15s|%-5s|%-9s|%-7s|%-4s%n", "Логин", "Побед", "Поражений", "Процент", "Очки");
         for (ScoreEntity scoreEntity : topTen) {
             top += format(ENGLISH, "%-15s|%-5s|%-9s|%-7.2f|%-4s%n", scoreEntity.getLogin(), scoreEntity.getWin(),
                     scoreEntity.getLoss(), scoreEntity.getWinRate(), scoreEntity.getScore());

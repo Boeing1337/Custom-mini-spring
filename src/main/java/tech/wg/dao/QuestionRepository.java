@@ -27,6 +27,8 @@ public class QuestionRepository {
     @InjectProperty("questionsFileName")
     public static String QUESTIONS_FILE_NAME;
     private final Map<String, List<QuestionEntity>> questionByLetters = new HashMap<>();
+    private static String s;
+    private static String key;
 
     private void reading() {
         questionByLetters.clear();
@@ -72,7 +74,7 @@ public class QuestionRepository {
     public void addQuestionAnswers(String question, String answer) {
         reading();
         QuestionEntity newQuestion = new QuestionEntity(question, answer);
-        String key = answer.toUpperCase().substring(0, 1);
+        key = answer.toUpperCase().substring(0, 1);
         if (questionByLetters.containsKey(key)) {
             questionByLetters.get(key).add(newQuestion);
         }

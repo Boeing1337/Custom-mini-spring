@@ -21,6 +21,9 @@ public class RegistrationUsers {
     private GameMenu gameMenu;
     @InjectObject
     private PlayersScoreRepository playersScoreRepository;
+    static String login;
+    private static String pass1 = null;
+    private static String pass2;
 
 
     private boolean checkDoublePass(String pass1, String pass2) {
@@ -29,10 +32,9 @@ public class RegistrationUsers {
 
     public void registrationUser() {
         boolean allows = true;
-        String pass1 = null;
         while (allows) {
             grammar.write("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
-            String login = grammar.readLine();
+            login = grammar.readLine();
             if ("0".equals(login)) {
                 return;
             }
@@ -52,7 +54,7 @@ public class RegistrationUsers {
                 }
                 while (allows) {
                     grammar.write("Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню");
-                    String pass2 = grammar.readLine();
+                    pass2 = grammar.readLine();
                     if ("0".equals(pass2)) {
                         break;
                     }

@@ -14,6 +14,7 @@ import tech.wg.tools.MockGrammar;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static tech.wg.servise.RegistrationUsers.login;
 
 @ExtendWith(MockitoExtension.class)
 class MyScoreServiceTest {
@@ -28,7 +29,7 @@ class MyScoreServiceTest {
 
     @Test
     void myStat() {
-        String login = "Art";
+        login = "Art";
         GlobalVariable.setCurrentUser(new UserEntity(login, "123"));
         mockGrammar.initWithInput("0\n");
         Mockito.when(scoreService.getScore()).thenReturn(Optional.empty());

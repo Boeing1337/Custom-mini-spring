@@ -14,6 +14,7 @@ import static tech.wg.servise.Constants.BASE_DIRECTORY;
 @Log4j2
 @Component
 public class UserGameStateRepository {
+    private static String userProgress;
 
     public String getProgress(String login) {
         File file = new File("." + separator + BASE_DIRECTORY + separator + login + separator + "progress");
@@ -28,9 +29,8 @@ public class UserGameStateRepository {
     }
 
     public boolean writeProgress(String login, String word, char[] progress) {
-        try (PrintWriter writer = new PrintWriter("." + separator + BASE_DIRECTORY + separator + login +
-                separator + "progress", UTF_8)) {
-            String userProgress = new String(progress);
+        userProgress = new String(progress);
+        try (PrintWriter writer = new PrintWriter("." + separator + BASE_DIRECTORY + separator + login + separator + "progress", UTF_8)) {
             writer.println(word + ";" + userProgress);
             return true;
         } catch (Exception e) {

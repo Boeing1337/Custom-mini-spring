@@ -16,6 +16,8 @@ import tech.wg.tools.MockGrammar;
 import java.util.Collections;
 import java.util.List;
 
+import static tech.wg.servise.TheGameService.input;
+
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
 
@@ -27,15 +29,15 @@ class AdminServiceTest {
     private KeywordsRepository keywordsRepository;
     @Spy
     private MockGrammar grammar = new MockGrammar();
-
+    private String result;
     @Test
     void testMenuWords1() {
         List<String> list = List.of("ВЕНИК", "ДОКЛАД", "ШУФЛЯДКА", "ЛЕПРЕКОН", "ФОТОАРХИВ", "АБСОЛЮТИЗМ");
-        String input = "1\n1\n0\n0";
+        input = "1\n1\n0\n0";
         Mockito.when(keywordsRepository.readKeywords()).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                         "1) Загаданные слова.\n" +
                         "2) Вопросы и ответы.\n" +
@@ -73,12 +75,12 @@ class AdminServiceTest {
     @Test
     void testMenuWords2() {
         List<String> list = List.of("ВЕНИК", "ДОКЛАД", "ШУФЛЯДКА", "ЛЕПРЕКОН", "ФОТОАРХИВ", "АБСОЛЮТИЗМ");
-        String input = "1\n2\nФифА\n1\n0\n0";
+        input = "1\n2\nФифА\n1\n0\n0";
         Mockito.when(keywordsRepository.addKeywords(Collections.singleton("ФИФА"))).thenReturn(list);
         Mockito.when(keywordsRepository.readKeywords()).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                         "1) Загаданные слова.\n" +
                         "2) Вопросы и ответы.\n" +
@@ -123,12 +125,12 @@ class AdminServiceTest {
     @Test
     void testMenuWords3() {
         List<String> list = List.of("ВЕНИК", "ДОКЛАД", "ШУФЛЯДКА", "ЛЕПРЕКОН", "ФОТОАРХИВ", "АБСОЛЮТИЗМ");
-        String input = "1\n3\nФифа\nФуфлО\n1\n0\n0";
+        input = "1\n3\nФифа\nФуфлО\n1\n0\n0";
         Mockito.when(keywordsRepository.editKeywords("ФИФА", "ФУФЛО")).thenReturn(list);
         Mockito.when(keywordsRepository.readKeywords()).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                         "1) Загаданные слова.\n" +
                         "2) Вопросы и ответы.\n" +
@@ -174,11 +176,11 @@ class AdminServiceTest {
     @Test
     void testMenuWords4() {
         List<String> list = List.of("ВЕНИК", "ДОКЛАД", "ШУФЛЯДКА", "ЛЕПРЕКОН", "ФОТОАРХИВ", "АБСОЛЮТИЗМ");
-        String input = "1\n4\nДОКЛАД\n1\n0\n0";
+        input = "1\n4\nДОКЛАД\n1\n0\n0";
         Mockito.when(keywordsRepository.readKeywords()).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                         "1) Загаданные слова.\n" +
                         "2) Вопросы и ответы.\n" +
@@ -225,11 +227,11 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers1() {
         List<QuestionEntity> list = List.of();
-        String input = "2\n1\nГ\n0\n0";
+        input = "2\n1\nГ\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("Г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                 "1) Загаданные слова.\n" +
                 "2) Вопросы и ответы.\n" +
@@ -262,11 +264,11 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers2() {
         List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
-        String input = "2\n2\nФифа\nгГгГ\n1\nГ\n0\n0";
+        input = "2\n2\nФифа\nгГгГ\n1\nГ\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("Г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                 "1) Загаданные слова.\n" +
                 "2) Вопросы и ответы.\n" +
@@ -311,11 +313,11 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers3() {
         List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
-        String input = "2\n3\nг\n1\nфуфло\n1\nг\n0\n0";
+        input = "2\n3\nг\n1\nфуфло\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                 "1) Загаданные слова.\n" +
                 "2) Вопросы и ответы.\n" +
@@ -362,11 +364,11 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers4() {
         List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
-        String input = "2\n4\nг\n1\nггг\n1\nг\n0\n0";
+        input = "2\n4\nг\n1\nггг\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                 "1) Загаданные слова.\n" +
                 "2) Вопросы и ответы.\n" +
@@ -411,11 +413,11 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers5() {
         List<QuestionEntity> list = List.of();
-        String input = "2\n5\nг\n1\n1\nг\n0\n0";
+        input = "2\n5\nг\n1\n1\nг\n0\n0";
         Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
-        String result = grammar.getOut();
+        result = grammar.getOut();
         Assertions.assertEquals("-----Категория файлов-----\n" +
                 "1) Загаданные слова.\n" +
                 "2) Вопросы и ответы.\n" +

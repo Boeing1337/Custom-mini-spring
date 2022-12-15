@@ -20,15 +20,24 @@ public class AdminService {
     @InjectObject
     private KeywordsRepository keywordsRepository;
     @InjectObject
-    private Grammar grammar;
+    static Grammar grammar;
+    private static String inputWord;
+    private static String inputNewWord;
+    private static String questAddQuestAnswer;
+    private static String answerAddQuestAnswer;
+    private static String wordChangeQuest;
+    private static String questChangeQuest;
+    private static String wordChangeAnswer;
+    private static String newAnswer;
+    private static String wordDeleteQuestAnswer;
+
+
 
     public void action() {
         do {
-            grammar.print("\n-----Категория файлов-----\n" +
-                    "1) Загаданные слова.\n" +
-                    "2) Вопросы и ответы.\n" +
-                    "0) Выход из Админ-панели.\n" +
-                    "Выберете вариант: ");
+            grammar.print("\n-----Категория файлов-----\n"
+                    + "1) Загаданные слова.\n" + "2) Вопросы и ответы.\n"
+                    + "0) Выход из Админ-панели.\n" + "Выберете вариант: ");
             switch (grammar.readLine()) {
                 case "1":
                     menuWordsOperation();
@@ -48,13 +57,10 @@ public class AdminService {
     private void menuWordsOperation() {
         try {
             do {
-                grammar.print("\n-----Работа с загаданными словами-----\n" +
-                        "1) Прочитать все загаданные слова.\n" +
-                        "2) Добавить слово.\n" +
-                        "3) Изменит слово.\n" +
-                        "4) Удалить слово.\n" +
-                        "0) назад.\n" +
-                        "Выберете вариант: ");
+                grammar.print("\n-----Работа с загаданными словами-----\n"
+                        + "1) Прочитать все загаданные слова.\n" + "2) Добавить слово.\n"
+                        + "3) Изменит слово.\n" + "4) Удалить слово.\n" + "0) назад.\n"
+                        + "Выберете вариант: ");
                 switch (grammar.readLine()) {
                     case "1":
                         grammar.write("");
@@ -69,9 +75,9 @@ public class AdminService {
                         break;
                     case "3":
                         grammar.print("Введите слово которое хотите изменить: ");
-                        String inputWord = grammar.readLine().toUpperCase();
+                        inputWord = grammar.readLine().toUpperCase();
                         grammar.write("Введите новое слово");
-                        String inputNewWord = grammar.readLine().toUpperCase();
+                        inputNewWord = grammar.readLine().toUpperCase();
                         keywordsRepository.editKeywords(inputWord, inputNewWord);
                         break;
 
@@ -96,14 +102,11 @@ public class AdminService {
         try {
             boolean flag = true;
             do {
-                grammar.print("\n-----Работа с вопросами и ответами-----\n" +
-                        "1) Прочитать все вопросы и ответы на выбранную букву.\n" +
-                        "2) Добавить вопрос и ответ.\n" +
-                        "3) Изменить вопрос.\n" +
-                        "4) Изменить ответ.\n" +
-                        "5) Удалить вопрос и ответ.\n" +
-                        "0) назад.\n" +
-                        "Выберете вариант: ");
+                grammar.print("\n-----Работа с вопросами и ответами-----\n"
+                        + "1) Прочитать все вопросы и ответы на выбранную букву.\n"
+                        + "2) Добавить вопрос и ответ.\n" + "3) Изменить вопрос.\n"
+                        + "4) Изменить ответ.\n" + "5) Удалить вопрос и ответ.\n" + "0) назад.\n"
+                        + "Выберете вариант: ");
                 switch (grammar.readLine()) {
                     case "1":
                         printQuestsAnswers();
@@ -145,16 +148,16 @@ public class AdminService {
 
     private void addQuestAnswer() {
         grammar.print("Введите вопрос: ");
-        String questAddQuestAnswer = grammar.readLine().trim();
+        questAddQuestAnswer = grammar.readLine().trim();
         grammar.write("");
         grammar.print("Введите ответ: ");
-        String answerAddQuestAnswer = grammar.readLine();
+        answerAddQuestAnswer = grammar.readLine();
         questionRepository.addQuestionAnswers(questAddQuestAnswer, answerAddQuestAnswer);
     }
 
     private void changeQuest() {
         grammar.print("Какая первая буква ответа на вопрос который хотите изменить: ");
-        String wordChangeQuest = grammar.readLine();
+        wordChangeQuest = grammar.readLine();
         grammar.write("");
         grammar.write("");
         List<QuestionEntity> listChangeQuest = questionRepository.getQuestionAnswerByLetter(wordChangeQuest);
@@ -167,7 +170,7 @@ public class AdminService {
                 int number = Integer.parseInt(grammar.readLine().trim()) - 1;
                 grammar.write("");
                 grammar.write("Введите новый вопрос в одну строку: ");
-                String questChangeQuest = grammar.readLine();
+                questChangeQuest = grammar.readLine();
                 questionRepository.setQuestions(wordChangeQuest, number, questChangeQuest);
                 break;
             } else {
@@ -178,7 +181,7 @@ public class AdminService {
 
     private void changeAnswer() {
         grammar.print("Какая первая буква ответа: ");
-        String wordChangeAnswer = grammar.readLine();
+        wordChangeAnswer = grammar.readLine();
         List<QuestionEntity> listChangeAnswer = questionRepository.getQuestionAnswerByLetter(wordChangeAnswer);
         grammar.write("");
         for (int i = 0; i < listChangeAnswer.size(); i++) {
@@ -190,7 +193,7 @@ public class AdminService {
                 int optionChangeAnswer = Integer.parseInt(grammar.readLine().trim()) - 1;
                 grammar.write("");
                 grammar.print("Введите новый ответ на выбранную букву: ");
-                String newAnswer = grammar.readLine();
+                newAnswer = grammar.readLine();
                 questionRepository.setAnswers(wordChangeAnswer, optionChangeAnswer, newAnswer);
                 break;
             } else {
@@ -201,7 +204,7 @@ public class AdminService {
 
     private void deleteQuestAnswer() {
         grammar.print("Введите букву русского алфавита: ");
-        String wordDeleteQuestAnswer = grammar.readLine();
+        wordDeleteQuestAnswer = grammar.readLine();
         List<QuestionEntity> listDeleteQuestAnswer = questionRepository.getQuestionAnswerByLetter(wordDeleteQuestAnswer);
         grammar.write("");
         for (int i = 0; i < listDeleteQuestAnswer.size(); i++) {

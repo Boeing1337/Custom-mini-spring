@@ -35,6 +35,7 @@ public class MainMenu {
                     return;
                 default:
                     grammar.write("Нет такой команды. Попробуйте ещё раз");
+                    break;
             }
         }
     }

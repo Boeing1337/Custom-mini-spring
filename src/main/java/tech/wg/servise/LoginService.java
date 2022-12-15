@@ -9,12 +9,16 @@ import tech.wg.tools.Grammar;
 
 import java.util.Optional;
 
+import static tech.wg.servise.RegistrationUsers.login;
+
 @Component
 public class LoginService {
     @InjectObject
     private UserRepository userRepository;
     @InjectObject
     private Grammar grammar;
+
+    private static String pass;
     @InjectObject
     private Encryption encryption;
     @InjectObject
@@ -23,7 +27,6 @@ public class LoginService {
 
     public void authorization() {
 
-        String login;
         while (true) {
             grammar.write("Введите логин или 0, чтобы вернуться в предыдущее меню");
             login = grammar.readLine();
@@ -37,7 +40,7 @@ public class LoginService {
             }
             while (true) {
                 grammar.write("Введите пароль, или 0, чтобы вернуться в предыдущее меню");
-                String pass = grammar.readLine();
+                pass = grammar.readLine();
                 if ("0".equals(pass)) {
                     break;
                 }
