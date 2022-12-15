@@ -20,7 +20,7 @@ import java.util.List;
 class AdminServiceTest {
 
     @InjectMocks
-    private AdminService adminService = new AdminService();
+    private AdminService adminService;
     @Mock
     private QuestionRepository questionRepository;
     @Mock
