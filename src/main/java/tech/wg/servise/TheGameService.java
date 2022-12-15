@@ -122,6 +122,11 @@ public class TheGameService {
                 continue;
             }
             choosePersonLetter = grammar.readInt();
+            if (choosePersonLetter > wordToGuess.length()) {
+                grammar.write("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
+                grammar.readLine();
+                continue;
+            }
             if (choosePersonLetter == 0) {
                 back = 0;
                 stopped = false;
