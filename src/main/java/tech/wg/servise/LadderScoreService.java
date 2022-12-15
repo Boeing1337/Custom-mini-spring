@@ -18,7 +18,7 @@ public class LadderScoreService {
     @InjectObject
     private Grammar grammar;
     @InjectProperty
-    private final int ladderCount = 10;
+    private int ladderCount;
 
 
     public void showLadderTop() {
