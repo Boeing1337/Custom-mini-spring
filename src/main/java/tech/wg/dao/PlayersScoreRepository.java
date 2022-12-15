@@ -32,19 +32,21 @@ public class PlayersScoreRepository {
     }
 
 
-    public void saveScore(ScoreEntity scoreEntity) {
+    public Optional<ScoreEntity> saveScore(ScoreEntity scoreEntity) {
         List<ScoreEntity> allPlayerScore = findAllPlayerScore();
         int i = allPlayerScore.indexOf(scoreEntity);
+        ScoreEntity result = null;
         if (i == -1) {
             allPlayerScore.add(scoreEntity);
         } else {
-            ScoreEntity result = allPlayerScore.get(i);
+            result = allPlayerScore.get(i);
             result.setWin(scoreEntity.getWin());
             result.setLoss(scoreEntity.getLoss());
             result.setWinRate(scoreEntity.getWinRate());
             result.setScore(scoreEntity.getScore());
         }
         writeScores(allPlayerScore);
+        return Optional.ofNullable(result);
     }
 
     public List<ScoreEntity> findAllPlayerScore() {
