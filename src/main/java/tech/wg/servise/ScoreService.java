@@ -2,6 +2,7 @@ package tech.wg.servise;
 
 import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectObject;
+import tech.ioc.annotations.InjectProperty;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.PlayersScoreRepository;
 import tech.wg.dao.ScoreEntity;
@@ -15,8 +16,12 @@ import static java.util.Comparator.comparingLong;
 
 @Component
 public class ScoreService {
-    private final int winCount = 1;
-    private final int looseCount = 1;
+    @InjectProperty
+    private long pointsForWinning;
+    @InjectProperty
+    private long pointForLoosing;
+    @InjectProperty
+    private long pointsForError;
     @InjectObject
     private PlayersScoreRepository playersScoreRepository;
 
@@ -40,7 +45,7 @@ public class ScoreService {
         return playersScoreRepository.findScoreBy(GlobalVariable.getCurrentUser().getLogin());
     }
 
-    public void commitWinLoose(int i) {
+    public long commitWinLoose(int i) {
         if (i > 1 || i < -1 || i == 0) {
             throw new IllegalArgumentException("Значение должно быть: 1 или -1");
         }
@@ -50,21 +55,30 @@ public class ScoreService {
         long score = result.getScore();
         if (i == 1) {
             win++;
-            score += 100;
+            score += pointsForWinning;
+            result.setWin(win);
+            result.setLoss(loose);
+            result.setWinRate(((double) win / (win + loose)) * 100.0);
+            result.setScore(score);
+            playersScoreRepository.saveScore(result);
+            return pointsForWinning;
         }else {
             loose++;
-            score -=100;
+            score += pointForLoosing;result.setWin(win);
+            result.setLoss(loose);
+            result.setWinRate(((double) win / (win + loose)) * 100.0);
+            result.setScore(score);
+            playersScoreRepository.saveScore(result);
+            return pointForLoosing;
         }
-        result.setWin(win);
-        result.setLoss(loose);
-        result.setWinRate(((double) win / (win + loose)) * 100.0);
-        result.setScore(score);
-        playersScoreRepository.saveScore(result);
+
+
     }
 
-    public void commitAnswerMismatch() {
+    public long commitAnswerMismatch() {
         ScoreEntity result = playersScoreRepository.findScoreBy(GlobalVariable.getCurrentUser().getLogin()).orElseThrow();
-        result.setScore(result.getScore() - 50);
+        result.setScore(result.getScore() + pointsForError);
         playersScoreRepository.saveScore(result);
+        return pointsForError;
     }
 }
