@@ -65,8 +65,7 @@ public class TheGameService {
                 String input = grammar.readLine();
                 switch (input) {
                     case "1":
-                        grammar.write("Вы потеряли 100 очков");
-                        scoreService.commitWinLoose(-1);
+                        grammar.write("Ваш счет изменился: " + scoreService.commitWinLoose(-1) + "очков");
                         userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
                         gameBegin();
                         break;
@@ -92,8 +91,8 @@ public class TheGameService {
             }
         }
         if (stopped) {
-            grammar.write("Поздравляю, вы набрали 100 очков");
-            scoreService.commitWinLoose(1);
+            grammar.write("Поздравляю, вы набрали" + scoreService.commitWinLoose(1) + "очков");
+
             userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
         }
     }
@@ -163,8 +162,8 @@ public class TheGameService {
                     grammar.write("Верно");
                     stopped = false;
                 } else {
-                    grammar.write("Введена не верная буква, попробуте еще раз");
-                    scoreService.commitAnswerMismatch();
+                    grammar.write("Введена не верная буква.\nВаш счет изменился: "
+                            + scoreService.commitAnswerMismatch() + " очков.\nПопробуте еще раз");
                 }
             }
         }
