@@ -47,7 +47,7 @@ class TheGameServiceTest {
         Mockito.when(questionRepository.getQuestionAnswerByLetter(any())).thenReturn(
                 List.of(new QuestionEntity(TEST_QUESTION, "ЕБУЧИЙ_ОТВЕТ")));
         Mockito.when(userGameStateRepository.getProgress(any())).thenReturn("RF;**");
-        mockGrammar.initWithInput("1\nN\nR\n0");
+        mockGrammar.initWithInput("1\nN\nR\n0\n");
         targetToTest.theGameContinue();
         Assertions.assertEquals("[*, *]\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\n" +
@@ -78,7 +78,7 @@ class TheGameServiceTest {
         Mockito.when(userGameStateRepository.writeProgress(any(), any(), any())).thenReturn(true);
         Mockito.when(questionRepository.getQuestionAnswerByLetter(any())).thenReturn(
                 List.of(new QuestionEntity(TEST_QUESTION, "ЕБУЧИЙ_ОТВЕТ")));
-        mockGrammar.initWithInput("1\nа\nд\n0");
+        mockGrammar.initWithInput("1\nа\nд\n0\n");
         targetToTest.theGameNew();
         Assertions.assertEquals("[*, *]\n" +
                 "Выбери номер буквы или нажми 0, чтобы вернуться назад\n" +
