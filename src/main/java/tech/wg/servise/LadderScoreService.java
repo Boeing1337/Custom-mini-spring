@@ -37,6 +37,7 @@ public class LadderScoreService {
         while (grammar.readInt() != 0) {
             grammar.write("Введена не верная команда");
         }
+        grammar.readLine();
     }
 
 }
