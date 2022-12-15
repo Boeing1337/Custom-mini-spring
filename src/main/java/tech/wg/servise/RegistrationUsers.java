@@ -4,8 +4,8 @@ import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectObject;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.PlayersScoreRepository;
-import tech.wg.dao.UserEntity;
 import tech.wg.dao.ScoreEntity;
+import tech.wg.dao.UserEntity;
 import tech.wg.dao.UserRepository;
 import tech.wg.tools.Grammar;
 
@@ -65,10 +65,6 @@ public class RegistrationUsers {
             }
             if (!allows) {
                 createdFiles(login, pass1);
-                GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
-                playersScoreRepository.saveScore(new ScoreEntity(GlobalVariable.currentUser.getLogin(),
-                        0, 0, 0.00, 0));
-                grammar.write("Добро пожаловать " + login + "!");
                 return;
             }
         }
@@ -77,6 +73,10 @@ public class RegistrationUsers {
     private void createdFiles(String login, String pass1) {
         if (userRepository.createUser(login, encryption.action(pass1))) {
             GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
+            GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
+            playersScoreRepository.saveScore(new ScoreEntity(GlobalVariable.currentUser.getLogin(),
+                    0, 0, 0.00, 0));
+            grammar.write("Добро пожаловать " + login + "!");
             gameMenu.startGameMenu();
         } else {
             grammar.write("К сожалению произошла критическая ошибка при создании логина, пожалуйста" +

@@ -24,10 +24,10 @@ public class MainMenu {
             switch (grammar.readLine()) {
                 case "1":
                     loginService.authorization();
-                    return;
+                    break;
                 case "2":
                     registrationUsers.registrationUser();
-                    return;
+                    break;
                 case "/admin":
                     adminService.action();
                     break;

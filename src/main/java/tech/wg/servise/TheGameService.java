@@ -51,6 +51,7 @@ public class TheGameService {
             }
         }
         grammar.write(Arrays.toString(arrayRandomWord));
+        back = 1;
         continuous();
     }
 
@@ -109,6 +110,7 @@ public class TheGameService {
         Arrays.fill(arrayRandomWord, 0, wordToGuess.length(), '*');
         grammar.write(Arrays.toString(arrayRandomWord));
         guessedLetters = new int[wordToGuess.length()];
+        userGameStateRepository.writeProgress(GlobalVariable.getCurrentUser().getLogin(), wordToGuess, arrayRandomWord);
         continuous();
     }
 
@@ -122,9 +124,10 @@ public class TheGameService {
                 continue;
             }
             choosePersonLetter = grammar.readInt();
+            grammar.readLine();
             if (choosePersonLetter > wordToGuess.length()) {
                 grammar.write("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
-                grammar.readLine();
+
                 continue;
             }
             if (choosePersonLetter == 0) {
@@ -132,7 +135,6 @@ public class TheGameService {
                 stopped = false;
                 break;
             }
-            grammar.readLine();
             for (int i = 0; i < wordToGuess.length(); i++) {
                 if (guessedLetters[i] == choosePersonLetter) {
                     grammar.write("Данная буква уже отгадана, выберете другую букву");
