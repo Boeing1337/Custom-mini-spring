@@ -20,14 +20,13 @@ public class MainMenu {
             grammar.write("Введите 1 для входа в аккаунт");
             grammar.write("Введите 2 для регистрации аккаунта");
             grammar.write("Введите 0 для выхода из игры");
-
             switch (grammar.readLine()) {
                 case "1":
                     loginService.authorization();
-                    return;
+                    break;
                 case "2":
                     registrationUsers.registrationUser();
-                    return;
+                    break;
                 case "/admin":
                     adminService.action();
                     break;
