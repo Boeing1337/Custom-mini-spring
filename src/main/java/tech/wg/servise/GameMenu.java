@@ -19,12 +19,12 @@ public class GameMenu {
     public void startGameMenu() {
 
         while (true) {
-            grammar.write("Введите 1 для начала новой новой игры");
-            grammar.write("Введите 2 для продолжения ранее начатой игры");
-            grammar.write("Введите 3 для просмотра личной статистики");
-            grammar.write("Введите 4 для просмотра списка лидеров");
-            grammar.write("Введите 0 для выхода из игры");
-            switch (grammar.readLine()) {
+            grammar.println("Введите 1 для начала новой новой игры");
+            grammar.println("Введите 2 для продолжения ранее начатой игры");
+            grammar.println("Введите 3 для просмотра личной статистики");
+            grammar.println("Введите 4 для просмотра списка лидеров");
+            grammar.println("Введите 0 для выхода из игры");
+            switch (grammar.nextLine()) {
                 case "1":
                     theGameService.theGameNew();
                     break;
@@ -40,7 +40,7 @@ public class GameMenu {
                 case "0":
                     return;
                 default:
-                    grammar.write("Нет такой команды. Попробуйте ещё раз");
+                    grammar.println("Нет такой команды. Попробуйте ещё раз");
                     break;
             }
         }
