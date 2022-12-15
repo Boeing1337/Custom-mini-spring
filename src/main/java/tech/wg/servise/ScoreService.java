@@ -1,17 +1,23 @@
 package tech.wg.servise;
 
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.PlayersScoreRepository;
 import tech.wg.dao.ScoreEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.Comparator.comparingLong;
 
+@Component
 public class ScoreService {
-
-    private int winCount = 1;
-    private int looseCount = 1;
+    private final int winCount = 1;
+    private final int looseCount = 1;
+    @InjectObject
     private PlayersScoreRepository playersScoreRepository;
 
 
@@ -19,7 +25,7 @@ public class ScoreService {
         List<ScoreEntity> scoreEntities = playersScoreRepository.findAllPlayerScore();
         List<ScoreEntity> result = new ArrayList<>();
         sortingByScore(scoreEntities);
-        for (int i = 0;scoreEntities.size() > i && i < count; i++) {
+        for (int i = 0; scoreEntities.size() > i && i < count; i++) {
             result.add(scoreEntities.get(i));
         }
         return result;

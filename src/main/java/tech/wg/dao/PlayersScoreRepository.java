@@ -56,7 +56,7 @@ public class PlayersScoreRepository {
                 resultList.add(scoreEntity);
             }
         } catch (Exception e) {
-            log.error("нет файла со словами", e);
+            log.error("нет файла с очками.", e);
         }
         return resultList;
     }

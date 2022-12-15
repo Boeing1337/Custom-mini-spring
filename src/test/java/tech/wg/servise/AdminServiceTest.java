@@ -47,7 +47,8 @@ class AdminServiceTest {
                         "3) Изменит слово.\n" +
                         "4) Удалить слово.\n" +
                         "0) назад.\n" +
-                        "Выберете вариант: ВЕНИК\n" +
+                        "Выберете вариант: \n" +
+                        "ВЕНИК\n" +
                         "ДОКЛАД\n" +
                         "ШУФЛЯДКА\n" +
                         "ЛЕПРЕКОН\n" +
@@ -96,7 +97,8 @@ class AdminServiceTest {
                         "3) Изменит слово.\n" +
                         "4) Удалить слово.\n" +
                         "0) назад.\n" +
-                        "Выберете вариант: ВЕНИК\n" +
+                        "Выберете вариант: \n" +
+                        "ВЕНИК\n" +
                         "ДОКЛАД\n" +
                         "ШУФЛЯДКА\n" +
                         "ЛЕПРЕКОН\n" +
@@ -146,7 +148,8 @@ class AdminServiceTest {
                         "3) Изменит слово.\n" +
                         "4) Удалить слово.\n" +
                         "0) назад.\n" +
-                        "Выберете вариант: ВЕНИК\n" +
+                        "Выберете вариант: \n" +
+                        "ВЕНИК\n" +
                         "ДОКЛАД\n" +
                         "ШУФЛЯДКА\n" +
                         "ЛЕПРЕКОН\n" +
@@ -194,7 +197,8 @@ class AdminServiceTest {
                         "3) Изменит слово.\n" +
                         "4) Удалить слово.\n" +
                         "0) назад.\n" +
-                        "Выберете вариант: ВЕНИК\n" +
+                        "Выберете вариант: \n" +
+                        "ВЕНИК\n" +
                         "ДОКЛАД\n" +
                         "ШУФЛЯДКА\n" +
                         "ЛЕПРЕКОН\n" +
@@ -221,8 +225,8 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers1() {
         List<QuestionEntity> list = List.of();
-        String input = "2\n1\nг\n0\n0";
-        Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
+        String input = "2\n1\nГ\n0\n0";
+        Mockito.when(questionRepository.getQuestionAnswerByLetter("Г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
         String result = grammar.getOut();
@@ -258,8 +262,8 @@ class AdminServiceTest {
     @Test
     void testMenuQuestsAnswers2() {
         List<QuestionEntity> list = List.of(new QuestionEntity("Фифа", "гГгГ"));
-        String input = "2\n2\nФифа\nгГгГ\n1\nг\n0\n0";
-        Mockito.when(questionRepository.getQuestionAnswerByLetter("г")).thenReturn(list);
+        String input = "2\n2\nФифа\nгГгГ\n1\nГ\n0\n0";
+        Mockito.when(questionRepository.getQuestionAnswerByLetter("Г")).thenReturn(list);
         grammar.initWithInput(input);
         adminService.action();
         String result = grammar.getOut();
@@ -338,8 +342,6 @@ class AdminServiceTest {
                 "5) Удалить вопрос и ответ.\n" +
                 "0) назад.\n" +
                 "Выберете вариант: Введите букву русского алфавита: \n" +
-                "1) Фифа\n" +
-                "1) гГгГ\n" +
                 "\n" +
                 "-----Работа с вопросами и ответами-----\n" +
                 "1) Прочитать все вопросы и ответы на выбранную букву.\n" +
@@ -389,8 +391,6 @@ class AdminServiceTest {
                 "5) Удалить вопрос и ответ.\n" +
                 "0) назад.\n" +
                 "Выберете вариант: Введите букву русского алфавита: \n" +
-                "1) Фифа\n" +
-                "1) гГгГ\n" +
                 "\n" +
                 "-----Работа с вопросами и ответами-----\n" +
                 "1) Прочитать все вопросы и ответы на выбранную букву.\n" +

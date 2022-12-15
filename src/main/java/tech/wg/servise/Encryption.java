@@ -1,12 +1,14 @@
 package tech.wg.servise;
 
 import lombok.extern.log4j.Log4j2;
+import tech.ioc.annotations.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
 @Log4j2
+@Component
 public class Encryption {
     public String action(String pass) {
         StringBuilder builder = new StringBuilder();

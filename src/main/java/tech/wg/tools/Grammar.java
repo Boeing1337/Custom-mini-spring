@@ -1,18 +1,14 @@
 package tech.wg.tools;
 
-import tech.wg.servise.AdminService;
+import tech.ioc.annotations.Component;
 
 import java.io.PrintStream;
 import java.util.Scanner;
 
+@Component
 public class Grammar {
     Scanner scanner = new Scanner(System.in);
     PrintStream printStream = System.out;
-
-    public static void main(String[] args) {
-        AdminService adminService = new AdminService();
-        adminService.action();
-    }
 
     public void write(String value) {
         printStream.println(value);

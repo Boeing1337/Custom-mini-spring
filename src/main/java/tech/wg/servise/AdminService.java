@@ -1,6 +1,8 @@
 package tech.wg.servise;
 
 import lombok.extern.log4j.Log4j2;
+import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.wg.dao.KeywordsRepository;
 import tech.wg.dao.QuestionEntity;
 import tech.wg.dao.QuestionRepository;
@@ -10,10 +12,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Log4j2
+@Component
 public class AdminService {
     private final String except = "\nНеверная команда.\n";
+    @InjectObject
     private QuestionRepository questionRepository;
+    @InjectObject
     private KeywordsRepository keywordsRepository;
+    @InjectObject
     private Grammar grammar;
 
     public void action() {
@@ -51,6 +57,7 @@ public class AdminService {
                         "Выберете вариант: ");
                 switch (grammar.readLine()) {
                     case "1":
+                        grammar.write("");
                         List<String> listMenuWords = keywordsRepository.readKeywords();
                         for (String s : listMenuWords) {
                             grammar.write(s);
@@ -128,7 +135,7 @@ public class AdminService {
 
     private void printQuestsAnswers() {
         grammar.print("Введите букву русского алфавита: ");
-        List<QuestionEntity> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.readLine());
+        List<QuestionEntity> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.readLine().toUpperCase());
         grammar.write("");
         for (int i = 0; i < listPrintQuestAnswer.size(); i++) {
             grammar.write(i + 1 + ") " + listPrintQuestAnswer.get(i).getQuestion());

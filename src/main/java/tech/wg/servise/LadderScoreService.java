@@ -1,6 +1,7 @@
 package tech.wg.servise;
 
 import tech.ioc.annotations.Component;
+import tech.ioc.annotations.InjectObject;
 import tech.ioc.annotations.InjectProperty;
 import tech.wg.dao.ScoreEntity;
 import tech.wg.tools.Grammar;
@@ -12,7 +13,9 @@ import static java.util.Locale.ENGLISH;
 
 @Component
 public class LadderScoreService {
+    @InjectObject
     private ScoreService scoreService;
+    @InjectObject
     private Grammar grammar;
     @InjectProperty
     private final int ladderCount = 10;

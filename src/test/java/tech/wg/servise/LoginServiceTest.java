@@ -28,6 +28,9 @@ class LoginServiceTest {
     @Mock
     Encryption encryption;
 
+    @Mock
+    GameMenu gameMenu;
+
 
     @Spy
     MockGrammar grammar;

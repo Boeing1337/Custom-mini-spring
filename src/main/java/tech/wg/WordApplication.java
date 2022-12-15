@@ -2,11 +2,17 @@ package tech.wg;
 
 import tech.ioc.infrastucture.Application;
 import tech.ioc.see_here.TestBeanPrinter;
+import tech.wg.servise.MainMenu;
 
 public class WordApplication {
 
+
     public static void main(String[] args) {
-        Application.run("tech").getObject(TestBeanPrinter.class).print("");
+        if (args.length != 0 && "test".equals(args[0])) {
+            Application.run("tech").getObject(TestBeanPrinter.class).print("");
+        } else {
+            Application.run("tech").getObject(MainMenu.class).startMainMenu();
+        }
     }
 
 }
