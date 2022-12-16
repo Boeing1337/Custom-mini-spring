@@ -132,7 +132,7 @@ public class TheGameService {
                 break;
             }
             if (choosePersonLetter > wordToGuess.length() || choosePersonLetter < 1) {
-                grammar.println("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
+                grammar.println("Ваш выбор выходит за диапазон слова. Пожалуйста попробуйте еще раз.");
 
                 continue;
             }
