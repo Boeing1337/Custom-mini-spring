@@ -2,12 +2,12 @@ package tech.wg.servise;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import tech.extention.ExtendWIthTechAndMockito;
+import tech.ioc.annotations.InjectProperty;
 import tech.wg.context.GlobalVariable;
 import tech.wg.dao.PlayersScoreRepository;
 import tech.wg.dao.ScoreEntity;
@@ -18,17 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWIthTechAndMockito
 class ScoreServiceTest {
-
     @InjectMocks
     ScoreService service;
-
     @Mock
     PlayersScoreRepository playersScoreRepository;
-
     @Spy
     MockGrammar grammar;
+    @InjectProperty
+    private long pointsForWinning;
+    @InjectProperty
+    private long pointForLoosing;
+    @InjectProperty
+    private long pointsForError;
 
     @Test
     void showTopPlayers() {
@@ -65,7 +68,7 @@ class ScoreServiceTest {
     @Test
     void TestCommitWinLooseLoose() {
         GlobalVariable.setCurrentUser(new UserEntity("login", "pass"));
-        ScoreEntity expected= new ScoreEntity("login", 10, 1, 90.9090909090909, 900);
+        ScoreEntity expected = new ScoreEntity("login", 10, 1, 90.9090909090909, 900);
         Mockito.when(playersScoreRepository.findScoreBy("login"))
                 .thenReturn(Optional.of(new ScoreEntity("login", 10, 0, 100.0, 1000)));
         service.commitWinLoose(-1);
@@ -80,7 +83,7 @@ class ScoreServiceTest {
     @Test
     void TestCommitWinLooseWin() {
         GlobalVariable.setCurrentUser(new UserEntity("login", "pass"));
-        ScoreEntity expected= new ScoreEntity("login", 11, 0, 100.0, 1100);
+        ScoreEntity expected = new ScoreEntity("login", 11, 0, 100.0, 1100);
         Mockito.when(playersScoreRepository.findScoreBy("login"))
                 .thenReturn(Optional.of(new ScoreEntity("login", 10, 0, 100.0, 1000)));
         service.commitWinLoose(1);
@@ -95,7 +98,7 @@ class ScoreServiceTest {
     @Test
     void commitAnswerMismatch() {
         GlobalVariable.setCurrentUser(new UserEntity("login", "pass"));
-        ScoreEntity expected= new ScoreEntity("login", 10, 0, 100.0, 950);
+        ScoreEntity expected = new ScoreEntity("login", 10, 0, 100.0, 950);
         Mockito.when(playersScoreRepository.findScoreBy("login"))
                 .thenReturn(Optional.of(new ScoreEntity("login", 10, 0, 100.0, 1000)));
         service.commitAnswerMismatch();

@@ -28,15 +28,16 @@ public class LadderScoreService {
             top += format(ENGLISH, "%-15s|%-5s|%-9s|%-7.2f|%-4s%n", scoreEntity.getLogin(), scoreEntity.getWin(),
                     scoreEntity.getLoss(), scoreEntity.getWinRate(), scoreEntity.getScore());
         }
-        grammar.write(top);
+        grammar.println(top);
         refund();
     }
 
     private void refund() {
-        grammar.write("Введите 0, чтоб вернуться назад");
-        while (grammar.readInt() != 0) {
-            grammar.write("Введена не верная команда");
+        grammar.println("Введите 0, чтоб вернуться назад");
+        while (grammar.nextInt() != 0) {
+            grammar.println("Введена не верная команда");
         }
+        grammar.nextLine();
     }
 
 }

@@ -10,7 +10,7 @@ public class Grammar {
     Scanner scanner = new Scanner(System.in);
     PrintStream printStream = System.out;
 
-    public void write(String value) {
+    public void println(String value) {
         printStream.println(value);
     }
 
@@ -18,23 +18,23 @@ public class Grammar {
         printStream.print(value);
     }
 
-    public void write(int value) {
+    public void println(int value) {
         printStream.println(value);
     }
 
-    public void write(char value) {
+    public void println(char value) {
         printStream.println(value);
     }
 
-    public int readInt() {
+    public int nextInt() {
         return scanner.nextInt();
     }
 
-    public String readLine() {
+    public String nextLine() {
         return scanner.nextLine();
     }
 
-    public String readToken() {
+    public String next() {
         return scanner.next();
     }
 

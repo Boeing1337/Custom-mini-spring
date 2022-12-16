@@ -27,7 +27,7 @@ class LadderScoreServiceTest {
         List<ScoreEntity> listScoreEntity = new ArrayList<>();
         ScoreEntity player1 = new ScoreEntity("Atr", 10, 0, 100.00, 1000);
         listScoreEntity.add(player1);
-        mockGrammar.initWithInput("0");
+        mockGrammar.initWithInput("0\n");
         Mockito.when(scoreService.getTopPlayers(10)).thenReturn(listScoreEntity);
         service.showLadderTop();
         Assertions.assertEquals("Логин          |Побед|Поражений|Процент|Очки\n" +

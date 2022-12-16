@@ -37,7 +37,7 @@ public class TheGameService {
     public void theGameContinue() {
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if ("".equals(progress)) {
-            grammar.write("Нет игры, которую можно продолжить. Начните новую игру");
+            grammar.println("Нет игры, которую можно продолжить. Начните новую игру");
             return;
         }
         String[] a = progress.trim().split(";");
@@ -50,35 +50,37 @@ public class TheGameService {
                 guessedLetters[i] = i + 1;
             }
         }
-        grammar.write(Arrays.toString(arrayRandomWord));
+        back = 1;
         continuous();
     }
 
     public void theGameNew() {
         String progress = userGameStateRepository.getProgress(GlobalVariable.getCurrentUser().getLogin());
         if (!("".equals(progress))) {
-            grammar.write(String.format("У вас есть незаконченная игра. Если вы начнете новую, будет защитано " +
+            grammar.println(String.format("У вас есть незаконченная игра. Если вы начнете новую, будет защитано " +
                     "поражение%nВведите 1, чтоб начать новую игру%nВведите 0, чтоб вернуться назад"));
             boolean inTheProcess = true;
             while (inTheProcess) {
-                String input = grammar.readLine();
+                String input = grammar.nextLine();
                 switch (input) {
                     case "1":
-                        grammar.write("Вы потеряли 100 очков");
-                        scoreService.commitWinLoose(-1);
+                        grammar.println("Ваш счет изменился: " + scoreService.commitWinLoose(-1) + " очков");
                         userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
+                        back = 1;
                         gameBegin();
+                        inTheProcess = false;
                         break;
                     case "0":
                         inTheProcess = false;
                         break;
                     default:
-                        grammar.write("Нет такой команды. Попробуйте ещё раз");
+                        grammar.println("Нет такой команды. Попробуйте ещё раз");
                         break;
                 }
             }
             return;
         }
+        back = 1;
         gameBegin();
     }
 
@@ -91,8 +93,7 @@ public class TheGameService {
             }
         }
         if (stopped) {
-            grammar.write("Поздравляю, вы набрали 100 очков");
-            scoreService.commitWinLoose(1);
+            grammar.println("Поздравляю, вы набрали " + scoreService.commitWinLoose(1) + " очков");
             userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
         }
     }
@@ -105,26 +106,29 @@ public class TheGameService {
     }
 
     private void gameBegin() {
+        back = 1;
         arrayRandomWord = new char[chooseWordToGuess().length()];
         Arrays.fill(arrayRandomWord, 0, wordToGuess.length(), '*');
-        grammar.write(Arrays.toString(arrayRandomWord));
         guessedLetters = new int[wordToGuess.length()];
+        userGameStateRepository.writeProgress(GlobalVariable.getCurrentUser().getLogin(), wordToGuess, arrayRandomWord);
         continuous();
     }
 
     private void startGame() {
         while (stopped) {
+            grammar.println(Arrays.toString(arrayRandomWord));
             boolean retern = true;
-            grammar.write("Выбери номер буквы или нажми 0, чтобы вернуться назад");
+            grammar.println("Выбери номер буквы или нажми 0, чтобы вернуться назад");
             if (!grammar.hasNextInt()) {
-                grammar.write("Необходимо написать цифру");
-                grammar.readLine();
+                grammar.println("Необходимо написать цифру");
+                grammar.nextLine();
                 continue;
             }
-            choosePersonLetter = grammar.readInt();
+            choosePersonLetter = grammar.nextInt();
+            grammar.nextLine();
             if (choosePersonLetter > wordToGuess.length()) {
-                grammar.write("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
-                grammar.readLine();
+                grammar.println("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
+
                 continue;
             }
             if (choosePersonLetter == 0) {
@@ -132,10 +136,9 @@ public class TheGameService {
                 stopped = false;
                 break;
             }
-            grammar.readLine();
             for (int i = 0; i < wordToGuess.length(); i++) {
                 if (guessedLetters[i] == choosePersonLetter) {
-                    grammar.write("Данная буква уже отгадана, выберете другую букву");
+                    grammar.println("Данная буква уже отгадана, выберете другую букву");
                     retern = false;
                     break;
                 }
@@ -150,19 +153,19 @@ public class TheGameService {
                 questions[i] = quesans.get(i).getQuestion();
             }
             String question = questions[random.nextInt(questions.length)];
-            grammar.write(question);
             while (stopped) {
-                grammar.write("Введите первую букву ответа или нажми 0, чтобы вернуться назад");
-                String answer = grammar.readLine();
+                grammar.println(question);
+                grammar.println("Введите первую букву ответа или нажми 0, чтобы вернуться назад");
+                String answer = grammar.nextLine();
                 if ("0".equals(answer)) {
                     break;
                 }
                 if (answer.toUpperCase().charAt(0) == randomChar) {
-                    grammar.write("Верно");
+                    grammar.println("Верно");
                     stopped = false;
                 } else {
-                    grammar.write("Введена не верная буква, попробуте еще раз");
-                    scoreService.commitAnswerMismatch();
+                    grammar.println("Введена не верная буква.\nВаш счет изменился: "
+                            + scoreService.commitAnswerMismatch() + " очков.\nПопробуте еще раз");
                 }
             }
         }
@@ -170,7 +173,6 @@ public class TheGameService {
 
     private void isGameFinished() {
         arrayRandomWord[choosePersonLetter - 1] = wordToGuess.charAt(choosePersonLetter - 1);
-        grammar.write(Arrays.toString(arrayRandomWord));
         back = 0;
         stopped = true;
         for (int i = 0; i < wordToGuess.length(); i++) {

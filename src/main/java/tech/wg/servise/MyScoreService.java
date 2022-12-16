@@ -19,7 +19,7 @@ public class MyScoreService {
 
     public void showMyStat() {
         ScoreEntity scoreEntity = scoreService.getScore().orElse(buildScoreEntity());
-        grammar.write(format(ENGLISH, "%-25s %s%n%-25s %d%n%-25s %d%n%-25s %.2f%%%n%-25s %s%n", "Логин:",
+        grammar.println(format(ENGLISH, "%-25s %s%n%-25s %d%n%-25s %d%n%-25s %.2f%%%n%-25s %s%n", "Логин:",
                 scoreEntity.getLogin(), "Количество побед:", scoreEntity.getWin(), "Количество поражений:",
                 scoreEntity.getLoss(), "Процент побед:", scoreEntity.getWinRate(), "Заработанно очков:",
                 scoreEntity.getScore()));
@@ -31,10 +31,10 @@ public class MyScoreService {
     }
 
     private void refund() {
-        grammar.write("Введите 0, чтоб вернуться назад");
-        while (grammar.readInt() != 0) {
-            grammar.write("Введена не верная команда");
+        grammar.println("Введите 0, чтоб вернуться назад");
+        while (grammar.nextInt() != 0) {
+            grammar.println("Введена не верная команда");
         }
-        grammar.readLine();
+        grammar.nextLine();
     }
 }

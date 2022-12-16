@@ -33,8 +33,9 @@ public class MainMenu {
                 case "0":
                     return;
                 default:
-                    grammar.write("Нет такой команды. Попробуйте ещё раз");
+                    grammar.println("Нет такой команды. Попробуйте ещё раз");
             }
         }
+        
     }
 }
