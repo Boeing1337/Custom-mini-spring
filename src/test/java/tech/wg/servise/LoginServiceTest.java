@@ -65,8 +65,8 @@ class LoginServiceTest {
                 .thenReturn(Optional.of(new UserEntity("login", ENCRYPTED_PASS)));
         service.authorization();
         Assertions.assertEquals("Введите логин или 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", grammar.getOut(), "Не правильный вывод на консоль");
+                        "Введите пароль, или 0, чтобы вернуться в предыдущее меню"
+                , grammar.getOut(), "Не правильный вывод на консоль");
     }
 
     @Test

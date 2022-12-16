@@ -7,7 +7,10 @@ import tech.wg.dao.PlayersScoreRepository;
 import tech.wg.dao.ScoreEntity;
 import tech.wg.dao.UserEntity;
 import tech.wg.dao.UserRepository;
+import tech.wg.servise.login.LoginResolver;
 import tech.wg.tools.Grammar;
+
+import java.util.Optional;
 
 @Component
 public class RegistrationUsers {
@@ -21,6 +24,8 @@ public class RegistrationUsers {
     private GameMenu gameMenu;
     @InjectObject
     private PlayersScoreRepository playersScoreRepository;
+    @InjectObject
+    private LoginResolver loginResolver;
 
 
     private boolean checkDoublePass(String pass1, String pass2) {
@@ -32,7 +37,11 @@ public class RegistrationUsers {
         String pass1 = null;
         while (allows) {
             grammar.println("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню");
-            String login = grammar.nextLine();
+            Optional<String> optionalLogin = loginResolver.resolve();
+            if (optionalLogin.isEmpty()) {
+                continue;
+            }
+            String login = optionalLogin.get();
             if ("0".equals(login)) {
                 return;
             }
@@ -65,7 +74,6 @@ public class RegistrationUsers {
             }
             if (!allows) {
                 createdFiles(login, pass1);
-                return;
             }
         }
     }
@@ -73,10 +81,8 @@ public class RegistrationUsers {
     private void createdFiles(String login, String pass1) {
         if (userRepository.createUser(login, encryption.action(pass1))) {
             GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
-            GlobalVariable.setCurrentUser(new UserEntity(login, pass1));
             playersScoreRepository.saveScore(new ScoreEntity(GlobalVariable.currentUser.getLogin(),
                     0, 0, 0.00, 0));
-            grammar.println("Добро пожаловать " + login + "!");
             gameMenu.startGameMenu();
         } else {
             grammar.println("К сожалению произошла критическая ошибка при создании логина, пожалуйста" +
