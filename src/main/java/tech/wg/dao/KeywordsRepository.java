@@ -14,7 +14,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Log4j2
 public class KeywordsRepository {
     private final Set<String> cash = new LinkedHashSet<>();
-
     @InjectProperty
     private String keywordsFileName;
 
@@ -48,7 +47,6 @@ public class KeywordsRepository {
 
     public List<String> editKeywords(String oldKeyword, String newKeyword) {
         readKeywords();
-        readKeywords();
         if (cash.contains(oldKeyword)) {
             cash.remove(oldKeyword);
             cash.add(newKeyword);
@@ -77,7 +75,7 @@ public class KeywordsRepository {
             if(cash.contains(wrongWord)) {
                 cash.remove(wrongWord);
             } else {
-                System.out.println("Нет такого слова в списке слов.");
+                log.error("Нет такого слова в списке слов.");
             }
             writer.write(String.join("\n", cash));
             cash.clear();
