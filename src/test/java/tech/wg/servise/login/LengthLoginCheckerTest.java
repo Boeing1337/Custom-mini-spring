@@ -46,8 +46,11 @@ class LengthLoginCheckerTest {
     }
 
     @Test
-    void testIfErrorHasMessage() {
-        Assertions.assertNotNull(checker.getError());
+    void testIfErrorHasCorrectMessage() {
+        Assertions.assertEquals(
+                String.format("Длинна логина должна быть в диапазоне от %s до %s", minLoginLength, maxLoginLength)
+                , checker.getError()
+        );
     }
 
 }
