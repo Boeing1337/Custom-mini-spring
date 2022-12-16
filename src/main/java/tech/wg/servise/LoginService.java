@@ -25,30 +25,30 @@ public class LoginService {
 
         String login;
         while (true) {
-            grammar.write("Введите логин или 0, чтобы вернуться в предыдущее меню");
-            login = grammar.readLine();
+            grammar.println("Введите логин или 0, чтобы вернуться в предыдущее меню");
+            login = grammar.nextLine();
             if ("0".equals(login)) {
                 return;
             }
             Optional<UserEntity> user = userRepository.getUser(login);
             if ((user.isEmpty())) {
-                grammar.write("Такого логина не существует. Пожалуйста, попробуйте еще раз");
+                grammar.println("Такого логина не существует. Пожалуйста, попробуйте еще раз");
                 continue;
             }
             while (true) {
-                grammar.write("Введите пароль, или 0, чтобы вернуться в предыдущее меню");
-                String pass = grammar.readLine();
+                grammar.println("Введите пароль, или 0, чтобы вернуться в предыдущее меню");
+                String pass = grammar.nextLine();
                 if ("0".equals(pass)) {
                     break;
                 }
                 pass = encryption.action(pass);
                 if (pass.equals(user.get().getPass())) {
-                    grammar.write("Добро пожаловать " + login + "!");
+                    grammar.println("Добро пожаловать " + login + "!");
                     GlobalVariable.setCurrentUser(new UserEntity(login, pass));
                     gameMenu.startGameMenu();
                     return;
                 }
-                grammar.write("Не верный пароль! Попробуйте ещё раз.");
+                grammar.println("Не верный пароль! Попробуйте ещё раз.");
             }
         }
     }

@@ -21,8 +21,8 @@ public class MockGrammar extends Grammar {
     }
 
     @Override
-    public void write(String value) {
-        super.write(value);
+    public void println(String value) {
+        super.println(value);
     }
 
     @Override
@@ -31,28 +31,28 @@ public class MockGrammar extends Grammar {
     }
 
     @Override
-    public void write(int value) {
-        super.write(value);
+    public void println(int value) {
+        super.println(value);
     }
 
     @Override
-    public void write(char value) {
-        super.write(value);
+    public void println(char value) {
+        super.println(value);
     }
 
     @Override
-    public int readInt() {
-        return super.readInt();
+    public int nextInt() {
+        return super.nextInt();
     }
 
     @Override
-    public String readLine() {
-        return super.readLine();
+    public String nextLine() {
+        return super.nextLine();
     }
 
     @Override
-    public String readToken() {
-        return super.readToken();
+    public String next() {
+        return super.next();
     }
 
     @Override
