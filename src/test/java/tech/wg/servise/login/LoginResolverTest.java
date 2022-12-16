@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import tech.extention.ExtendWIthTechAndMockito;
+import tech.ioc.annotations.InjectProperty;
 import tech.wg.tools.MockGrammar;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWIthTechAndMockito
@@ -24,6 +26,12 @@ class LoginResolverTest {
 
     @Spy
     private ArrayList<LoginChecker> loginCheckers = new ArrayList<>();
+
+    @InjectProperty
+    private int minLoginLength;
+
+    @InjectProperty
+    private int maxLoginLength;
 
     @BeforeEach
     void setup() {
@@ -49,7 +57,10 @@ class LoginResolverTest {
                         result.isPresent(),
                         "При корректном логине должен вернуться НЕ пустой ответ"),
                 () -> assertEquals(
-                        "В логине допустимы только буквы, цифры и знак _ и длинной от 1 до 12 знаков"
+                        format(
+                                "В логине допустимы только буквы, цифры и знак _ и длинной от %s до %s знаков"
+                                , minLoginLength
+                                , maxLoginLength)
                         , mockGrammar.getOut()
                 ));
     }
@@ -63,7 +74,10 @@ class LoginResolverTest {
                         result.isPresent(),
                         "При НЕкорректном логине должен вернуться пустой ответ"),
                 () -> assertEquals(
-                        "В логине допустимы только буквы, цифры и знак _ и длинной от 1 до 12 знаков\n" +
+                        format(
+                                "В логине допустимы только буквы, цифры и знак _ и длинной от %s до %s знаков\n"
+                                , minLoginLength
+                                , maxLoginLength) +
                                 SOME_ERROR
                         , mockGrammar.getOut()
                 ));
