@@ -47,7 +47,6 @@ public class KeywordsRepository {
 
     public List<String> editKeywords(String oldKeyword, String newKeyword) {
         readKeywords();
-        readKeywords();
         if (cash.contains(oldKeyword)) {
             cash.remove(oldKeyword);
             cash.add(newKeyword);

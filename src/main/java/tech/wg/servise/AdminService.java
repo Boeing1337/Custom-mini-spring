@@ -64,20 +64,33 @@ public class AdminService {
                         }
                         break;
                     case "2":
-                        grammar.print("Введите новое слово: ");
-                        keywordsRepository.addKeywords(Collections.singleton(grammar.nextLine().toUpperCase()));
+                        grammar.print("Введите новое слово или введите 0 для выхода: ");
+                        String input = grammar.nextLine().toUpperCase();
+                        if (input.equals("0")) {
+                            break;
+                        }
+                        keywordsRepository.addKeywords(Collections.singleton(input));
                         break;
                     case "3":
-                        grammar.print("Введите слово которое хотите изменить: ");
+                        grammar.print("Введите слово которое хотите изменить или введите 0 для выхода: ");
                         String inputWord = grammar.nextLine().toUpperCase();
-                        grammar.println("Введите новое слово");
+                        if (inputWord.equals("0")) {
+                            break;
+                        }
+                        grammar.println("Введите новое слово или введите 0 для выхода");
                         String inputNewWord = grammar.nextLine().toUpperCase();
+                        if (inputNewWord.equals("0")) {
+                            break;
+                        }
                         keywordsRepository.editKeywords(inputWord, inputNewWord);
                         break;
-
                     case "4":
-                        grammar.print("Введите слово которое хотите удалить: ");
-                        keywordsRepository.deleteKeyword(grammar.nextLine().toUpperCase());
+                        grammar.print("Введите слово которое хотите удалить или введите 0 для выхода: ");
+                        String inputDeleteWord = grammar.nextLine().toUpperCase();
+                        if (inputDeleteWord.equals("0")) {
+                            break;
+                        }
+                        keywordsRepository.deleteKeyword(inputDeleteWord);
                         break;
                     case "0":
                         return;
@@ -134,8 +147,15 @@ public class AdminService {
     }
 
     private void printQuestsAnswers() {
-        grammar.print("Введите букву русского алфавита: ");
-        List<QuestionEntity> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(grammar.nextLine().toUpperCase());
+        grammar.print("Введите букву русского алфавита или введите 0 для выхода: ");
+        String later = grammar.nextLine().toUpperCase();
+        if (later.equals("0")) {
+            return;
+        }
+        List<QuestionEntity> listPrintQuestAnswer = questionRepository.getQuestionAnswerByLetter(later);
+        if (listPrintQuestAnswer.isEmpty()) {
+            grammar.println("\n\nНичего на эту букву нет.");
+        }
         grammar.println("");
         for (int i = 0; i < listPrintQuestAnswer.size(); i++) {
             grammar.println(i + 1 + ") " + listPrintQuestAnswer.get(i).getQuestion());
@@ -144,31 +164,56 @@ public class AdminService {
     }
 
     private void addQuestAnswer() {
-        grammar.print("Введите вопрос: ");
+        grammar.print("Введите вопрос или введите 0 для выхода: ");
         String questAddQuestAnswer = grammar.nextLine().trim();
+        if (questAddQuestAnswer.equals("0")) {
+            return;
+        }
         grammar.println("");
-        grammar.print("Введите ответ: ");
+        grammar.print("Введите ответ или введите 0 для выхода: ");
         String answerAddQuestAnswer = grammar.nextLine();
+        if (answerAddQuestAnswer.equals("0")) {
+            return;
+        }
         questionRepository.addQuestionAnswers(questAddQuestAnswer, answerAddQuestAnswer);
     }
 
     private void changeQuest() {
-        grammar.print("Какая первая буква ответа на вопрос который хотите изменить: ");
-        String wordChangeQuest = grammar.nextLine();
+        grammar.print("Какая первая буква ответа на вопрос который хотите изменить или введите 0 для выхода: ");
+        String wordChangeQuest = grammar.nextLine().toUpperCase();
+        if (wordChangeQuest.equals("0")) {
+            return;
+        }
         grammar.println("");
         grammar.println("");
         List<QuestionEntity> listChangeQuest = questionRepository.getQuestionAnswerByLetter(wordChangeQuest);
+        if (listChangeQuest.isEmpty()) {
+            grammar.println("Ничего нет на эту букву.\n");
+            return;
+        }
         for (int i = 0; i < listChangeQuest.size(); i++) {
             grammar.println(i + 1 + ") " + listChangeQuest.get(i).getQuestion());
         }
         while (true) {
-            grammar.print("Выберете вариант вопроса: ");
+            grammar.print("Выберете вариант вопроса или введите 0 для выхода: ");
             if (grammar.hasNextInt()) {
-                int number = Integer.parseInt(grammar.nextLine().trim()) - 1;
+                int number;
+                while (true) {
+                    number = Integer.parseInt(grammar.nextLine().trim());
+                    if (number == 0) {
+                        return;
+                    } else if (number <= listChangeQuest.size() && number > 0) {
+                        break;
+                    } else {
+                        grammar.println("Не верный ввод.");
+                    }
+                }
                 grammar.println("");
-                grammar.println("Введите новый вопрос в одну строку: ");
+                grammar.println("Введите новый вопрос в одну строку или введите 0 для выхода: ");
                 String questChangeQuest = grammar.nextLine();
-                questionRepository.setQuestions(wordChangeQuest, number, questChangeQuest);
+                if (questChangeQuest.equals("0"))
+                    return;
+                questionRepository.setQuestions(wordChangeQuest, number - 1, questChangeQuest);
                 break;
             } else {
                 grammar.println("\nНеправильный ввод.\n");
@@ -177,21 +222,40 @@ public class AdminService {
     }
 
     private void changeAnswer() {
-        grammar.print("Какая первая буква ответа: ");
-        String wordChangeAnswer = grammar.nextLine();
+        grammar.print("Какая первая буква ответа или введите 0 для выхода: ");
+        String wordChangeAnswer = grammar.nextLine().toUpperCase();
+        if (wordChangeAnswer.equals("0")) {
+            return;
+        }
         List<QuestionEntity> listChangeAnswer = questionRepository.getQuestionAnswerByLetter(wordChangeAnswer);
+        if (listChangeAnswer.isEmpty()) {
+            grammar.println("\nНичего нет на эту букву.");
+            return;
+        }
         grammar.println("");
         for (int i = 0; i < listChangeAnswer.size(); i++) {
             grammar.println(i + 1 + ") " + listChangeAnswer.get(i).getAnswer());
         }
         while (true) {
-            grammar.print("Выберете вариант ответа: ");
+            grammar.print("Выберете вариант ответа или введите 0 для выхода: ");
             if (grammar.hasNextInt()) {
-                int optionChangeAnswer = Integer.parseInt(grammar.nextLine().trim()) - 1;
+                int optionChangeAnswer;
+                while (true) {
+                    optionChangeAnswer = Integer.parseInt(grammar.nextLine().trim());
+                    if (optionChangeAnswer == 0) {
+                        return;
+                    } else if (optionChangeAnswer <= listChangeAnswer.size() && optionChangeAnswer > 0) {
+                        break;
+                    } else {
+                        grammar.println("Не верный ввод.");
+                    }
+                }
                 grammar.println("");
-                grammar.print("Введите новый ответ на выбранную букву: ");
-                String newAnswer = grammar.nextLine();
-                questionRepository.setAnswers(wordChangeAnswer, optionChangeAnswer, newAnswer);
+                grammar.print("Введите новый ответ на выбранную букву или введите 0 для выхода: ");
+                String newAnswer = grammar.nextLine().toUpperCase();
+                if (newAnswer.equals("0"))
+                    return;
+                questionRepository.setAnswers(wordChangeAnswer, optionChangeAnswer - 1, newAnswer);
                 break;
             } else {
                 grammar.println("\nНеправильный ввод.\n");
@@ -200,19 +264,36 @@ public class AdminService {
     }
 
     private void deleteQuestAnswer() {
-        grammar.print("Введите букву русского алфавита: ");
-        String wordDeleteQuestAnswer = grammar.nextLine();
+        grammar.print("Введите букву русского алфавита или введите 0 для выхода: ");
+        String wordDeleteQuestAnswer = grammar.nextLine().toUpperCase();
+        if (wordDeleteQuestAnswer.equals("0")) {
+            return;
+        }
         List<QuestionEntity> listDeleteQuestAnswer = questionRepository.getQuestionAnswerByLetter(wordDeleteQuestAnswer);
         grammar.println("");
+        if (listDeleteQuestAnswer.isEmpty()) {
+            grammar.println("Ничего нет на эту букву.");
+            return;
+        }
         for (int i = 0; i < listDeleteQuestAnswer.size(); i++) {
             grammar.println(i + 1 + ") " + listDeleteQuestAnswer.get(i).getQuestion());
             grammar.println(i + 1 + ") " + listDeleteQuestAnswer.get(i).getAnswer());
         }
         while (true) {
-            grammar.print("Выберете вариант: ");
+            grammar.print("Выберете вариант или введите 0 для выхода: ");
             if (grammar.hasNextInt()) {
-                int optionDeleteQuestAnswer = Integer.parseInt(grammar.nextLine().trim()) - 1;
-                questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer);
+                int optionDeleteQuestAnswer;
+                while (true) {
+                    optionDeleteQuestAnswer = Integer.parseInt(grammar.nextLine().trim());
+                    if (optionDeleteQuestAnswer == 0) {
+                        return;
+                    } else if (optionDeleteQuestAnswer <= listDeleteQuestAnswer.size() && optionDeleteQuestAnswer > 0) {
+                        break;
+                    } else {
+                        grammar.println("Не верный ввод.");
+                    }
+                }
+                questionRepository.deleteQuestions(wordDeleteQuestAnswer, optionDeleteQuestAnswer - 1);
                 break;
             } else {
                 grammar.println("\nНеправильный ввод.\n");
