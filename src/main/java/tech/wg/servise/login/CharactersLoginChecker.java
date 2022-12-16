@@ -1,5 +1,8 @@
 package tech.wg.servise.login;
 
+import tech.ioc.annotations.Component;
+
+@Component
 public class CharactersLoginChecker implements LoginChecker {
     @Override
     public boolean check(String login) {
