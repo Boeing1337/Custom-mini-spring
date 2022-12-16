@@ -24,7 +24,7 @@ class CharactersLoginCheckerTest {
 
     @Test
     void testIfCheckTrueIfLoginHasUnderscore() {
-        Assertions.assertTrue(checker.check("___"), "Чекер не пропустил английские буквы");
+        Assertions.assertTrue(checker.check("___"), "Чекер не пропустил _");
     }
 
     @Test
