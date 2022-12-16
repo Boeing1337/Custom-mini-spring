@@ -126,15 +126,15 @@ public class TheGameService {
             }
             choosePersonLetter = grammar.nextInt();
             grammar.nextLine();
-            if (choosePersonLetter > wordToGuess.length()) {
-                grammar.println("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
-
-                continue;
-            }
             if (choosePersonLetter == 0) {
                 back = 0;
                 stopped = false;
                 break;
+            }
+            if (choosePersonLetter > wordToGuess.length() || choosePersonLetter < 1) {
+                grammar.println("Ваш выбор выходит за диапазон букв. Пожалуйста попробуйте еще раз.");
+
+                continue;
             }
             for (int i = 0; i < wordToGuess.length(); i++) {
                 if (guessedLetters[i] == choosePersonLetter) {

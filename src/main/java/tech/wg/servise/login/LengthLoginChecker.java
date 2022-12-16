@@ -21,6 +21,6 @@ public class LengthLoginChecker implements LoginChecker {
 
     @Override
     public String getError() {
-        return format("Длинна логина должна быть в диапазоне от %s до %s", maxLoginLength, maxLoginLength);
+        return format("Длинна логина должна быть в диапазоне от %s до %s", minLoginLength, maxLoginLength);
     }
 }
