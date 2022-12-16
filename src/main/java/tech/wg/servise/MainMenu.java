@@ -17,11 +17,10 @@ public class MainMenu {
 
     public void startMainMenu() {
         while (true) {
-            grammar.println("Введите 1 для входа в аккаунт");
-            grammar.println("Введите 2 для регистрации аккаунта");
-            grammar.println("Введите 0 для выхода из игры");
-
-            switch (grammar.nextLine()) {
+            grammar.write("Введите 1 для входа в аккаунт");
+            grammar.write("Введите 2 для регистрации аккаунта");
+            grammar.write("Введите 0 для выхода из игры");
+            switch (grammar.readLine()) {
                 case "1":
                     loginService.authorization();
                     break;
@@ -37,5 +36,6 @@ public class MainMenu {
                     grammar.println("Нет такой команды. Попробуйте ещё раз");
             }
         }
+        
     }
 }
