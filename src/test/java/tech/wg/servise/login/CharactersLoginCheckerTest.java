@@ -19,7 +19,7 @@ class CharactersLoginCheckerTest {
 
     @Test
     void testIfCheckTrueIfLoginHasNumbers() {
-        Assertions.assertTrue(checker.check("09"), "Чекер не пропустил английские буквы");
+        Assertions.assertTrue(checker.check("09"), "Чекер не пропустил цифры");
     }
 
     @Test
