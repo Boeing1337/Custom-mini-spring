@@ -50,7 +50,6 @@ public class TheGameService {
                 guessedLetters[i] = i + 1;
             }
         }
-        grammar.println(Arrays.toString(arrayRandomWord));
         back = 1;
         continuous();
     }
@@ -65,9 +64,11 @@ public class TheGameService {
                 String input = grammar.nextLine();
                 switch (input) {
                     case "1":
-                        grammar.println("Ваш счет изменился: " + scoreService.commitWinLoose(-1) + "очков");
+                        grammar.println("Ваш счет изменился: " + scoreService.commitWinLoose(-1) + " очков");
                         userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
+                        back = 1;
                         gameBegin();
+                        inTheProcess = false;
                         break;
                     case "0":
                         inTheProcess = false;
@@ -79,6 +80,7 @@ public class TheGameService {
             }
             return;
         }
+        back = 1;
         gameBegin();
     }
 
@@ -91,8 +93,7 @@ public class TheGameService {
             }
         }
         if (stopped) {
-            grammar.println("Поздравляю, вы набрали" + scoreService.commitWinLoose(1) + "очков");
-
+            grammar.println("Поздравляю, вы набрали " + scoreService.commitWinLoose(1) + " очков");
             userGameStateRepository.deleteProgress(GlobalVariable.getCurrentUser().getLogin());
         }
     }
@@ -105,9 +106,9 @@ public class TheGameService {
     }
 
     private void gameBegin() {
+        back = 1;
         arrayRandomWord = new char[chooseWordToGuess().length()];
         Arrays.fill(arrayRandomWord, 0, wordToGuess.length(), '*');
-        grammar.println(Arrays.toString(arrayRandomWord));
         guessedLetters = new int[wordToGuess.length()];
         userGameStateRepository.writeProgress(GlobalVariable.getCurrentUser().getLogin(), wordToGuess, arrayRandomWord);
         continuous();
@@ -115,6 +116,7 @@ public class TheGameService {
 
     private void startGame() {
         while (stopped) {
+            grammar.println(Arrays.toString(arrayRandomWord));
             boolean retern = true;
             grammar.println("Выбери номер буквы или нажми 0, чтобы вернуться назад");
             if (!grammar.hasNextInt()) {
@@ -151,8 +153,8 @@ public class TheGameService {
                 questions[i] = quesans.get(i).getQuestion();
             }
             String question = questions[random.nextInt(questions.length)];
-            grammar.println(question);
             while (stopped) {
+                grammar.println(question);
                 grammar.println("Введите первую букву ответа или нажми 0, чтобы вернуться назад");
                 String answer = grammar.nextLine();
                 if ("0".equals(answer)) {
@@ -171,7 +173,6 @@ public class TheGameService {
 
     private void isGameFinished() {
         arrayRandomWord[choosePersonLetter - 1] = wordToGuess.charAt(choosePersonLetter - 1);
-        grammar.println(Arrays.toString(arrayRandomWord));
         back = 0;
         stopped = true;
         for (int i = 0; i < wordToGuess.length(); i++) {
