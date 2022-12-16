@@ -2,6 +2,7 @@ package tech.wg.servise;
 
 import tech.ioc.annotations.Component;
 import tech.ioc.annotations.InjectObject;
+import tech.wg.context.GlobalVariable;
 import tech.wg.tools.Grammar;
 
 @Component
@@ -17,7 +18,7 @@ public class GameMenu {
 
 
     public void startGameMenu() {
-
+        grammar.println("Добро пожаловать " + GlobalVariable.currentUser.getLogin() + "!");
         while (true) {
             grammar.println("Введите 1 для начала новой новой игры");
             grammar.println("Введите 2 для продолжения ранее начатой игры");

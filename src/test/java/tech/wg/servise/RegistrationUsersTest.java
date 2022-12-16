@@ -11,7 +11,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.wg.dao.PlayersScoreRepository;
 import tech.wg.dao.UserRepository;
+import tech.wg.servise.login.LoginResolver;
 import tech.wg.tools.MockGrammar;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationUsersTest {
@@ -28,6 +31,8 @@ class RegistrationUsersTest {
     GameMenu gameMenu;
     @Mock
     PlayersScoreRepository playersScoreRepository;
+    @Mock
+    private LoginResolver loginResolver;
 
     @BeforeEach
     void soglasovanie() {
@@ -39,8 +44,9 @@ class RegistrationUsersTest {
     void testInputPasswordFalse() {
         Mockito.when(userRepository.createUser("login", ENCRYPTED_PASS)).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
+        Mockito.when(loginResolver.resolve()).thenReturn(Optional.of("login"));
 
-        mockGrammar.initWithInput("login\n\npass\npass");
+        mockGrammar.initWithInput("\npass\npass");
 
         service.registrationUser();
 
@@ -48,15 +54,15 @@ class RegistrationUsersTest {
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
                 "Пароль должен содержать значение\n" +
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", mockGrammar.getOut());
+                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню", mockGrammar.getOut());
     }
 
     @Test
     void testInputPasswordFalse2() {
         Mockito.when(userRepository.createUser("login", ENCRYPTED_PASS)).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
-        mockGrammar.initWithInput("login\npass\npzass\npass");
+        Mockito.when(loginResolver.resolve()).thenReturn(Optional.of("login"));
+        mockGrammar.initWithInput("pass\npzass\npass");
 
         service.registrationUser();
 
@@ -64,8 +70,7 @@ class RegistrationUsersTest {
                 "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
                 "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
                 "Ваш первый и второй пароль разные. Пожалуйста, попробуйте еще раз\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", mockGrammar.getOut());
+                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню", mockGrammar.getOut());
     }
 
     @Test
@@ -73,55 +78,62 @@ class RegistrationUsersTest {
         Mockito.when(userRepository.createUser("login", ENCRYPTED_PASS)).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("existingLogin")).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
+        Mockito.when(loginResolver.resolve())
+                .thenReturn(Optional.of("existingLogin"))
+                .thenReturn(Optional.of("login"));
 
-        mockGrammar.initWithInput("existingLogin\nlogin\npass\npass");
+        mockGrammar.initWithInput("pass\npass");
 
         service.registrationUser();
 
-        Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Такой логин уже занят. Пожалуйста, попробуйте еще раз\n" +
+        Assertions.assertEquals(
                 "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", mockGrammar.getOut());
+                        "Такой логин уже занят. Пожалуйста, попробуйте еще раз\n" +
+                        "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню"
+                , mockGrammar.getOut());
     }
 
     @Test
     void registrationUser() {
         Mockito.when(userRepository.createUser("login", ENCRYPTED_PASS)).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
+        Mockito.when(loginResolver.resolve()).thenReturn(Optional.of("login"));
 
-        mockGrammar.initWithInput("login\n0\nlogin\npass\npass");
+        mockGrammar.initWithInput("0\npass\npass");
 
         service.registrationUser();
 
-        Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+        Assertions.assertEquals(
                 "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", mockGrammar.getOut());
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню"
+                , mockGrammar.getOut());
     }
 
     @Test
     void registrationUser2() {
         Mockito.when(userRepository.createUser("login", ENCRYPTED_PASS)).thenReturn(true);
         Mockito.when(userRepository.isUserPresents("login")).thenReturn(false);
+        Mockito.when(loginResolver.resolve()).thenReturn(Optional.of("login"));
 
-        mockGrammar.initWithInput("login\n0\nlogin\npass\n0\n0\nlogin\npass\npass");
+        mockGrammar.initWithInput("0\npass\n0\n0\npass\npass");
 
         service.registrationUser();
 
         Assertions.assertEquals("Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
-                "Добро пожаловать login!", mockGrammar.getOut());
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите логин или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль, или нажмите 0, чтобы вернуться в предыдущее меню\n" +
+                        "Введите пароль повторно, или нажмите 0, чтобы вернуться в предыдущее меню"
+                , mockGrammar.getOut());
     }
 }
 

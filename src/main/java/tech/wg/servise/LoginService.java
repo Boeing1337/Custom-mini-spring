@@ -43,7 +43,6 @@ public class LoginService {
                 }
                 pass = encryption.action(pass);
                 if (pass.equals(user.get().getPass())) {
-                    grammar.println("Добро пожаловать " + login + "!");
                     GlobalVariable.setCurrentUser(new UserEntity(login, pass));
                     gameMenu.startGameMenu();
                     return;
