@@ -4,12 +4,12 @@ import lombok.SneakyThrows;
 import tech.ioc.casting.FromStringTypeCaster;
 import tech.ioc.infrastucture.interfaces.Scanner;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
-import static java.nio.file.Files.readAllLines;
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
 public class ApplicationPropertiesResolver implements PropertyResolver {
@@ -18,11 +18,13 @@ public class ApplicationPropertiesResolver implements PropertyResolver {
 
     @SneakyThrows
     public ApplicationPropertiesResolver(Scanner scanner, String resource) {
-        String url = getClass().getClassLoader().getResource(resource).getPath().replace("%20", " ");
-        properties = readAllLines(new File(url).toPath())
-                .stream()
-                .map(line -> line.split("="))
-                .collect(toMap(e -> e[0], e -> e[1]));
+        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(resource)) {
+            properties = stream(new String(resourceAsStream.readAllBytes()).split("\\n|\\r\\n"))
+                    .map(line -> line.split("="))
+                    .collect(toMap(e -> e[0], e -> e[1]));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
         for (var caster : scanner.getScanner().getSubTypesOf(FromStringTypeCaster.class)) {
             FromStringTypeCaster fromStringTypeCaster = caster.getDeclaredConstructor().newInstance();
             if (casters.containsKey(fromStringTypeCaster)) {
